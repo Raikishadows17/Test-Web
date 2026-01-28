@@ -1,0 +1,13 @@
+
+.action-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
+/* Si quieres que el botón sea más ancho o tenga otro estilo, ajusta aquí */
+.action-buttons .btn-primary {
+  padding: 12px 32px;
+  font-size: 1.1rem;
+}

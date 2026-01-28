@@ -1,0 +1,89 @@
+<!-- Barra de filtros arriba -->
+<header class="top-bar">
+  <app-filters (filtersApplied)="onFiltersApplied($event)"></app-filters>
+</header>
+
+<!-- Layout principal: mapa + panel derecho -->
+<div class="strategic-layout">
+
+  <!-- MAPA / IMAGEN - ahora ocupa la izquierda grande -->
+  <section class="map-section">
+    <img *ngIf="!useMap" src="images/map-main.png" class="map-image" alt="Mapa estratégico" />
+    <div *ngIf="useMap" id="map" class="map-container"></div>
+  </section>
+
+  <!-- PANEL DERECHO - ahora a la derecha -->
+  <aside class="info-panel">
+    <h3>Foráneos</h3>
+    <ul class="tree" *ngIf="treeData.length > 0">
+      <li class="tree-group" *ngFor="let group of treeData" [class.open]="openGroupRight === group.key">
+        <div class="tree-header" (click)="toggleRight(group.key)">
+          <span class="material-icons chevron">
+            {{ openGroupRight === group.key ? 'expand_more' : 'chevron_right' }}
+          </span>
+          <span class="subTittle">
+            {{ group.title }} [{{ group.items.length }}]
+          </span>
+        </div>
+
+        <ul class="tree-children" *ngIf="openGroupRight === group.key">
+          <li *ngFor="let economico of group.items" class="tree-item" (click)="showDetails(economico)">
+            {{ economico }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+
+</div>
+<!-- MODAL DE DETALLES DE UNIDAD -->
+<div class="modal-overlay" *ngIf="showDetailsModal"></div>
+  <div class="details-modal" *ngIf="showDetailsModal">
+    <div class="modal-content">
+      <!-- X grande y visible desde el inicio -->
+      <button class="close-btn" (click)="closeDetailsModal()" aria-label="Cerrar">
+        <span class="material-icons">close</span>
+      </button>
+
+      <div class="modal-header">
+        <h3>Detalles de {{ selectedUnit?.economico }}</h3>
+      </div>
+
+      <div class="modal-body details-grid">
+        <div class="detail-row">
+          <strong>Origen</strong>
+          <span>{{ selectedUnit?.origen }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Destino</strong>
+          <span>{{ selectedUnit?.destino }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Operador</strong>
+          <span>{{ selectedUnit?.operador }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Equipo</strong>
+          <span>{{ selectedUnit?.equipo }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Terminal</strong>
+          <span>{{ selectedUnit?.terminal }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Contenedor</strong>
+          <span>{{ selectedUnit?.contenedor }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Cliente</strong>
+          <span>{{ selectedUnit?.cliente }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>Tipo de viaje</strong>
+          <span class="tag" [class.full]="selectedUnit?.tipoViaje === 'lleno'">
+            {{ selectedUnit?.tipoViaje | titlecase }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>

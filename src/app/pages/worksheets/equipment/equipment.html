@@ -1,0 +1,57 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">Equipos</h1>
+
+    <div class="search-actions">
+      <button class="btn-primary" (click)="newEquipment()">Nuevo Equipo</button>
+    </div>
+  </header>
+  <div class="search-box">
+    <input type="text" placeholder="Buscar por Clave de Inventario o Placas" [(ngModel)]="searchTerm"
+      (input)="searchEquipment()">
+  </div>
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-msg">Cargando Equipos...</div>
+
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lista de clientes -->
+  <div *ngIf="!loading && !errorMessage" class="table-wrapper">
+
+    <table class="catalog-table">
+      <thead>
+        <tr>
+          <th>Clave de Inventario</th>
+          <th>Foraneo</th>
+          <th>Equipo Completo</th>
+          <th>Numero de Placas</th>
+          <th>Año de Vigencia</th>
+          <th>Capacidad de diesel</th>
+          <th>Fecha de Validación</th>
+          <th>Ruta al documento de factura</th>
+          <th>Ruta al documento verificación fisica</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of filteredEquipments">
+          <td>{{ c.numero_Economico }}</td>
+          <td>{{ c.foreign }}</td>
+          <td>{{ c.full }}</td>
+          <td>{{ c.plates }}</td>
+          <td>{{ c.plates_validation_Year }}</td>
+          <td>{{ c.diesel_Capacity }}</td>
+          <td>{{ c.physycal_check_Validation_Date }}</td>
+          <td>{{ c.invoice_Document_Path }}</td>
+          <td>{{ c.physycal_check_Document_Path }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

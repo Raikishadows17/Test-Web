@@ -1,0 +1,319 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">RH / OPERADORES</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Recursos Humanos y Operadores
+  </div>
+
+  <section class="form-section">
+    <h3>
+      <span class="material-icons">person</span>
+      DATOS PERSONALES
+    </h3>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nombre(s) *</label>
+        <input type="text" [(ngModel)]="formData.name" placeholder="Nombre(s)" required
+          pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" (keypress)="onlyLetters($event)">
+      </div>
+
+      <div class="form-group">
+        <label>Apellido Paterno *</label>
+        <input type="text" [(ngModel)]="formData.fatherLastName" placeholder="Apellido Paterno" required
+          pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" (keypress)="onlyLetters($event)">
+      </div>
+
+      <div class="form-group">
+        <label>Apellido Materno</label>
+        <input type="text" [(ngModel)]="formData.motherLastName" placeholder="Apellido Materno" required
+          pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" (keypress)="onlyLetters($event)">
+      </div>
+
+      <div class="form-group">
+        <label>RFC *</label>
+        <input type="text" [(ngModel)]="formData.rfc" placeholder="RFC" required>
+      </div>
+
+      <div class="form-group">
+        <label>CURP</label>
+        <input type="text" [(ngModel)]="formData.curp" placeholder="CURP" axlength="18"
+          pattern="[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]" (input)="formatCurp($event)" (blur)="validateCurp()">
+        <small *ngIf="curpError" style="color: #ff9800;">
+          {{ curpError }}
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label>NSS (IMSS)</label>
+        <input type="text" [(ngModel)]="formData.nss" placeholder="NSS" maxlength="11" pattern="[0-9]{11}"
+          (keypress)="onlyNumbers($event)">
+      </div>
+
+      <div class="form-group">
+        <label>Fecha Nacimiento</label>
+        <input type="date" [(ngModel)]="formData.birthDate">
+      </div>
+
+      <div class="form-group">
+        <label>Sexo</label>
+        <select [(ngModel)]="formData.sex">
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let s of sexes">{{ s }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Estado Civil</label>
+        <select [(ngModel)]="formData.maritalStatus">
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let ms of maritalStatuses">{{ ms }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tipo de Sangre</label>
+        <select [(ngModel)]="formData.okTipoSangre">
+          <option value="">-- Seleccionar --</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+          <option>O+</option>
+          <option>O-</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Nivel de Estudios</label>
+        <select [(ngModel)]="formData.okNivelEstudios">
+          <option value="">-- Seleccionar --</option>
+          <option>Primaria</option>
+          <option>Secundaria</option>
+          <option>Preparatoria / Bachillerato</option>
+          <option>Técnico</option>
+          <option>Licenciatura</option>
+          <option>Maestría</option>
+          <option>Doctorado</option>
+        </select>
+      </div>
+    </div>
+  </section>
+  <!-- DATOS COMPLEMENTARIOS -->
+  <section class="form-section">
+    <h3>
+      <span class="material-icons">contact_phone</span>
+      DATOS COMPLEMENTARIOS
+    </h3>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" [(ngModel)]="formData.okTelefono" placeholder="55 1234 5678" maxlength="15"
+          (keypress)="onlyNumbers($event)">
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono en caso de no contestar</label>
+        <input type="tel" [(ngModel)]="formData.okTelefonoEmergencia" placeholder="55 1234 5678" maxlength="15"
+          (keypress)="onlyNumbers($event)">
+      </div>
+
+      <div class="form-group">
+        <label>Dirección</label>
+        <input type="text" [(ngModel)]="formData.okDireccion" placeholder="Calle, número, colonia...">
+      </div>
+
+      <div class="form-group">
+        <label>Código Postal</label>
+        <input type="text" [(ngModel)]="formData.okCodigoPostal" placeholder="60950" maxlength="5"
+          (keypress)="onlyNumbers($event)">
+      </div>
+
+      <div class="form-group">
+        <label>INE</label>
+        <input type="text" [(ngModel)]="formData.okIne" placeholder="Número de INE" maxlength="13"
+          (keypress)="onlyNumbers($event)">
+      </div>
+    </div>
+  </section>
+
+  <!-- DATOS LABORALES -->
+  <section class="form-section">
+    <h3>
+      <span class="material-icons">work</span>
+      DATOS LABORALES
+    </h3>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Puesto / Rol *</label>
+        <select [(ngModel)]="formData.position" required>
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let p of positions">{{ p }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Fecha Ingreso</label>
+        <input type="date" [(ngModel)]="formData.hireDate">
+      </div>
+
+      <div class="form-group">
+        <label>Salario Diario</label>
+        <input type="number" [(ngModel)]="formData.dailySalary" placeholder="0.00">
+      </div>
+
+      <div class="form-group">
+        <label>Fecha Baja</label>
+        <input type="date" [(ngModel)]="formData.downDate">
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.isUnionMember">
+        ¿Es Agremiado? (Sindicato)
+      </label>
+    </div>
+  </section>
+
+  <!-- LICENCIAS Y CERTIFICACIONES -->
+  <section class="form-section">
+    <h3>
+      <span class="material-icons">check_box</span>
+      LICENCIAS Y CERTIFICACIONES
+    </h3>
+
+    <div class="form-grid">
+      <!-- Columna izquierda: Licencia Federal -->
+      <div class="license-column">
+        <h4>Licencia Federal</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Número</label>
+            <input type="text" [(ngModel)]="formData.licenseNumber" placeholder="Número" maxlength="15"
+              (keypress)="onlyNumbers($event)" pattern="[0-9]+">
+          </div>
+
+          <div class="form-group">
+            <label>Vigencia</label>
+            <input type="date" [(ngModel)]="formData.licenseExpiration">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo</label>
+          <input type="text" [(ngModel)]="formData.licenseType" placeholder="Ej. B, E" maxlength="1"
+            (keypress)="onlyLettersType($event)" pattern="[A-Za-z]">
+        </div>
+
+        <button type="button" class="btn-secondary">
+          <span class="material-icons">visibility</span>
+          Ver Foto Licencia
+        </button>
+      </div>
+
+      <!-- Columna derecha: Certificado Médico / Aptitud -->
+      <div class="license-column">
+        <h4>Certificado Médico / Aptitud</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Folio</label>
+            <input type="text" [(ngModel)]="formData.medicalCertificateFolio" placeholder="Folio" maxlength="20"
+              (keypress)="onlyNumbers($event)" pattern="[0-9]+">
+          </div>
+
+          <div class="form-group">
+            <label>Vencimiento</label>
+            <input type="date" [(ngModel)]="formData.medicalCertificateExpiration">
+          </div>
+        </div>
+        <!-- Nuevo campo: Certificado Foráneo (FK) -->
+        <div class="form-group">
+          <label>Certificado Foráneo (Documento Aprobatorio)</label>
+          <div class="file-upload-group">
+            <input type="file" id="certificadoForaneo" (change)="onCertificadoForaneoSelected($event)" accept=".pdf"
+              style="display:none;">
+            <label for="certificadoForaneo" class="btn-secondary">
+              <span class="material-icons">upload_file</span>
+              Subir Certificado Foráneo
+            </label>
+            <span class="file-name" *ngIf="selectedCertificadoForaneo">{{ selectedCertificadoForaneo }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h3>
+      <span class="material-icons">event</span>
+      VIGENCIAS Y ESTADOS ESPECIALES
+    </h3>
+
+    <div class="form-grid">
+      <!-- Columna izquierda: Vigencias -->
+      <div class="license-column">
+        <h4>Vigencias</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Vencimiento de Vigencias de Operador</label>
+            <input type="date" [(ngModel)]="formData.okVencimientoVigencias">
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha: Bloqueos/Incapacidad -->
+      <div class="license-column">
+        <h4>Bloqueos/Incapacidad</h4>
+        <div class="form-group">
+          <label>Empleado Bloqueado Terminal (ID Terminal)</label>
+          <input type="text" [(ngModel)]="formData.okIdTerminalBloqueo" placeholder="ID Terminal">
+        </div>
+        <div class="form-grid">
+          <div>
+            <div class="form-group">
+              <label>Fecha Inicio Bloqueo</label>
+              <input type="date" [(ngModel)]="formData.okFechaInicioBloqueo">
+            </div>
+            <div class="form-group">
+              <label>Fecha Fin Bloqueo</label>
+              <input type="date" [(ngModel)]="formData.okFechaFinBloqueo">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Empleado Incapacitado</label>
+            <div class="checkbox-row">
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.okIncapacitado">
+                Sí
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.okIncapacitado">
+                No
+              </label>
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label>Fecha Inicio Incapacidad</label>
+              <input type="date" [(ngModel)]="formData.okFechaInicioIncapacidad">
+            </div>
+            <div class="form-group">
+              <label>Fecha Fin Incapacidad</label>
+              <input type="date" [(ngModel)]="formData.okFechaFinIncapacidad">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div>

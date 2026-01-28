@@ -1,0 +1,47 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">Operadores</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="newOperator()">Nuevo Operador</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Listado de Operadores Activos
+  </div>
+
+  <div class="table-wrapper">
+    <table class="catalog-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre Completo</th>
+          <th>RFC</th>
+          <th>CURP</th>
+          <th>NSS</th>
+          <th>Puesto</th>
+          <th>Fecha Ingreso</th>
+          <th>Teléfono</th>
+          <th>Tipo Sangre</th>
+          <th>Licencia Federal</th>
+          <th>Vigencia Licencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let op of operadores; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ op.nombre }}</td>
+          <td>{{ op.rfc }}</td>
+          <td>{{ op.curp }}</td>
+          <td>{{ op.nss }}</td>
+          <td>{{ op.puesto }}</td>
+          <td>{{ op.fechaIngreso }}</td>
+          <td>{{ op.telefono }}</td>
+          <td>{{ op.tipoSangre }}</td>
+          <td>{{ op.licencia }}</td>
+          <td>{{ op.vigenciaLicencia }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

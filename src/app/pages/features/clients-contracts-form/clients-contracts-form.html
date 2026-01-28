@@ -1,0 +1,370 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">CLIENTES Y CONTRATOS</h1>
+    <div>
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Gestión Comercial: Clientes y Contratos
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. Datos Cliente
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Contrato y Tarifas
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Direcciones y Contactos
+    </button>
+  </div>
+
+  <!-- Contenido de tabs -->
+  <div class="tab-content">
+    <div class="form-section">
+      <!-- Tab 1: Datos Cliente -->
+      <div *ngIf="activeTab === 1">
+        <h3>
+          <span class="material-icons">card_travel</span>
+          IDENTIFICACIÓN FISCAL
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>RFC *</label>
+            <input type="text" [(ngModel)]="formData.rfc" placeholder="Ej: AAA010101AAA" required maxlength="13"
+              minlength="13" (input)="formatRfc($event)" (keypress)="onlyRfcChars($event)" pattern="[A-Z0-9]{13}"
+              (blur)="validateRfc()">
+            <small *ngIf="formData.rfc && formData.rfc.length !== 13" style="color: #ff9800;">
+              Deben ser exactamente 13 caracteres (4 letras + 6 números + 3 alfanuméricos)
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Razón Social *</label>
+            <input type="text" [(ngModel)]="formData.razonSocial" placeholder="Razón Social" required
+              (keypress)="onlyLettersWithSpaces($event)">
+          </div>
+
+          <div class="form-group">
+            <label>Nombre Comercial (Apodo)</label>
+            <input type="text" [(ngModel)]="formData.nombreComercial" placeholder="Ej: Samsung Lázaro"
+              (keypress)="onlyLettersWithSpaces($event)">
+          </div>
+
+          <div class="form-group">
+            <label>Industria/Sector</label>
+            <select [(ngModel)]="formData.industria">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let i of industrias">{{ i }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Estatus</label>
+            <select [(ngModel)]="formData.estatus">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let e of estatuses">{{ e }}</option>
+            </select>
+          </div>
+        </div>
+
+        <h3>
+          <span class="material-icons">group</span>
+          CLASIFICACIÓN COMERCIAL
+        </h3>
+        <div class="form-grid">
+          <div class="form-group checkbox-group">
+            <label>Tipo de Cliente</label>
+            <div class="checkbox-row">
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.clienteFinal">
+                Cliente Final
+              </label>
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.freightForwarder">
+                Freight Forwarder
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Ejecutivo de Cuenta</label>
+            <select [(ngModel)]="formData.ejecutivoCuenta">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let e of ejecutivos">{{ e }}</option>
+            </select>
+          </div>
+        </div>
+
+        <h3>
+          <span class="material-icons">attach_money</span>
+          CONDICIONES DE CRÉDITO
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Términos de Pago</label>
+            <select [(ngModel)]="formData.terminosPago">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of terminosPago">{{ t }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Límite de Crédito</label>
+            <input type="number" [(ngModel)]="formData.limiteCredito" placeholder="0.00">
+          </div>
+
+          <div class="form-group">
+            <label>Constancia Fiscal</label>
+            <div class="file-upload-group">
+              <input type="file" id="constanciaFiscal" (change)="onConstanciaSelected($event)" accept=".pdf"
+                style="display: none;" />
+              <label for="constanciaFiscal" class="btn-secondary">
+                <span class="material-icons">upload_file</span>
+                Subir PDF
+              </label>
+              <span class="file-name" *ngIf="selectedConstancia">
+                {{ selectedConstancia }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 2 Contratos y Tarifas-->
+      <div *ngIf="activeTab === 2">
+        <h3>
+          <span class="material-icons">calendar_today</span>
+          VIGENCIA DEL CONTRATO
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Inicio Contrato</label>
+            <input type="date" [(ngModel)]="formData.inicioContrato">
+          </div>
+
+          <div class="form-group">
+            <label>Fin Contrato</label>
+            <input type="date" [(ngModel)]="formData.finContrato">
+          </div>
+
+          <div class="form-group">
+            <label>Moneda</label>
+            <select [(ngModel)]="formData.moneda">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let m of monedas">{{ m }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo Contrato</label>
+            <select [(ngModel)]="formData.tipoContrato">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of tiposContrato">{{ t }}</option>
+            </select>
+          </div>
+        </div>
+
+        <h3>
+          <span class="material-icons">attach_money</span>
+          TARIFARIO BASE (COSTOS ESTÁNDAR)
+        </h3>
+        <div class="form-grid">
+          <!-- Fletes y Movimientos -->
+          <div class="tarifario-section">
+            <h5>Fletes y Movimientos</h5>
+            <div class="form-group">
+              <label>Flete Local (Base)</label>
+              <input type="number" [(ngModel)]="formData.fleteLocal" placeholder="$0.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Movimiento en Falso</label>
+              <input type="number" [(ngModel)]="formData.movimientoFalso" placeholder="$0.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Reparto Adicional</label>
+              <input type="number" [(ngModel)]="formData.repartoAdicional" placeholder="$0.00" step="0.01">
+            </div>
+          </div>
+
+          <!-- Estadías y Demoras -->
+          <div class="tarifario-section">
+            <h5>Estadías y Demoras</h5>
+            <div class="form-group">
+              <label>Estadía (por día)</label>
+              <input type="number" [(ngModel)]="formData.estadiaDia" placeholder="$0.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Días Libres Carga</label>
+              <input type="number" [(ngModel)]="formData.diasLibresCarga" placeholder="Ej. 24 hrs">
+            </div>
+            <div class="form-group">
+              <label>Días Libres Descarga</label>
+              <input type="number" [(ngModel)]="formData.diasLibresDescarga" placeholder="Ej. 48 hrs">
+            </div>
+          </div>
+
+          <!-- Adicionales -->
+          <div class="tarifario-section">
+            <h5>Adicionales</h5>
+            <div class="form-group">
+              <label>Pernocta</label>
+              <input type="number" [(ngModel)]="formData.pernocta" placeholder="$0.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Maniobra IMO</label>
+              <input type="text" [(ngModel)]="formData.maniobraIMO" placeholder="+ % o Monto">
+            </div>
+          </div>
+        </div>
+
+        <!-- Rutas específicas -->
+        <h3>
+          <span class="material-icons">location_on</span>
+          RUTAS ESPECÍFICAS (TARIFAS)
+        </h3>
+
+        <div class="rutas-section">
+          <div class="checkbox-row">
+            <label>
+              <input type="checkbox" [(ngModel)]="formData.requierePortalesCita">
+              Requiere Portales de Cita
+            </label>
+          </div>
+
+          <div class="rutas-table">
+            <table >
+              <thead>
+                <tr>
+                  <th>Origen</th>
+                  <th>Destino</th>
+                  <th>Tipo Unidad</th>
+                  <th>Tarifa Pactada</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Ejemplo inicial (puedes dejarlo o hacerlo dinámico) -->
+                <tr *ngFor="let ruta of formData.rutas; let i = index">
+                  <td>
+                    <input type="text" [(ngModel)]="ruta.origen" placeholder="Origen">
+                  </td>
+                  <td>
+                    <input type="text" [(ngModel)]="ruta.destino" placeholder="Destino">
+                  </td>
+                  <td>
+                    <select [(ngModel)]="ruta.tipoUnidad">
+                      <option value="">-- Seleccionar --</option>
+                      <option *ngFor="let t of tiposUnidad">{{ t }}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="ruta.tarifa" placeholder="$0.00" step="0.01">
+                  </td>
+                  <td>
+                    <button class="btn-secondary small" (click)="editRuta(i)">Editar</button>
+                    <button class="btn-danger small" (click)="removeRuta(i)">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <button class="btn-primary add-ruta" (click)="addRuta()">
+              + Agregar Nueva Ruta al Contrato
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 3: Direcciones y Contactos -->
+      <div *ngIf="activeTab === 3">
+        <h3>
+          <span class="material-icons">location_on</span>
+          DIRECTORIO DE DIRECCIONES
+        </h3>
+
+        <div class="direcciones-grid">
+          <!-- Tarjetas existentes (dinámicas) -->
+          <div class="direccion-card" *ngFor="let dir of direcciones; let i = index">
+            <h5>{{ dir.nombre }}</h5>
+            <p>{{ dir.direccion }}</p>
+            <p><strong>{{ dir.tipo }}</strong></p>
+            <p>Contacto: {{ dir.contacto }}</p>
+            <p>Email: {{ dir.email }}</p>
+            <p>Horario: {{ dir.horario }}</p>
+            <div class="card-actions">
+              <button class="btn-secondary small" (click)="editarDireccion(i)">Editar</button>
+              <button class="btn-danger small" (click)="eliminarDireccion(i)">Eliminar</button>
+            </div>
+          </div>
+
+          <!-- Botón de agregar (siempre abajo a la izquierda si hay tarjetas) -->
+          <button class="btn-primary add-direccion add-transparent-btn"
+            (click)="mostrarFormulario = !mostrarFormulario">
+            {{ mostrarFormulario ? 'Cancelar' : '+ Agregar Nueva Dirección / Sucursal' }}
+          </button>
+        </div>
+
+        <!-- Formulario para nueva dirección (aparece/desaparece) -->
+        <div class="nueva-direccion-form" *ngIf="mostrarFormulario">
+          <h4>Nueva Dirección / Sucursal</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nombre de la Sucursal *</label>
+              <input type="text" [(ngModel)]="nuevaDireccion.nombre" placeholder="Ej: Sucursal Guadalajara" required>
+            </div>
+
+            <div class="form-group full-width">
+              <label>Dirección Completa</label>
+              <input type="text" [(ngModel)]="nuevaDireccion.direccion"
+                placeholder="Av. Ejemplo 123, Col. Centro, CP 44100, Guadalajara, Jal.">
+            </div>
+
+            <div class="form-group">
+              <label>Tipo</label>
+              <select [(ngModel)]="nuevaDireccion.tipo">
+                <option value="Fiscal">Fiscal</option>
+                <option value="Operativa">Operativa</option>
+                <option value="Almacén">Almacén</option>
+                <option value="Oficina">Oficina</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Contacto</label>
+              <input type="text" [(ngModel)]="nuevaDireccion.contacto" placeholder="Nombre del contacto">
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" [(ngModel)]="nuevaDireccion.email" placeholder="contacto@sucursal.com">
+            </div>
+
+            <div class="form-group">
+              <label>Horario</label>
+              <input type="text" [(ngModel)]="nuevaDireccion.horario" placeholder="L-V 8:00 - 18:00">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-secondary" (click)="mostrarFormulario = false">Cancelar</button>
+            <button class="btn-primary" (click)="agregarDireccion()"
+              [disabled]="!nuevaDireccion.nombre || !nuevaDireccion.direccion">
+              Guardar Sucursal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

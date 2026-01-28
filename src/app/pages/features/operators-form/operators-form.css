@@ -1,0 +1,7 @@
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 16px;
+  align-items: center;
+}

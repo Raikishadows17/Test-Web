@@ -1,0 +1,89 @@
+/* Contenedor general del dashboard */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* ====== HEADER SUPERIOR ====== */
+
+
+.header .left {
+  font-weight: bold;
+  color: #E9F3FC;
+  display: flex;
+  align-items: center;
+}
+
+.header .right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #E9F3FC;
+  font-size: 14px;
+}
+
+.header .type {
+  font-weight: bold;
+  color: #f3f3f3;
+}
+
+.header .name {
+  font-weight: 500;
+}
+
+.header .date {
+  color: #f3f3f3;
+  font-style: italic;
+}
+
+/* ====== CONTENIDO PRINCIPAL ====== */
+.main {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 45px); /* resta el alto del header */
+  /*overflow: hidden;*/
+}
+
+/* ====== SIDEBAR (izquierda) ====== */
+app-sidebar {
+  flex-shrink: 0;
+  border-right: 1px solid #fff;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* ====== CONTENIDO (derecha) ====== */
+.content {
+  flex: 1;
+  padding: 20px 30px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: #061B36;
+}
+
+/* ====== FILTROS ====== */
+.filters {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+}
+
+.filters h3 {
+  margin-top: 0;
+  color: #333;
+}
+.header-logo {
+  width: 36px;
+  height: 36px;
+  margin-right: 12px;
+  border-radius: 6px; /* opcional */
+  object-fit: contain;
+  transition: all 0.3s ease;
+  align-items: center;
+}
+

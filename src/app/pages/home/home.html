@@ -1,0 +1,36 @@
+<div class="dashboard">
+  <!-- HEADER SUPERIOR -->
+  <header id="isHeader" class="header">
+    <div class="left">
+      <img src="images/logo.png" alt="Logo" class="header-logo" />
+      <span class="company">001-valmarq-tosdev</span>
+    </div>
+    <div class="right">
+      <span class="type">{{ usertype }}</span> -
+      <span class="name">{{ name }}</span> -
+      <span class="date">{{ fecha | date: 'dd/MM/yyyy hh:mm a' }}</span>
+    </div>
+  </header>
+
+  <!-- ZONA PRINCIPAL -->
+  <div class="main">
+    <!-- MENÚ LATERAL -->
+    <app-sidebar id="sidebar" ></app-sidebar>
+
+    <!-- CONTENIDO -->
+    <div class="content" [class.container-theme]="containerTheme" [class.inputs-theme]="inputsTheme">
+      <router-outlet></router-outlet>
+
+      <!-- BOTONES ABAJO -->
+        <button (click)="toggleContainerTheme()">
+          Cambiar color contenedor
+        </button>
+
+        <button (click)="toggleInputsTheme()">
+          Cambiar estilo inputs
+        </button>
+    </div>
+
+  </div>
+
+</div>

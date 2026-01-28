@@ -1,0 +1,49 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">Clientes</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="newClient()">Nuevo Cliente</button>
+    </div>
+  </header>
+  <div class="search-box">
+    <input type="text" placeholder="Buscar por Nombre o RFC" [(ngModel)]="searchTerm"
+      (input)="searchCustomers()">
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-msg">Cargando clientes...</div>
+
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lista de clientes -->
+  <div *ngIf="!loading && !errorMessage" class="table-wrapper">
+
+    <table class="catalog-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>RFC</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Dirección</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let c of filteredCustomers">
+          <td>{{ c.name }}</td>
+          <td>{{ c.rfc }}</td>
+          <td>{{ c.phone }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.address }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

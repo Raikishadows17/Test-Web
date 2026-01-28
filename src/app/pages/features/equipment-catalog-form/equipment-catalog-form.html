@@ -1,0 +1,507 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">Alta de Equipos</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Gestión de Flota y Equipos
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. General
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Visual y Fotos
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Documentación
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 4" (click)="setActiveTab(4)">
+      4. Estado y Mantenimiento
+    </button>
+  </div>
+
+  <!-- Contenido de tabs -->
+  <div class="tab-content">
+    <!-- Tab 1: General -->
+    <div class="form-section">
+      <div *ngIf="activeTab === 1">
+        <h3>
+          <span class="material-icons">local_shipping</span>
+          IDENTIFICACIÓN Y CLASIFICACIÓN
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Núm. Económico *</label>
+            <input type="text" [(ngModel)]="formData.economicNumber" placeholder="Ej: ECO-001" required>
+          </div>
+          <div class="form-group">
+            <label>Tipo de Unidad</label>
+            <select [(ngModel)]="formData.unitType">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let type of unitTypes">{{ type }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Marca/Modelo</label>
+            <input type="text" [(ngModel)]="formData.brandModel" placeholder="Ej: Kenworth T880">
+          </div>
+          <div class="form-group">
+            <label>Año</label>
+            <select [(ngModel)]="formData.year">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let y of years">{{ y }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Placas Federales</label>
+            <input type="text" [(ngModel)]="formData.federalPlates" placeholder="Placas Federales">
+          </div>
+          <div class="form-group">
+            <label>Combustible</label>
+            <select [(ngModel)]="formData.fuelType">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let fuel of fuelTypes">{{ fuel }}</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label>Descripción Detallada</label>
+            <textarea [(ngModel)]="formData.descriptionFull" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+      <h3>
+        <span class="material-icons">
+          assignment
+        </span>
+        CONFIGURACIÓN OPERATIVA
+      </h3>
+
+      <div class="config-operativa">
+        <!-- Checkboxes principales -->
+        <div class="checkbox-row">
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.habilitadoForaneo">
+            Habilitado Foráneo (OK-NW)
+          </label>
+
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.esSocioProveedor">
+            ¿Es de Socio/Proveedor?
+          </label>
+
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.equipoVendidoSinPapeles">
+            Equipo Vendido / Sin Papeles (NW)
+          </label>
+        </div>
+
+        <!-- 3 inputs en una sola línea -->
+        <div class="form-grid three-columns">
+          <div class="form-group">
+            <label>Capacidad Diésel (Lts)</label>
+            <input type="number" [(ngModel)]="formData.dieselCapacity">
+          </div>
+
+          <div class="form-group">
+            <label>Capacidad Arrastre (Tons)</label>
+            <input type="number" [(ngModel)]="formData.trailerCapacity">
+          </div>
+
+          <div class="form-group">
+            <label>Ejes</label>
+            <select [(ngModel)]="formData.ejes">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let eje of axles">{{ eje }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Checkbox debajo de Capacidad Diésel -->
+        <div class="checkbox-row unidad-rotulada">
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.unidadRotulada">
+            Unidad Rotulada (Cobre Externo)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 2: Visual y Fotos -->
+      <div *ngIf="activeTab === 2">
+        <h3>
+          <span class="material-icons">
+            photo_camera
+          </span>
+          GALERÍA 360°
+        </h3>
+        <div class="gallery-grid">
+          <div class="gallery-card">
+            <span class="material-icons">photo_camera</span>
+            <p>Frente</p>
+            <button class="btn-secondary small">Subir</button>
+          </div>
+          <div class="gallery-card">
+            <span class="material-icons">photo_camera</span>
+            <p>Izquierda</p>
+            <button class="btn-secondary small">Subir</button>
+          </div>
+          <div class="gallery-card">
+            <span class="material-icons">photo_camera</span>
+            <p>Derecha</p>
+            <button class="btn-secondary small">Subir</button>
+          </div>
+          <div class="gallery-card">
+            <span class="material-icons">photo_camera</span>
+            <p>Atrás</p>
+            <button class="btn-secondary small">Subir</button>
+          </div>
+          <div class="gallery-card">
+            <span class="material-icons">photo_camera</span>
+            <p>Arriba</p>
+            <button class="btn-secondary small">Subir</button>
+
+          </div>
+          <!-- Agrega más según necesites -->
+        </div>
+        <h3>
+          <span class="material-icons">
+            location_on
+          </span>
+          REPRESENTACIÓN VISUAL Y PATIO
+        </h3>
+
+        <div class="form-grid">
+          <!-- Izquierda: Imagen Referencia Listado -->
+          <div class="visual-column">
+            <!-- Imagen Referencia Listado (mismo tamaño y estilo que los demás inputs) -->
+            <div class="form-group">
+              <label>Imagen Referencia Listado</label>
+              <input type="text" [(ngModel)]="formData.imagenReferencia" placeholder="URL Icono/Thumb"
+                class="full-width-input">
+              <small class="help-text">URL Icono/Thumb</small>
+            </div>
+
+            <!-- Color Distintivo (debajo, con paleta) -->
+            <div class="form-group">
+              <label>Color Distintivo</label>
+              <div class="color-picker-wrapper">
+                <input type="color" [(ngModel)]="formData.colorDistintivo" value="#0000ff" class="color-picker-full">
+              </div>
+            </div>
+          </div>
+          <!-- Centro: Esquema de Armado + Color Distintivo -->
+          <div class="visual-column center">
+            <label>Esquema de Armado</label>
+            <div class="esquema-armado-preview">
+              <div class="preview-container">
+                <!-- Figura 1: Azul (por defecto) -->
+                <div class="preview-rect rect1" [style.backgroundColor]="'#0000ff'"></div>
+
+                <!-- Separador -->
+                <span class="preview-separator">-</span>
+
+                <!-- Figura 2: Blanco -->
+                <div class="preview-rect rect2" [style.backgroundColor]="'#ffffff'"></div>
+
+                <!-- Separador -->
+                <span class="preview-separator">-</span>
+
+                <!-- Figura 3: Blanco -->
+                <div class="preview-rect rect3" [style.backgroundColor]="'#ffffff'"></div>
+                <span class="preview-separator">-</span>
+                <!-- Figura 4: Blanco -->
+                <div class="preview-rect rect4" [style.backgroundColor]="'#ffffff'"></div>
+              </div>
+
+              <p class="preview-text">
+                Vista previa Tracto + Dolly + Chasis + Adicional
+              </p>
+            </div>
+          </div>
+
+          <!-- Derecha: Posición en Patio -->
+          <div class="visual-column">
+            <div class="form-group">
+              <label>Posición en Patio</label>
+              <select [(ngModel)]="formData.platePosition">
+                <option value="">-- Seleccionar --</option>
+                <option *ngFor="let pos of positions">{{ pos }}</option>
+              </select>
+              <small class="help-text">Visualizar disponibilidad física en mapa de patio.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 3: Documentación -->
+      <div *ngIf="activeTab === 3">
+        <h3>
+          <span class="material-icons">
+            article
+          </span>
+          EXPEDIENTE LEGAL Y ADMINISTRATIVO
+        </h3>
+
+        <div class="expediente-grid">
+          <!-- Factura Compra -->
+          <div class="expediente-card">
+            <h4>Factura Compra</h4>
+            <div class="file-upload-group">
+              <input type="file" id="facturaCompra" (change)="onFacturaCompraSelected($event)" accept=".pdf,image/*"
+                style="display: none;" />
+              <label for="facturaCompra" class="btn-secondary">
+                <span class="material-icons">upload_file</span>
+                Subir Factura Compra
+              </label>
+              <span class="file-name" *ngIf="selectedFacturaCompra">
+                {{ selectedFacturaCompra }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Título Compra -->
+          <div class="expediente-card">
+            <h4>Título Compra</h4>
+            <div class="file-upload-group">
+              <input type="file" id="tituloCompra" (change)="onTituloCompraSelected($event)" accept=".pdf,image/*"
+                style="display: none;" />
+              <label for="tituloCompra" class="btn-secondary">
+                <span class="material-icons">upload_file</span>
+                Subir Título Compra
+              </label>
+              <span class="file-name" *ngIf="selectedTituloCompra">
+                {{ selectedTituloCompra }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Doc. Seguro -->
+          <div class="expediente-card">
+            <h4>Doc. Seguro</h4>
+            <div class="file-upload-group">
+              <input type="file" id="docSeguro" (change)="onDocSeguroSelected($event)" accept=".pdf"
+                style="display: none;" />
+              <label for="docSeguro" class="btn-secondary">
+                <span class="material-icons">upload_file</span>
+                Subir Doc. Seguro
+              </label>
+              <span class="file-name" *ngIf="selectedDocSeguro">
+                {{ selectedDocSeguro }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <h3>
+          <span class="material-icons">
+            check_box
+          </span>
+          CUMPLIMIENTO Y VIGENCIAS
+        </h3>
+
+        <div class="cumplimiento-grid">
+          <!-- Estudio Mecánico -->
+          <div class="cumplimiento-card">
+            <div class="checkbox-top-right">
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.estudioMecanicoActivo">
+                Activo
+              </label>
+            </div>
+            <h4>Estudio Mecánico</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Fecha Estudio</label>
+                <input type="date" [(ngModel)]="formData.fechaEstudioMecanico">
+              </div>
+              <div class="form-group">
+                <label>Vigencia</label>
+                <input type="date" [(ngModel)]="formData.vigenciaEstudioMecanico">
+              </div>
+            </div>
+          </div>
+
+          <!-- Hologramas Cumplimiento -->
+          <div class="cumplimiento-card">
+            <div class="checkbox-top-right">
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.hologramasActivo">
+                Activo
+              </label>
+            </div>
+            <h4>Hologramas Cumplimiento</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Fecha Emisión</label>
+                <input type="date" [(ngModel)]="formData.fechaHologramas">
+              </div>
+              <div class="form-group">
+                <label>Vigencia</label>
+                <input type="date" [(ngModel)]="formData.vigenciaHologramas">
+              </div>
+            </div>
+            <button class="btn-secondary small">
+              <span class="material-icons">visibility</span>
+              Ver Archivo Hologramas
+            </button>
+          </div>
+
+          <!-- Verificación Vehicular -->
+          <div class="cumplimiento-card">
+            <h4>Verificación Vehicular</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Vigencia</label>
+                <input type="date" [(ngModel)]="formData.vigenciaVerificacion">
+              </div>
+              <div class="form-group">
+                <label>Archivo Verificación</label>
+                <button class="btn-secondary">
+                  <span class="material-icons">upload_file</span>
+                  Subir Archivo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Póliza de Seguro -->
+          <div class="cumplimiento-card">
+            <h4>Póliza de Seguro</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Vencimiento (Calendario)</label>
+                <input type="date" [(ngModel)]="formData.vencimientoPoliza">
+              </div>
+              <div class="form-group">
+                <label>Folio Póliza</label>
+                <input type="text" [(ngModel)]="formData.folioPoliza" placeholder="Folio póliza">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 4: Estado y Mantenimiento -->
+      <div *ngIf="activeTab === 4">
+        <h3>
+          <span class="material-icons">warning</span>
+          ESTADO ACTUAL Y MANTENIMIENTO
+        </h3>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Estatus Operativo</label>
+            <select [(ngModel)]="formData.estatusOperativo">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let estatus of currentStatus">{{ estatus }}</option>
+            </select>
+          </div>
+
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="formData.rojoFuncionalBloqueo">
+              Rojo Funcional (Bloqueo Administrativo)
+            </label>
+          </div>
+        </div>
+
+        <!-- Mantenimiento -->
+        <div class="mantenimiento-box">
+          <h4>Mantenimiento</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tipo Mantenimiento</label>
+              <select [(ngModel)]="formData.tipoMantenimiento">
+                <option value="">-- Seleccionar --</option>
+                <option *ngFor="let tipo of tiposMantenimiento">{{ tipo }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Fecha Ingreso Taller</label>
+              <input type="date" [(ngModel)]="formData.fechaIngresoTaller">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Recibos/Relaciones / Insumos asociados</label>
+            <div class="file-upload-group">
+              <input type="file" id="recibosRelaciones" (change)="onRecibosRelacionesSelected($event)" multiple
+                style="display: none;" />
+              <label for="recibosRelaciones" class="btn-secondary">
+                <span class="material-icons">upload_file</span>
+                Seleccionar archivos
+              </label>
+              <span class="file-name" *ngIf="recibosCount > 0">
+                {{ recibosCount }} archivo(s) seleccionado(s)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documentación de Viaje Activo -->
+        <h3>
+          <span class="material-icons">
+            article
+          </span>
+          OCUMENTACIÓN DE VIAJE ACTIVO
+        </h3>
+        <p class="help-text">Documentos temporales del servicio actual / última misión</p>
+
+        <div class="documentacion-viaje-grid">
+          <!-- Boleta Terminal -->
+          <div class="document-card">
+            <h4>Boletín Terminal</h4>
+            <div class="file-upload-group">
+              <input type="file" id="boletaTerminal" (change)="onBoletaTerminalSelected($event)"
+                style="display: none;" />
+              <label for="boletaTerminal" class="btn-secondary small">
+                Seleccionar archivo
+              </label>
+              <span class="file-name" *ngIf="boletaCount > 0">
+                {{ boletaCount }} archivo(s)
+              </span>
+            </div>
+          </div>
+
+          <!-- Carta Porte - Complemento -->
+          <div class="document-card">
+            <h4>Carta Porte - Complemento</h4>
+            <div class="file-upload-group">
+              <input type="file" id="cartaPorte" (change)="onCartaPorteSelected($event)" style="display: none;" />
+              <label for="cartaPorte" class="btn-secondary small">
+                Seleccionar archivo
+              </label>
+              <span class="file-name" *ngIf="cartaPorteCount > 0">
+                {{ cartaPorteCount }} archivo(s)
+              </span>
+            </div>
+          </div>
+
+          <!-- Fotos Revisión (Previo) -->
+          <div class="document-card">
+            <h4>Fotos Revisión (Previo)</h4>
+            <div class="file-upload-group">
+              <input type="file" id="fotosRevision" (change)="onFotosRevisionSelected($event)" multiple accept="image/*"
+                style="display: none;" />
+              <label for="fotosRevision" class="btn-secondary small">
+                Seleccionar fotos
+              </label>
+              <span class="file-name" *ngIf="fotosRevisionCount > 0">
+                {{ fotosRevisionCount }} foto(s)
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

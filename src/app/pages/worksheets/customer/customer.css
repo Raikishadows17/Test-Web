@@ -1,0 +1,20 @@
+/* Buscador */
+.search-box {
+  margin-bottom: 20px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px;
+  background: #2A2A2A; /* fondo del input */
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #E9F3FC;
+  border-radius: 8px;
+  font-size: 14px;
+}
+/* Mensajes */
+.loading-msg,
+.error-msg {
+  color: #E9F3FC;
+  margin-top: 15px;
+}

@@ -1,0 +1,310 @@
+/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #061B36 !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.title {
+  color: #F05A22;
+  padding: 25px;
+  width: 100%;
+  margin: 20px auto;
+  font-weight: 700;
+}
+
+.text {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+  color: #E9F3FC;
+  font-weight: 400;
+}
+
+#sidebar {
+  background-color: #1A1A1A;
+  flex-shrink: 0;
+  border-right: 1px solid #fff;
+  height: 100%;
+  box-sizing: border-box;
+  color: #E9F3FC;
+
+}
+
+#isHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1A1A1A;
+  /*061B36*/
+  border-bottom: 1px solid #ccc;
+  padding: 8px 16px;
+  height: 45px;
+  flex-shrink: 0;
+}
+
+/* === ESTILO BASE PARA FORMULARIOS CATÁLOGO === */
+.catalog-container {
+  border: 1px solid #444;
+  border-radius: 20px;
+  padding: 25px;
+  width: 95%;
+  max-width: 1400px;
+  margin: 20px auto;
+  background: #1A1A1A;
+  color: #e0e0e0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+}
+
+/* BUSQUEDA + BOTÓN EN UNA SOLA LÍNEA */
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-input {
+  padding: 10px 16px;
+  width: 300px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #2d2d2d;
+  color: white;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: #f36b21;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* SUBTÍTULO ANTES DE SECCIÓN */
+.section-label {
+  color: #ccc;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+/* SECCIONES */
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-section h3 {
+  color: #f36b21;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.form-section h3 .material-icons {
+  font-size: 30px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #ccc;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  /*padding: 10px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #2d2d2d;
+  color: white;*/
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bfcde0;
+  background: #d9e9ff;
+  border-radius: 4px;
+}
+
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-top: 16px;
+}
+
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+}
+
+/* BOTONES SECUNDARIOS (Subir Foto, PDF, Ver, etc.) */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  background: #444;
+  color: white;
+  border: 1px solid #666;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  text-align: left;
+  /* Fuerza alineación izquierda */
+  width: 100%;
+  /* Ocupa todo el ancho disponible */
+  max-width: 250px;
+}
+
+.btn-secondary:hover {
+  background: #555;
+  border-color: #f36b21;
+  color: #f36b21;
+}
+
+.btn-secondary .material-icons {
+  font-size: 22px;
+}
+
+/* Nombre archivo seleccionado */
+.file-name {
+  margin-top: 8px;
+  color: #aaa;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Ancho completo */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Columnas especiales de Licencias */
+.licenses-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.license-column {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #444;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: #2d2d2d;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.tab-btn.active {
+  background: #f36b21;
+  color: white;
+  border-bottom: 4px solid #f36b21;
+}
+/* Tablas */
+.table-wrapper {
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.catalog-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1E1E1E; /* fondo de la tabla */
+}
+
+.catalog-table thead {
+  background: #2A2F3A; /* azul oscuro */
+}
+
+.catalog-table th {
+  color: #F05A22; /* naranja */
+  padding: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.catalog-table td {
+  padding: 12px;
+  color: #E9F3FC;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Filas alternadas */
+.catalog-table tbody tr:nth-child(even) {
+  background: #242424; /* gris oscuro */
+}
+
+/* Hover */
+.catalog-table tbody tr:hover {
+  background: #F05A22;
+}
+
+
+
+/* Colores para cambiar */
+.inputs-theme .form-group input,
+.inputs-theme .form-group select,
+.inputs-theme .form-group textarea {
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #2d2d2d;
+  color: #ffffff;
+}
+
+/* CONTENEDOR CATÁLOGO */
+.container-theme .catalog-container {
+  background: #061B36;
+}

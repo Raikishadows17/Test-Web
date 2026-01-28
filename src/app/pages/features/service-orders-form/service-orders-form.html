@@ -1,0 +1,380 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">ÓRDENES DE SERVICIO</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Nueva Orden de Servicio
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. General y Ruta
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Asignación y Carga
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Gastos y Evidencias (NW)
+    </button>
+  </div>
+
+  <!-- Contenido de tabs -->
+  <div class="tab-content">
+    <div class="form-section">
+      <!-- Tab 1: General y Ruta -->
+      <div *ngIf="activeTab === 1">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Folio Servicio</label>
+            <input type="text" [(ngModel)]="formData.folio" readonly>
+          </div>
+
+          <div class="form-group">
+            <label>Cliente *</label>
+            <select [(ngModel)]="formData.client">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let c of clients">{{ c }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo Viaje</label>
+            <select [(ngModel)]="formData.tripType">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of tripTypes">{{ t }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Estatus</label>
+            <select [(ngModel)]="formData.status">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let s of statuses">{{ s }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fechas Críticas  -->
+        <h3>
+          <span class="material-icons">
+            calendar_month
+          </span>
+          Fechas Críticas
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Solicitud</label>
+            <input type="datetime-local" [(ngModel)]="formData.solicitud" lang="es-MX">
+          </div>
+
+          <div class="form-group">
+            <label>Programada</label>
+            <input type="datetime-local" [(ngModel)]="formData.programada" lang="es-MX">
+          </div>
+
+          <div class="form-group">
+            <label>Cita Carga</label>
+            <input type="datetime-local" [(ngModel)]="formData.citaCarga" lang="es-MX">
+          </div>
+
+          <div class="form-group">
+            <label>Cita Descarga</label>
+            <input type="datetime-local" [(ngModel)]="formData.citaDescarga" lang="es-MX">
+          </div>
+          <div class="form-group">
+            <label>Cierre/Factura</label>
+            <input type="date" lang="es-MX" pattern="\d{2}/\d{2}/\d{4}">
+          </div>
+        </div>
+        <h3>
+          <span class="material-icons">
+            location_on
+          </span>
+          DEFINICIÓN DE RUTA
+        </h3>
+        <div class="route-grid">
+          <!-- Origen -->
+          <div class="route-column">
+            <h5>Origen</h5>
+            <div class="form-group">
+              <label>Lugar Origen</label>
+              <select [(ngModel)]="formData.originPlace">
+                <option value="">-- Seleccionar --</option>
+                <option *ngFor="let place of placesOrigin">{{ place }}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Dirección Específica</label>
+              <input type="text" [(ngModel)]="formData.originAddress" placeholder="Calle, Num., CP...">
+            </div>
+          </div>
+          <!-- Destino -->
+          <div class="route-column">
+            <h5>Destinos</h5>
+            <div *ngFor="let dest of formData.destinations; let i = index" class="destination-item">
+              <div class="destination-header">
+                <h6>Destino {{ i + 1 }} {{ i === 0 ? '(Principal)' : '' }}</h6>
+                <button *ngIf="i > 0" class="btn-danger small" (click)="removeDestino(i)">Eliminar</button>
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label>Lugar Destino</label>
+                    <select [(ngModel)]="formData.destinationPlace">
+                      <option value="">-- Seleccionar --</option>
+                      <option *ngFor="let place of placesDestination">{{ place }}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Dirección Específica</label>
+                    <input type="text" [(ngModel)]="formData.destinationAddress" placeholder="Calle, Num., CP...">
+                  </div>
+                  <div class="form-group full-width">
+                    <label>URL del Mapa</label>
+                    <input type="url" placeholder="https://maps.app.goo.gl/xxxx">
+                    <small class="help-text">
+                      Pega el enlace de Google Maps
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <button class="btn-secondary add-destino" (click)="addDestino()">
+                + Agregar Otro Destino
+              </button>
+            </div>
+          </div>
+          <!-- KM y Tiempo -->
+          <div class="route-column">
+            <div class="form-group">
+              <label>KM Estimados</label>
+              <input type="number" [(ngModel)]="formData.estimatedKm" placeholder="KM">
+            </div>
+            <div class="form-group">
+              <label>Tiempo Estimado</label>
+              <input type="text" [(ngModel)]="formData.estimatedTime" placeholder="HH:MM" maxlength="5"
+                pattern="([0-1][0-9]|2[0-3]):[0-5][0-9]" (input)="formatTime($event)" required>
+            </div>
+            <div class="checkbox-row">
+              <label>
+                <input type="checkbox" [(ngModel)]="formData.requiresOvernight">
+                Requiere Pernocta
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <!-- Tab 2: Asignación y Carga -->
+      <div *ngIf="activeTab === 2">
+        <h3>
+          <span class="material-icons">person</span>
+          Asignación de Recursos
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Operador *</label>
+            <select [(ngModel)]="formData.operator">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let o of operators">{{ o }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tracto *</label>
+            <select [(ngModel)]="formData.tractor">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of tractors">{{ t }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Remolque/Chasis</label>
+            <select [(ngModel)]="formData.trailer">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of trailers">{{ t }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="alert" *ngIf="formData.operator">
+          ⚠️ Alerta: El operador seleccionado tiene la licencia próxima a vencer (15 días).
+        </div>
+
+        <h3>
+          <span class="material-icons">assignment</span>
+          Detalle de Carga (Contenedor)
+        </h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Num. Contenedor</label>
+            <input type="text" [(ngModel)]="formData.containerNumber">
+          </div>
+
+          <div class="form-group">
+            <label>Tipo</label>
+            <select [(ngModel)]="formData.containerType">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let t of containerTypes">{{ t }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Estado Carga</label>
+            <select [(ngModel)]="formData.loadStatus">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let s of loadStatuses">{{ s }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Peso (Kg)</label>
+            <input type="number" [(ngModel)]="formData.weight">
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Sello 1</label>
+            <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+              (input)="onlyNumbers($event)" pattern="[0-9]*">
+          </div>
+          <div class="form-group">
+            <label>Sello 2</label>
+            <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+              (input)="onlyNumbers($event)" pattern="[0-9]*">
+          </div>
+          <div class="form-group">
+            <label>Pedimiento</label>
+            <input type="text" [(ngModel)]="formData.pedimento" placeholder="15 dígitos" maxlength="15"
+              (input)="onlyNumbers($event)" pattern="[0-9]*">
+          </div>
+          <div class="checkbox-row">
+            <label>
+              <input type="checkbox" [(ngModel)]="formData.isFull">
+              ¿Es Full?
+            </label>
+          </div>
+        </div>
+        <h3>
+          <span class="material-icons">article</span>
+          DOCUMENTACIÓN DIGITAL (CARTA PORTE)
+        </h3>
+
+        <div class="document-buttons">
+          <div class="file-upload-group">
+            <input type="file" id="cartaPorte" (change)="onCartaPorteSelected($event)" accept=".pdf"
+              style="display: none;" />
+            <label for="cartaPorte" class="btn-secondary">
+              <span class="material-icons">upload_file</span>
+              + Subir Carta Porte (PDF)
+            </label>
+            <span class="file-name" *ngIf="selectedCartaPorte">{{ selectedCartaPorte }}</span>
+          </div>
+
+          <div class="file-upload-group">
+            <input type="file" id="boletaTerminal" (change)="onBoletaTerminalSelected($event)" accept=".pdf"
+              style="display: none;" />
+            <label for="boletaTerminal" class="btn-secondary">
+              <span class="material-icons">upload_file</span>
+              + Subir Boleta Terminal
+            </label>
+            <span class="file-name" *ngIf="selectedBoletaTerminal">{{ selectedBoletaTerminal }}</span>
+          </div>
+
+          <div class="file-upload-group">
+            <input type="file" id="doda" (change)="onDodaSelected($event)" accept=".pdf" style="display: none;" />
+            <label for="doda" class="btn-secondary">
+              <span class="material-icons">upload_file</span>
+              + Subir DODA
+            </label>
+            <span class="file-name" *ngIf="selectedDoda">{{ selectedDoda }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <!-- Tab 3: Gastos y Evidencias -->
+      <div *ngIf="activeTab === 3">
+        <h3>
+          <span class="material-icons">attach_money</span>
+          REGISTRO DE GASTOS (OPERADOR/UNIDAD)
+        </h3>
+
+        <!-- Fila para agregar nuevo gasto -->
+        <!-- Fila para agregar nuevo gasto -->
+        <div class="expense-input-row">
+          <div class="form-group">
+            <label>Concepto</label>
+            <select [(ngModel)]="newExpense.concept">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let c of expenseConcepts">{{ c }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Monto</label>
+            <input type="number" [(ngModel)]="newExpense.amount" placeholder="0.00">
+          </div>
+
+          <div class="form-group">
+            <label>Forma Pago</label>
+            <select [(ngModel)]="newExpense.paymentMethod">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let p of paymentMethods">{{ p }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Evidencia</label>
+            <button class="btn-secondary evidence-btn">
+              <span class="material-icons">photo_camera</span>
+            </button>
+          </div>
+
+          <button class="btn-primary add-btn" (click)="addExpense()">
+            Agregar
+          </button>
+        </div>
+        <!-- Tabla de gastos registrados -->
+        <div class="table-wrapper">
+          <table class="catalog-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Forma Pago</th>
+                <th>Evidencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let expense of formData.expenses; let i = index">
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.concept }}</td>
+                <td>${{ expense.amount | number:'1.2-2' }}</td>
+                <td>{{ expense.paymentMethod }}</td>
+                <td>
+                  <button class="btn-secondary small">Ver Evidencia</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align: right; font-weight: bold;"></td>
+                <td tyle="font-weight: bold; color: #f36b21;">
+                  Total Gastos:
+                  <strong>${{ totalExpenses | number:'1.2-2' }}</strong>
+                </td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

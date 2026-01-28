@@ -1,0 +1,262 @@
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.gallery-card {
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.gallery-card .material-icons {
+  font-size: 2rem;
+  color: #f36b21;
+  margin-bottom: 8px;
+}
+/* Checkboxes generales */
+.checkbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.checkbox-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+
+.visual-column {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+
+.visual-column.center {
+  text-align: center;
+}
+
+/* Esquema de Armado - 3 bloques de color */
+.esquema-armado {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 12px;
+}
+
+
+/* Ajustes para inputs y selects */
+.visual-column input{
+  width: 95%;
+  padding: 10px;
+}
+
+.help-text {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 4px;
+  display: block;
+}
+/* Columna izquierda ajustada */
+.visual-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Espacio entre los dos bloques */
+}
+
+/* Color Distintivo - picker completo + vista previa */
+.color-picker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-picker-full {
+  width: 60px;
+  height: 60px;
+  padding: 2px;
+  border: 2px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.color-preview-box {
+  flex: 1;
+  height: 60px;
+  border: 2px solid #444;
+  border-radius: 8px;
+  min-width: 120px;
+}
+/* Configuración Operativa  */
+.config-operativa {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  margin-top: 20px;
+  position: relative;
+}
+
+.checkboxes-top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.checkboxes-top-right label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  color: #e0e0e0;
+}
+
+/* Checkbox debajo de Capacidad Diésel */
+.checkbox-below {
+  margin-top: 8px;
+}
+
+.checkbox-below label {
+  font-size: 0.95rem;
+  color: #ccc;
+}
+/* EXPEDIENTE LEGAL Y ADMINISTRATIVO */
+.expediente-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.expediente-card {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  text-align: center;
+}
+
+/* CUMPLIMIENTO Y VIGENCIAS */
+.cumplimiento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.cumplimiento-card .checkbox-group {
+  margin-bottom: 16px;
+}
+
+.cumplimiento-card .checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+/* Checkboxes arriba a la derecha en las tarjetas */
+.checkbox-top-right {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+}
+
+.checkbox-top-right label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+}
+
+/* Tarjetas con espacio para checkbox */
+.cumplimiento-card {
+  padding: 48px 20px 20px 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  position: relative;
+  min-height: 220px;
+}
+/* Mantenimiento box */
+.mantenimiento-box {
+  background: rgba(255, 193, 7, 0.1); /* Amarillo sutil como en tu imagen */
+  border: 1px solid #ffc107;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 24px;
+}
+
+.mantenimiento-box h4 {
+  color: #ffc107;
+  margin-bottom: 16px;
+}
+
+/* Documentación de Viaje Activo */
+.documentacion-viaje-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.document-card {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  text-align: center;
+}
+
+.document-card h4 {
+  margin-bottom: 16px;
+}
+/* Esquema de Armado - 4 rectángulos del mismo tamaño */
+.esquema-armado-preview {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.preview-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.preview-rect {
+  width: 120px;          /* Mismo ancho para todos */
+  height: 60px;          /* Mismo alto para todos (como la segunda figura) */
+  border: 2px solid #444;
+  border-radius: 8px;
+}
+
+.preview-separator {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #888;
+}
+
+.preview-text {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin-top: 8px;
+}

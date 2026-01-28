@@ -1,0 +1,176 @@
+.filters-container {
+  background: #1A1A1A;
+  border-bottom: 1px solid #f36b21;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  align-items: end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.filter-item label {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+  color: white;
+}
+
+.filter-item select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+}
+
+.checkboxes {
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 20px;
+  font-weight: normal;
+  color: white;
+}
+
+.filter-actions {
+  margin-top: 12px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #f36b21;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 120px;
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  margin-left: 10px;
+  background: #e0e0e0;
+  color: #1e1e1e;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 120px;
+}
+
+.filter-row .checkbox label{
+  color: white;
+}
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  width: 90%;
+  max-width: 420px;
+  border: 2px solid #f36b21;
+}
+
+.modal-content {
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-icon {
+  color: #ff9800;
+  font-size: 32px;
+}
+
+.modal-header h3 {
+  color: #f36b21;
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.modal-body p {
+  color: #e0e0e0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.modal-footer {
+  margin-top: 24px;
+  text-align: right;
+}
+
+.modal-footer .btn-primary {
+  padding: 10px 24px;
+  background: #F05A22;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.modal-footer .btn-primary:hover {
+  background: #e55a1c;
+}
+.filters-header {
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  background: #1e1e1e;
+  cursor: pointer;
+  user-select: none;
+}
+.filters-header .title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e55a1c;
+}
+.collapse-icon {
+  font-size: 28px;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.filters-content {
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  max-height: 250px; /* alto suficiente cuando abierto */
+  padding: 20px;
+}
+
+.filters-content.collapsed {
+  max-height: 0;
+  padding: 0 20px;
+}
