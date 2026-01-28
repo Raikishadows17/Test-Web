@@ -16,21 +16,10 @@ import { ClientsContractsForm } from './pages/features/clients-contracts-form/cl
 import { DashboardAnalysis } from './pages/worksheets/dashboard-analysis/dashboard-analysis';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  {
-    path: 'login',
-    component: LoginPage,
-    canActivate: [() => {
-      const router = inject(Router);
-      const hasToken = localStorage.getItem('token');
-
-      return hasToken ? router.parseUrl('/dashboard') : true;
-    }]
-  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
     path: 'dashboard',
     component: HomePage,
-    canActivate: [authGuard],
     children: [
       { path: 'strategic', component: DashboardStrategic },
       { path: 'analysis', component: DashboardAnalysis },
@@ -62,5 +51,4 @@ export const routes: Routes = [
       },
     ]
   },
-  { path: '**', redirectTo: 'login' }
 ];
