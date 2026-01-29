@@ -39,7 +39,8 @@ export const routes: Routes = [
       { path: 'equipment',
         children: [
           { path: '', component: Equipment },
-          { path: 'new', component: EquipmentCatalogForm }
+          { path: 'new', component: EquipmentCatalogForm },
+	  { path: 'edit/:id', component: EquipmentCatalogForm }
         ]
        },
       {
