@@ -12,6 +12,8 @@ export class OperatorsFrom {
   // Modelo del formulario
   curpError: string | null = null;
   selectedCertificadoForaneo = '';
+  profilePhotoPreview: string | null = null;
+  profilePhotoFileName: string = '';
   formData = {
     name: '',
     fatherLastName: '',
@@ -132,6 +134,22 @@ export class OperatorsFrom {
       console.log('Certificado Foráneo seleccionado:', file.name);
       this.selectedCertificadoForaneo = file.name;
       // Aquí puedes guardar el archivo en formData si lo necesitas
+    }
+  }
+  onProfilePhotoSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.profilePhotoFileName = file.name;
+
+      // Crear previsualización
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.profilePhotoPreview = e.target.result; // base64 para mostrar
+      };
+      reader.readAsDataURL(file);
+
+      // Opcional: guardar el archivo real si lo vas a subir al backend
+      // this.formData.profilePhotoFile = file;
     }
   }
 }

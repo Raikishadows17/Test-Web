@@ -15,6 +15,7 @@
       <thead>
         <tr>
           <th>#</th>
+          <th>Foto</th>
           <th>Nombre Completo</th>
           <th>RFC</th>
           <th>CURP</th>
@@ -30,6 +31,14 @@
       <tbody>
         <tr *ngFor="let op of operadores; let i = index">
           <td>{{ i + 1 }}</td>
+          <td class="photo-cell">
+            <img
+              [src]="op.fotoUrl || 'https://via.placeholder.com/60?text=' + (op.nombre | slice:0:1)"
+              alt="{{ op.nombre }}"
+              class="operator-photo"
+              (error)="onImageError($event)"
+            >
+          </td>
           <td>{{ op.nombre }}</td>
           <td>{{ op.rfc }}</td>
           <td>{{ op.curp }}</td>
