@@ -38,52 +38,59 @@
 </div>
 <!-- MODAL DE DETALLES DE UNIDAD -->
 <div class="modal-overlay" *ngIf="showDetailsModal"></div>
-  <div class="details-modal" *ngIf="showDetailsModal">
-    <div class="modal-content">
-      <!-- X grande y visible desde el inicio -->
-      <button class="close-btn" (click)="closeDetailsModal()" aria-label="Cerrar">
-        <span class="material-icons">close</span>
-      </button>
+<div class="details-modal" *ngIf="showDetailsModal">
+  <div class="modal-content">
+    <!-- X grande y visible desde el inicio -->
+    <button class="close-btn" (click)="closeDetailsModal()" aria-label="Cerrar">
+      <span class="material-icons">close</span>
+    </button>
 
-      <div class="modal-header">
-        <h3>Detalles de {{ selectedUnit?.economico }}</h3>
+    <div class="modal-header">
+      <h3>Detalles de
+        <a
+          [routerLink]="['/dashboard/equipment/edit', selectedUnit?.economico]"
+          class="unit-link"
+          (click)="closeDetailsModal()">
+          {{ selectedUnit?.economico }}
+        </a>
+      </h3>
+    </div>
+
+    <div class="modal-body details-grid">
+      <div class="detail-row">
+        <strong>Origen</strong>
+        <span>{{ selectedUnit?.origen }}</span>
       </div>
-
-      <div class="modal-body details-grid">
-        <div class="detail-row">
-          <strong>Origen</strong>
-          <span>{{ selectedUnit?.origen }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Destino</strong>
-          <span>{{ selectedUnit?.destino }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Operador</strong>
-          <span>{{ selectedUnit?.operador }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Equipo</strong>
-          <span>{{ selectedUnit?.equipo }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Terminal</strong>
-          <span>{{ selectedUnit?.terminal }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Contenedor</strong>
-          <span>{{ selectedUnit?.contenedor }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Cliente</strong>
-          <span>{{ selectedUnit?.cliente }}</span>
-        </div>
-        <div class="detail-row">
-          <strong>Tipo de viaje</strong>
-          <span class="tag" [class.full]="selectedUnit?.tipoViaje === 'lleno'">
-            {{ selectedUnit?.tipoViaje | titlecase }}
-          </span>
-        </div>
+      <div class="detail-row">
+        <strong>Destino</strong>
+        <span>{{ selectedUnit?.destino }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Operador</strong>
+        <span>{{ selectedUnit?.operador }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Equipo</strong>
+        <span>{{ selectedUnit?.equipo }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Terminal</strong>
+        <span>{{ selectedUnit?.terminal }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Contenedor</strong>
+        <span>{{ selectedUnit?.contenedor }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Cliente</strong>
+        <span>{{ selectedUnit?.cliente }}</span>
+      </div>
+      <div class="detail-row">
+        <strong>Tipo de viaje</strong>
+        <span class="tag" [class.full]="selectedUnit?.tipoViaje === 'lleno'">
+          {{ selectedUnit?.tipoViaje | titlecase }}
+        </span>
       </div>
     </div>
   </div>
+</div>

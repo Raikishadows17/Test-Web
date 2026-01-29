@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FiltersComponent } from '../../../components/filters/filters.component';
+import { RouterLink } from "@angular/router";
 
 interface TreeGroup {
   key: string;
@@ -13,7 +14,7 @@ interface TreeGroup {
 @Component({
   selector: 'app-dashboard-strategic',
   standalone: true,
-  imports: [CommonModule, FormsModule, FiltersComponent],
+  imports: [CommonModule, FormsModule, FiltersComponent, RouterLink],
   templateUrl: './dashboard-strategic.html',
   styleUrl: './dashboard-strategic.css',
 })

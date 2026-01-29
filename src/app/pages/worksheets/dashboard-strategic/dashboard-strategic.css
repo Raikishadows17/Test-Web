@@ -264,3 +264,15 @@ header.top-bar {
   background: #ff9800;
   color: white;
 }
+/* ENLACE A UNIDAD */
+.unit-link {
+  color: #f36b21;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.unit-link:hover {
+  color: #ff8c42;
+  text-decoration: none;
+}

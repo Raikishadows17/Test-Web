@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-equipment-catalog-form',
@@ -9,6 +10,10 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './equipment-catalog-form.css',
 })
 export class EquipmentCatalogForm {
+  isEditMode = false;
+  equipmentId: string | null = null;
+  constructor(private route: ActivatedRoute) {}
+
   activeTab = 1;
   selectedPhotoName = '';
   selectedPolicyName = '';
@@ -74,14 +79,26 @@ export class EquipmentCatalogForm {
   currentStatus = ['Disponible', 'En Ruta', 'Mantenimiento Preventivo', 'Mantenimiento Correctivo', 'Rojo (no circula)', 'Baja'];
   tiposMantenimiento = ['Preventivo', 'Correctivo', 'Revisión General', 'Otro'];
 
+  ngOnInit() {
+    this.equipmentId = this.route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.equipmentId;
+    if (this.isEditMode) {
+      this.loadEquipmentData(this.equipmentId!);
+    }
+  }
   setActiveTab(tab: number) {
     this.activeTab = tab;
   }
   //simulamos el guardar
   onSubmit() {
     if (this.formData.economicNumber && this.formData.unitType) {
-      console.log('Formulario enviado:', this.formData);
-      alert('Formulario enviado con éxito.');
+      if (this.isEditMode) {
+        console.log('Equipo actualizado:', this.formData);
+        alert('Equipo actualizado con éxito.');
+      } else {
+        console.log('Equipo creado:', this.formData);
+        alert('Equipo guardado con éxito.');
+      }
     } else {
       alert('Por favor, complete los campos obligatorios.');
     }
@@ -152,5 +169,32 @@ export class EquipmentCatalogForm {
 
   onFotosRevisionSelected(event: any) {
     this.fotosRevisionCount = event.target.files.length;
+  }
+  private loadEquipmentData(id: string) {
+    // Aquí simulas o llamas a un servicio para obtener los datos del equipo
+    // Ejemplo con datos ficticios (reemplaza con tu lógica real)
+    const mockData = {
+      economicNumber: id,
+      unitType: 'Tracto',
+      federalPlates: '123ABC',
+      fuelType: 'Diésel',
+      brandModel: 'Kenworth T880',
+      year: '2023',
+      // ... llena todos los campos que tengas
+      colorDistintivo: '#ff0000',
+      estatusOperativo: 'Disponible',
+      // etc.
+    };
+
+    this.formData = { ...this.formData, ...mockData };
+    console.log('Editando equipo:', id, mockData);
+  }
+  // Cambiar título y botón según modo
+  get pageTitle(): string {
+    return this.isEditMode ? 'Editar Equipo' : 'Alta de Equipos';
+  }
+
+  get submitButtonText(): string {
+    return this.isEditMode ? 'Actualizar Registro' : 'Guardar Registro';
   }
 }
