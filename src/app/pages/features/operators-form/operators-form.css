@@ -5,3 +5,91 @@
   margin-bottom: 16px;
   align-items: center;
 }
+/* Layout con foto a la izquierda */
+.personal-data-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+  margin-bottom: 24px;
+}
+
+.profile-photo-column {
+  flex: 0 0 240px; /* Ancho fijo para foto */
+  text-align: center;
+}
+
+.profile-photo-container {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 16px;
+  border: 3px solid #444;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #2d2d2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-placeholder {
+  color: #777;
+  text-align: center;
+}
+
+.profile-placeholder .material-icons {
+  font-size: 80px;
+  margin-bottom: 8px;
+}
+
+.upload-btn-wrapper {
+  margin-top: 12px;
+}
+
+.help-text {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 4px;
+  display: block;
+}
+
+/* En móvil: foto arriba, formulario abajo */
+@media (max-width: 768px) {
+  .personal-data-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-photo-column {
+    width: 100%;
+    max-width: 220px;
+  }
+}
+/* Columna del formulario (derecha) */
+.form-data-column {
+  flex: 1; /* Ocupa todo el espacio restante */
+  min-width: 300px; /* Evita que se haga muy angosto */
+}
+
+/* En móvil: foto arriba, formulario abajo */
+@media (max-width: 768px) {
+  .personal-data-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-photo-column {
+    width: 100%;
+    max-width: 220px;
+  }
+
+  .form-data-column {
+    width: 100%;
+  }
+}
