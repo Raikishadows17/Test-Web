@@ -30,19 +30,21 @@ export const routes: Routes = [
           { path: 'new', component: ServiceOrdersForm },
         ]
       },
-      { path: 'customer',
+      {
+        path: 'customer',
         children: [
           { path: '', component: Customer },
           { path: 'new', component: ClientsContractsForm }
         ]
       },
-      { path: 'equipment',
+      {
+        path: 'equipment',
         children: [
           { path: '', component: Equipment },
           { path: 'new', component: EquipmentCatalogForm },
-	  { path: 'edit/:id', component: EquipmentCatalogForm }
+          { path: 'edit/:id', component: EquipmentCatalogForm }
         ]
-       },
+      },
       {
         path: 'operator',
         children: [

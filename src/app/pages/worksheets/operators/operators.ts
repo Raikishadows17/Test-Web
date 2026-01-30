@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class Operators {
   constructor(private router: Router) { }
+  searchTerm = '';
   operadores = [
     {
       nombre: 'Juan Carlos Pérez López',
@@ -223,12 +224,18 @@ export class Operators {
       fotoUrl: 'https://ui-avatars.com/api/?name=Roberto+Carlos+Vega+Hernández&size=128&background=random&rounded=true&bold=true'
     }
   ];
+  filteredOperators = [...this.operadores];
 
   newOperator() {
     this.router.navigate(['/dashboard/operator/new']);
   }
   searchOperator() {
+    const term = this.searchTerm.toLowerCase().trim();
 
+    this.filteredOperators = this.operadores.filter(op =>
+      op.nombre.toLowerCase().includes(term) ||
+      op.rfc.toLowerCase().includes(term)
+    );
   }
   onImageError(event: any) {
     event.target.src = 'https://via.placeholder.com/50?text=?';
