@@ -23,6 +23,12 @@ namespace TLSRestApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(int.Parse(
+                    Environment.GetEnvironmentVariable("PORT") ?? "8080"));
+            });
+
 
             // Add services to the container.
 
