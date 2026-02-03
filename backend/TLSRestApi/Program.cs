@@ -98,7 +98,9 @@ namespace TLSRestApi
                 options.AddPolicy("AllowAngular",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:4200")
+                        policy.WithOrigins(
+                            "http://localhost:4200",
+                            "https://test-web-kappa-woad.vercel.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
