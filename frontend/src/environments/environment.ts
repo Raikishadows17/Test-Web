@@ -1,4 +1,5 @@
 
 export const environment = {
-  apiURL: "https://localhost:7293"
+  production: true,
+  apiURL: "https://test-web-i5s3.onrender.com"
 };
