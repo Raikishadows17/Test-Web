@@ -11,7 +11,6 @@
   padding: 12px 32px;
   font-size: 1.1rem;
 }
-
 /* Badge de estatus */
 .status-badge {
   padding: 4px 10px;
@@ -22,8 +21,8 @@
 
 .status-badge.programado { background: #3498db; color: white; }
 .status-badge.en-transito { background: #f39c12; color: white; }
-.status-badge.en-planta { background: #2ecc71; color: white; }
-.status-badge.finalizado { background: #95a5a6; color: white; }
+.status-badge.en-planta { background: #e67e22; color: white; }
+.status-badge.finalizado { background: #2ecc71; color: white; }
 .status-badge.facturado { background: #9b59b6; color: white; }
 
 /* Sin datos */

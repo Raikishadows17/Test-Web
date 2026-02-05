@@ -12,7 +12,7 @@
   <div class="form-grid">
     <div class="form-group">
       <label class="text">Cliente</label>
-      <input type="text" [(ngModel)]="filters.cliente" placeholder="Nombre o RFC" />
+      <input type="text" [(ngModel)]="filters.cliente" placeholder="Nombre" />
     </div>
 
     <div class="form-group">
@@ -83,7 +83,7 @@
           <td>{{ solicitud.cliente }}</td>
           <td>{{ solicitud.tripType }}</td>
           <td>
-            <span class="status-badge" [ngClass]="solicitud.status | lowercase">
+            <span class="status-badge" [ngClass]="getStatusClass(solicitud.status)">
               {{ solicitud.status }}
             </span>
           </td>

@@ -21,7 +21,7 @@ export class Servicerequest {
     estatus: ''
   };
 
-  // Lista completa de solicitudes (ejemplo, puedes traerlas de un servicio)
+  // Lista completa de solicitudes
   solicitudes = [
     {
       folio: 'SERV-2026-001',
@@ -42,7 +42,7 @@ export class Servicerequest {
       folio: 'SERV-2026-002',
       cliente: 'Samsung Lázaro Cárdenas',
       tripType: 'Local',
-      status: 'En Tránsito',
+      status: 'En Transito',
       originPlace: 'Patio Regulador',
       destinationPlace: 'Planta Querétaro',
       operator: 'Luis Hernández',
@@ -68,7 +68,36 @@ export class Servicerequest {
       citaCarga: '2026-01-20T10:00',
       citaDescarga: '2026-01-20T16:00'
     },
-    // ... agrega más o trae de backend
+    {
+      folio: 'SERV-2026-004',
+      cliente: 'Proveedor Automotriz',
+      tripType: 'Local',
+      status: 'En Planta',
+      originPlace: 'Patio Regulador',
+      destinationPlace: 'Planta Querétaro',
+      operator: 'Elias Gómez',
+      tractor: 'ECO-101',
+      containerNumber: 'MEDU9876543',
+      solicitud: '2026-01-19T14:30',
+      programada: '2026-01-20T07:00',
+      citaCarga: '2026-01-20T10:00',
+      citaDescarga: '2026-01-20T16:00'
+    },
+    {
+      folio: 'SERV-2026-005',
+      cliente: 'Proveedor Automotriz',
+      tripType: 'Local',
+      status: 'Facturado',
+      originPlace: 'Patio Regulador',
+      destinationPlace: 'Planta Querétaro',
+      operator: 'Elias Gómez',
+      tractor: 'ECO-101',
+      containerNumber: 'MEDU9876543',
+      solicitud: '2026-01-19T14:30',
+      programada: '2026-01-20T07:00',
+      citaCarga: '2026-01-20T10:00',
+      citaDescarga: '2026-01-20T16:00'
+    },
   ];
   // Lista filtrada (se actualiza con filtros)
   filteredSolicitudes = [...this.solicitudes];
@@ -112,5 +141,12 @@ export class Servicerequest {
   editSolicitud(folio: string) {
     // Navegar al formulario en modo edición
     this.router.navigate(['/dashboard/service-request/update', folio]);
+  }
+  getStatusClass(status: string): string {
+    return status
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-');
   }
 }

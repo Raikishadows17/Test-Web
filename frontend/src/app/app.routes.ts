@@ -16,10 +16,21 @@ import { ClientsContractsForm } from './pages/features/clients-contracts-form/cl
 import { DashboardAnalysis } from './pages/worksheets/dashboard-analysis/dashboard-analysis';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {
+    path: 'login',
+    component: LoginPage,
+    canActivate: [() => {
+      const router = inject(Router);
+      const hasToken = localStorage.getItem('token');
+
+      return hasToken ? router.parseUrl('/dashboard') : true;
+    }]
+  },
   {
     path: 'dashboard',
     component: HomePage,
+    canActivate: [authGuard],
     children: [
       { path: 'strategic', component: DashboardStrategic },
       { path: 'analysis', component: DashboardAnalysis },
@@ -28,23 +39,22 @@ export const routes: Routes = [
         children: [
           { path: '', component: Servicerequest },
           { path: 'new', component: ServiceOrdersForm },
+          { path: 'edit/:id', component: ServiceOrdersForm }
         ]
       },
-      {
-        path: 'customer',
+      { path: 'customer',
         children: [
           { path: '', component: Customer },
           { path: 'new', component: ClientsContractsForm }
         ]
       },
-      {
-        path: 'equipment',
+      { path: 'equipment',
         children: [
           { path: '', component: Equipment },
           { path: 'new', component: EquipmentCatalogForm },
           { path: 'edit/:id', component: EquipmentCatalogForm }
         ]
-      },
+       },
       {
         path: 'operator',
         children: [
@@ -54,4 +64,5 @@ export const routes: Routes = [
       },
     ]
   },
+  { path: '**', redirectTo: 'login' }
 ];
