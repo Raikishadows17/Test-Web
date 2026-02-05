@@ -53,14 +53,6 @@ export class HomePage {
       clearInterval(this.intervalId);
     }
   }
-
-  navigateTo(label: string) {
-
-    if (label === 'Cerrar Sesion') {
-      this.auth.logout();
-      return;
-    }
-  }
   toggleContainerTheme() {
     this.containerTheme = !this.containerTheme;
   }
