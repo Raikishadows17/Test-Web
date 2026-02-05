@@ -7,13 +7,6 @@
   margin: 16px 0;
 }
 /* Ruta */
-.route-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 32px;
-  margin-top: 20px;
-}
-
 .route-column{
   padding: 20px;
   border-radius: 12px;
