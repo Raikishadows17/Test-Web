@@ -41,7 +41,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Alpha',
       tipoViaje: 'lleno',
-      grupo: 'IDA'
+      grupo: 'IDA',
+      isForaneo: true
     },
     {
       economico: 'ECO-102',
@@ -53,7 +54,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Beta',
       tipoViaje: 'lleno',
-      grupo: 'IDA'
+      grupo: 'IDA',
+      isForaneo: true
     },
     {
       economico: 'ECO-103',
@@ -65,7 +67,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Gamma',
       tipoViaje: 'vacio',
-      grupo: 'IDA'
+      grupo: 'IDA',
+      isForaneo: true
     },
     {
       economico: 'ECO-104',
@@ -77,7 +80,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Alpha',
       tipoViaje: 'lleno',
-      grupo: 'IDA'
+      grupo: 'IDA',
+      isForaneo: true
     },
 
     // GRUPO: VUELTA
@@ -91,7 +95,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Alpha',
       tipoViaje: 'vacio',
-      grupo: 'VUELTA'
+      grupo: 'VUELTA',
+      isForaneo: true
     },
     {
       economico: 'ECO-202',
@@ -103,7 +108,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Beta',
       tipoViaje: 'lleno',
-      grupo: 'VUELTA'
+      grupo: 'VUELTA',
+      isForaneo: true
     },
     {
       economico: 'ECO-203',
@@ -115,7 +121,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Gamma',
       tipoViaje: 'vacio',
-      grupo: 'VUELTA'
+      grupo: 'VUELTA',
+      isForaneo: true
     },
     {
       economico: 'ECO-204',
@@ -127,7 +134,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 40',
       cliente: 'Cliente Alpha',
       tipoViaje: 'vacio',
-      grupo: 'VUELTA'
+      grupo: 'VUELTA',
+      isForaneo: true
     },
 
     // GRUPO: MANTOO
@@ -141,7 +149,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Sin contenedor',
       cliente: 'Interno',
       tipoViaje: 'vacio',
-      grupo: 'MANTOO'
+      grupo: 'MANTOO',
+      isForaneo: false
     },
     {
       economico: 'ECO-302',
@@ -153,7 +162,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Sin contenedor',
       cliente: 'Interno',
       tipoViaje: 'vacio',
-      grupo: 'MANTOO'
+      grupo: 'MANTOO',
+      isForaneo: false
     },
     {
       economico: 'ECO-303',
@@ -165,7 +175,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Sin contenedor',
       cliente: 'Interno',
       tipoViaje: 'vacio',
-      grupo: 'MANTOO'
+      grupo: 'MANTOO',
+      isForaneo: false
     },
 
     // GRUPO: MAOSA
@@ -179,7 +190,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Delta',
       tipoViaje: 'lleno',
-      grupo: 'MAOSA'
+      grupo: 'MAOSA',
+      isForaneo: true
     },
     {
       economico: 'ECO-402',
@@ -191,7 +203,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Delta',
       tipoViaje: 'vacio',
-      grupo: 'MAOSA'
+      grupo: 'MAOSA',
+      isForaneo: true
     },
     {
       economico: 'ECO-403',
@@ -203,7 +216,8 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Delta',
       tipoViaje: 'lleno',
-      grupo: 'MAOSA'
+      grupo: 'MAOSA',
+      isForaneo: true
     },
     {
       economico: 'ECO-404',
@@ -215,9 +229,31 @@ export class DashboardStrategic implements OnInit {
       contenedor: 'Contenedor 20',
       cliente: 'Cliente Delta',
       tipoViaje: 'vacio',
-      grupo: 'MAOSA'
+      grupo: 'MAOSA',
+      isForaneo: true
     }
   ];
+  ngOnInit() {
+    this.treeData = this.getAllGroupedData();
+  }
+  private getAllGroupedData(): TreeGroup[] {
+    const gruposMap = new Map<string, string[]>();
+
+    this.allData.forEach(unidad => {
+      if (!gruposMap.has(unidad.grupo)) {
+        gruposMap.set(unidad.grupo, []);
+      }
+      gruposMap.get(unidad.grupo)!.push(unidad.economico);
+    });
+
+    return Array.from(gruposMap.entries())
+      .map(([key, items]) => ({
+        key,
+        title: key,
+        items
+      }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+  }
 
   // Este método recibe los filtros del componente hijo
   onFiltersApplied(filters: any) {
@@ -262,22 +298,18 @@ export class DashboardStrategic implements OnInit {
       .sort((a, b) => a.title.localeCompare(b.title)); // orden alfabético opcional
   }
   showDetails(economico: string) {
-  // Busca la unidad completa en allData
-  this.selectedUnit = this.allData.find(u => u.economico === economico);
+    // Busca la unidad completa en allData
+    this.selectedUnit = this.allData.find(u => u.economico === economico);
 
-  if (this.selectedUnit) {
-    this.showDetailsModal = true;
+    if (this.selectedUnit) {
+      this.showDetailsModal = true;
+    }
   }
-}
-ngOnInit(){
-  this.treeData = this.getAllGroupedData();
-}
-
-// Método para cerrar el modal
-closeDetailsModal() {
-  this.showDetailsModal = false;
-  this.selectedUnit = null;
-}
+  // Método para cerrar el modal
+  closeDetailsModal() {
+    this.showDetailsModal = false;
+    this.selectedUnit = null;
+  }
   ngAfterViewInit() {
     if (this.useMap) {
       this.initMap();
@@ -291,24 +323,34 @@ closeDetailsModal() {
   toggleRight(key: string) {
     this.openGroupRight = this.openGroupRight === key ? null : key;
   }
-  private getAllGroupedData(): TreeGroup[] {
-  const gruposMap = new Map<string, string[]>();
-
-  this.allData.forEach(unidad => {
-    if (!gruposMap.has(unidad.grupo)) {
-      gruposMap.set(unidad.grupo, []);
+  // Contar total de foráneos
+getCountForaneo(): number {
+  let count = 0;
+  this.treeData.forEach(group => {
+    if (this.isGroupForaneo(group)) {
+      count += group.items.length;
     }
-    gruposMap.get(unidad.grupo)!.push(unidad.economico);
   });
-
-  return Array.from(gruposMap.entries())
-    .map(([key, items]) => ({
-      key,
-      title: key,
-      items
-    }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+  return count;
 }
 
+// Contar total de locales
+getCountLocal(): number {
+  let count = 0;
+  this.treeData.forEach(group => {
+    if (!this.isGroupForaneo(group)) {
+      count += group.items.length;
+    }
+  });
+  return count;
+}
+
+// Filtrar grupos foráneos
+isGroupForaneo(group: TreeGroup): boolean {
+  if (group.items.length === 0) return false;
+  const economico = group.items[0]; // Tomamos el primero como referencia
+  const unidad = this.allData.find(u => u.economico === economico);
+  return unidad ? unidad.isForaneo : false;
+}
 }
 
