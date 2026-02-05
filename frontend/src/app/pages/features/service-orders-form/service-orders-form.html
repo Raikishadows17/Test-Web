@@ -97,7 +97,7 @@
           </span>
           DEFINICIÓN DE RUTA
         </h3>
-        <div class="form-grid">
+        <div class="route-grid">
           <!-- Origen -->
           <div class="route-column">
             <h5>Origen</h5>
@@ -123,18 +123,18 @@
                 <div class="form-grid">
                   <div class="form-group">
                     <label>Lugar Destino</label>
-                    <select [(ngModel)]="dest.place">
+                    <select [(ngModel)]="formData.destinationPlace">
                       <option value="">-- Seleccionar --</option>
                       <option *ngFor="let place of placesDestination">{{ place }}</option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label>Dirección Específica</label>
-                    <input type="text" [(ngModel)]="dest.address" placeholder="Calle, Num., CP...">
+                    <input type="text" [(ngModel)]="formData.destinationAddress" placeholder="Calle, Num., CP...">
                   </div>
                   <div class="form-group full-width">
                     <label>URL del Mapa</label>
-                    <input type="url" [(ngModel)]="dest.mapUrl" placeholder="https://maps.app.goo.gl/xxxx">
+                    <input type="url" placeholder="https://maps.app.goo.gl/xxxx">
                     <small class="help-text">
                       Pega el enlace de Google Maps
                     </small>
