@@ -9,6 +9,7 @@
     <input type="text" placeholder="Buscar por Nombre o RFC" [(ngModel)]="searchTerm"
       (input)="searchOperator()">
   </div>
+
   <div class="section-label">
     Listado de Operadores Activos
   </div>
@@ -32,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let op of operadores; let i = index">
+        <tr *ngFor="let op of filteredOperators; let i = index">
           <td>{{ i + 1 }}</td>
           <td class="photo-cell">
             <img

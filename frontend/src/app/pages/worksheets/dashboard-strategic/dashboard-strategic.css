@@ -276,22 +276,3 @@ header.top-bar {
   color: #ff8c42;
   text-decoration: none;
 }
-.tipo-section {
-  margin-bottom: 32px;
-}
-
-.tipo-section h4 {
-  color: #f36b21;
-  margin: 0 0 12px;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #444;
-  padding-bottom: 8px;
-}
-
-.tipo-section.foraneos h4 {
-  color: #f36b21; /* naranja */
-}
-
-.tipo-section.locales h4 {
-  color: #2ecc71; /* verde */
-}
