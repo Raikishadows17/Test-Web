@@ -14,25 +14,64 @@
 
   <!-- PANEL DERECHO - ahora a la derecha -->
   <aside class="info-panel">
-    <h3>Foráneos</h3>
-    <ul class="tree" *ngIf="treeData.length > 0">
-      <li class="tree-group" *ngFor="let group of treeData" [class.open]="openGroupRight === group.key">
-        <div class="tree-header" (click)="toggleRight(group.key)">
-          <span class="material-icons chevron">
-            {{ openGroupRight === group.key ? 'expand_more' : 'chevron_right' }}
-          </span>
-          <span class="subTittle">
-            {{ group.title }} [{{ group.items.length }}]
-          </span>
-        </div>
+    <h3>Unidades Asignadas</h3>
 
-        <ul class="tree-children" *ngIf="openGroupRight === group.key">
-          <li *ngFor="let economico of group.items" class="tree-item" (click)="showDetails(economico)">
-            {{ economico }}
+    <!-- Sección Foráneos -->
+    <div class="tipo-section foraneos">
+      <h4>Foráneos [{{ getCountForaneo() }}]</h4>
+      <ul class="tree">
+        <ng-container *ngFor="let group of treeData">
+          <li *ngIf="isGroupForaneo(group)" class="tree-group" [class.open]="openGroupRight === group.key">
+
+            <div class="tree-header" (click)="toggleRight(group.key)">
+              <span class="material-icons chevron">
+                {{ openGroupRight === group.key ? 'expand_more' : 'chevron_right' }}
+              </span>
+              <span class="subTittle">
+                {{ group.title }} <span class="count">[{{ group.items.length }}]</span>
+              </span>
+            </div>
+
+            <ul class="tree-children" *ngIf="openGroupRight === group.key">
+              <li *ngFor="let economico of group.items" class="tree-item" (click)="showDetails(economico)">
+                {{ economico }}
+              </li>
+            </ul>
           </li>
-        </ul>
-      </li>
-    </ul>
+        </ng-container>
+      </ul>
+    </div>
+
+    <!-- Sección Locales -->
+    <div class="tipo-section locales">
+      <h4>Locales [{{ getCountLocal() }}]</h4>
+      <ul class="tree">
+        <ng-container *ngFor="let group of treeData">
+          <li *ngIf="!isGroupForaneo(group)" class="tree-group" [class.open]="openGroupRight === group.key">
+
+            <div class="tree-header" (click)="toggleRight(group.key)">
+              <span class="material-icons chevron">
+                {{ openGroupRight === group.key ? 'expand_more' : 'chevron_right' }}
+              </span>
+              <span class="subTittle">
+                {{ group.title }} <span class="count">[{{ group.items.length }}]</span>
+              </span>
+            </div>
+
+            <ul class="tree-children" *ngIf="openGroupRight === group.key">
+              <li *ngFor="let economico of group.items" class="tree-item" (click)="showDetails(economico)">
+                {{ economico }}
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+
+    <!-- Si no hay datos -->
+    <p *ngIf="treeData.length === 0" class="no-data">
+      No hay unidades asignadas en este momento
+    </p>
   </aside>
 
 </div>
@@ -47,9 +86,7 @@
 
     <div class="modal-header">
       <h3>Detalles de
-        <a
-          [routerLink]="['/dashboard/equipment/edit', selectedUnit?.economico]"
-          class="unit-link"
+        <a [routerLink]="['/dashboard/equipment/edit', selectedUnit?.economico]" class="unit-link"
           (click)="closeDetailsModal()">
           {{ selectedUnit?.economico }}
         </a>
