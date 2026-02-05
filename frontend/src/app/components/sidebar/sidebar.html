@@ -22,7 +22,7 @@
       @if (item.children && item.isOpen && !collapsed) {
       <ul class="submenu">
         @for (child of item.children; track child.label) {
-        <li class="submenu-item" (click)="navigate(child.route); $event.stopPropagation()">
+        <li class="submenu-item" (click)="toggleItem(child); $event.stopPropagation()">
 
           <span class="material-icons arrow">chevron_right</span>
           <span> {{ child.label }}</span>

@@ -77,7 +77,7 @@ export class EquipmentCatalogForm {
   positions = ['Carril 1', 'Carril 2', 'Taller 3', 'Salida'];
   axles = ['2', '3', '4+'];
   currentStatus = ['Disponible', 'En Ruta', 'Mantenimiento Preventivo', 'Mantenimiento Correctivo', 'Rojo (no circula)', 'Baja'];
-  tiposMantenimiento = ['Preventivo', 'Correctivo', 'Revisión General', 'Otro'];
+  typemaintenance = ['Preventivo', 'Correctivo', 'Revisión General', 'Otro'];
 
   ngOnInit() {
     this.equipmentId = this.route.snapshot.paramMap.get('id');
@@ -172,7 +172,6 @@ export class EquipmentCatalogForm {
   }
   private loadEquipmentData(id: string) {
     // Aquí simulas o llamas a un servicio para obtener los datos del equipo
-    // Ejemplo con datos ficticios (reemplaza con tu lógica real)
     const mockData = {
       economicNumber: id,
       unitType: 'Tracto',

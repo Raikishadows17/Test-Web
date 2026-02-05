@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { routes } from '../../app.routes';
+import { AuthService } from '../../auth/auth.service';
 
 interface MenuItem {
   icon?: string;
@@ -22,7 +23,7 @@ export class Sidebar {
   @Input() collapsed = false;
   @Output() toggle = new EventEmitter<void>();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private auth: AuthService) { }
 
   menuItems: MenuItem[] = [
     {
@@ -45,13 +46,16 @@ export class Sidebar {
           label: 'Solicitudes de servicio',
           route: '/dashboard/service-request'
         },
-        { label: 'Operadores',
+        {
+          label: 'Operadores',
           route: '/dashboard/operator'
-         },
-        { label: 'Equipos',
+        },
+        {
+          label: 'Equipos',
           route: '/dashboard/equipment'
         },
-        { label: 'Clientes',
+        {
+          label: 'Clientes',
           route: '/dashboard/customer'
         },
         { label: 'Tarifas' },
@@ -64,9 +68,10 @@ export class Sidebar {
       label: 'DASHBOARD ANALYSIS',
       isOpen: false,
       children: [
-        { label: 'Tablero',
+        {
+          label: 'Tablero',
           route: '/dashboard/analysis'
-         }
+        }
       ]
     },
     {
@@ -75,7 +80,7 @@ export class Sidebar {
       isOpen: false,
       children: [
         { label: 'Configuración' },
-        { label: 'Cerrar Sesion' }
+        { label: 'Cerrar Sesion', }
       ]
     },
   ];
@@ -93,6 +98,11 @@ export class Sidebar {
     }
     if (item.route) {
       this.router.navigateByUrl(item.route);
+      return;
+    }
+    if (item.label === 'Cerrar Sesion') {
+      this.auth.logout();
+      return;
     }
   }
   goHome() {
@@ -102,5 +112,4 @@ export class Sidebar {
     if (!route) return;
     this.router.navigateByUrl(route);
   }
-
 }
