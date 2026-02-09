@@ -17,20 +17,10 @@ import { DashboardAnalysis } from './pages/worksheets/dashboard-analysis/dashboa
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  {
-    path: 'dashboard',
-    component: HomePage,
-    canActivate: [() => {
-      const router = inject(Router);
-      const hasToken = localStorage.getItem('token');
 
-      return hasToken ? router.parseUrl('/dashboard') : true;
-    }]
-  },
   {
     path: 'dashboard',
     component: HomePage,
-    canActivate: [authGuard],
     children: [
       { path: 'strategic', component: DashboardStrategic },
       { path: 'analysis', component: DashboardAnalysis },
