@@ -16,10 +16,10 @@ import { ClientsContractsForm } from './pages/features/clients-contracts-form/cl
 import { DashboardAnalysis } from './pages/worksheets/dashboard-analysis/dashboard-analysis';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   {
-    path: 'login',
-    component: LoginPage,
+    path: 'dashboard',
+    component: HomePage,
     canActivate: [() => {
       const router = inject(Router);
       const hasToken = localStorage.getItem('token');
