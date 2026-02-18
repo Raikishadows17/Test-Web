@@ -1,0 +1,145 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">
+      article
+    </span>
+    EXPEDIENTE LEGAL Y ADMINISTRATIVO
+  </h3>
+
+  <div class="expediente-grid">
+    <!-- Factura Compra -->
+    <div class="expediente-card">
+      <h4>Factura Compra</h4>
+      <div class="file-upload-group">
+        <input type="file" id="facturaCompra" (change)="onFacturaCompraSelected($event)" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="facturaCompra" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Factura Compra
+        </label>
+        <span class="file-name" *ngIf="selectedFacturaCompra">
+          {{ selectedFacturaCompra }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Título Compra -->
+    <div class="expediente-card">
+      <h4>Título Compra</h4>
+      <div class="file-upload-group">
+        <input type="file" id="tituloCompra" (change)="onTituloCompraSelected($event)" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="tituloCompra" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Título Compra
+        </label>
+        <span class="file-name" *ngIf="selectedTituloCompra">
+          {{ selectedTituloCompra }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Doc. Seguro -->
+    <div class="expediente-card">
+      <h4>Doc. Seguro</h4>
+      <div class="file-upload-group">
+        <input type="file" id="docSeguro" (change)="onDocSeguroSelected($event)" accept=".pdf" style="display: none;" />
+        <label for="docSeguro" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Doc. Seguro
+        </label>
+        <span class="file-name" *ngIf="selectedDocSeguro">
+          {{ selectedDocSeguro }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <h3>
+    <span class="material-icons">
+      check_box
+    </span>
+    CUMPLIMIENTO Y VIGENCIAS
+  </h3>
+
+  <div class="cumplimiento-grid">
+    <!-- Estudio Mecánico -->
+    <div class="cumplimiento-card">
+      <div class="checkbox-top-right">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.estudioMecanicoActivo">
+          Activo
+        </label>
+      </div>
+      <h4>Estudio Mecánico</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha Estudio</label>
+          <input type="date" [(ngModel)]="formData.fechaEstudioMecanico">
+        </div>
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.vigenciaEstudioMecanico">
+        </div>
+      </div>
+    </div>
+
+    <!-- Hologramas Cumplimiento -->
+    <div class="cumplimiento-card">
+      <div class="checkbox-top-right">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.hologramasActivo">
+          Activo
+        </label>
+      </div>
+      <h4>Hologramas Cumplimiento</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha Emisión</label>
+          <input type="date" [(ngModel)]="formData.fechaHologramas">
+        </div>
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.vigenciaHologramas">
+        </div>
+      </div>
+      <button class="btn-secondary small">
+        <span class="material-icons">visibility</span>
+        Ver Archivo Hologramas
+      </button>
+    </div>
+
+    <!-- Verificación Vehicular -->
+    <div class="cumplimiento-card">
+      <h4>Verificación Vehicular</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.vigenciaVerificacion">
+        </div>
+        <div class="form-group">
+          <label>Archivo Verificación</label>
+          <button class="btn-secondary">
+            <span class="material-icons">upload_file</span>
+            Subir Archivo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Póliza de Seguro -->
+    <div class="cumplimiento-card">
+      <h4>Póliza de Seguro</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Vencimiento (Calendario)</label>
+          <input type="date" [(ngModel)]="formData.vencimientoPoliza">
+        </div>
+        <div class="form-group">
+          <label>Folio Póliza</label>
+          <input type="text" [(ngModel)]="formData.folioPoliza" placeholder="Folio póliza">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

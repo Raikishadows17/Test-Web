@@ -1,0 +1,153 @@
+<div class="form-section">
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Folio Servicio</label>
+      <input type="text" [(ngModel)]="formData.folio" readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Cliente*</label>
+      <select [(ngModel)]="formData.client">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let c of formData.options.clients">{{ c }}</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="formData.provisionalLocalTeam">
+      <label>Tipo Viaje</label>
+      <select [(ngModel)]="formData.tripType">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let t of formData.options.tripTypes">{{ t }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Estatus</label>
+      <select [(ngModel)]="formData.status">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let s of formData.options.statuses">{{ s }}</option>
+      </select>
+    </div>
+    <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.provisionalLocalTeam">
+          Equipo Provisional Local
+        </label>
+      </div>
+  </div>
+
+  <!-- Fechas Críticas  -->
+  <h3>
+    <span class="material-icons">
+      calendar_month
+    </span>
+    Fechas Críticas
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Solicitud</label>
+      <input type="datetime-local" [(ngModel)]="formData.daterequest" lang="es-MX">
+    </div>
+
+    <div class="form-group">
+      <label>Programada</label>
+      <input type="datetime-local" [(ngModel)]="formData.datescheduled" lang="es-MX">
+    </div>
+    <div class="form-group">
+      <label>Fecha programada del servicio</label>
+      <input type="datetime-local" [(ngModel)]="formData.fechaInicioRuta" lang="es-MX">
+      </div>
+
+    <div class="form-group">
+      <label>Cita Carga</label>
+      <input type="datetime-local" [(ngModel)]="formData.datecarry" lang="es-MX">
+    </div>
+
+    <div class="form-group">
+      <label>Cita Descarga</label>
+      <input type="datetime-local" [(ngModel)]="formData.datedownload" lang="es-MX">
+    </div>
+    <div class="form-group">
+      <label>Cierre/Factura</label>
+      <input type="date" lang="es-MX" pattern="\d{2}/\d{2}/\d{4}" [(ngModel)]="formData.dateclosing">
+    </div>
+  </div>
+  <h3>
+    <span class="material-icons">
+      location_on
+    </span>
+    DEFINICIÓN DE RUTA
+  </h3>
+  <div class="form-grid">
+    <!-- Origen -->
+    <div class="route-column">
+      <h5>Origen</h5>
+      <div class="form-group">
+        <label>Lugar Origen</label>
+        <select [(ngModel)]="formData.originPlace">
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let place of formData.options.placesOrigin">{{ place }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>URL del Mapa</label>
+        <input type="url" [(ngModel)]="formData.originUrlMap" placeholder="https://maps.app.goo.gl/xxxx">
+        <small class="help-text">
+          Pega el enlace de Google Maps
+        </small>
+      </div>
+    </div>
+    <!-- Destino -->
+    <div class="route-column">
+      <h5>Destinos</h5>
+      <div *ngFor="let dest of formData.destinations; let i = index" class="destination-item">
+        <div class="destination-header">
+          <h6>Destino {{ i + 1 }} {{ i === 0 ? '(Principal)' : '' }}</h6>
+          <button *ngIf="i > 0" class="btn-danger small" (click)="removeDestino(i)">Eliminar</button>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Lugar Destino</label>
+              <select [(ngModel)]="dest.place">
+                <option value="">-- Seleccionar --</option>
+                <option *ngFor="let place of formData.options.placesDestination">{{ place }}</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label>URL del Mapa</label>
+              <input type="url" [(ngModel)]="dest.mapUrl" placeholder="https://maps.app.goo.gl/xxxx">
+              <small class="help-text">
+                Pega el enlace de Google Maps
+              </small>
+            </div>
+          </div>
+        </div>
+        <button class="btn-secondary add-destino" (click)="addDestino()">
+          + Agregar Otro Destino
+        </button>
+      </div>
+    </div>
+    <!-- KM y Tiempo -->
+    <div class="route-column">
+      <div class="form-group" *ngIf="formData.tripType ==='Foráneo'">
+        <label>KM Estimados</label>
+        <input type="number" [(ngModel)]="formData.estimatedKm" placeholder="KM">
+      </div>
+      <div class="form-group" *ngIf="formData.tripType ==='Foráneo'">
+        <label>Tiempo Estimado</label>
+        <input type="text" [(ngModel)]="formData.estimatedTime" placeholder="HH:MM" maxlength="5"
+          pattern="([0-1][0-9]|2[0-3]):[0-5][0-9]" (input)="formatTime($event)" required>
+      </div>
+      <div class="form-group full-width">
+              <label>Instrucciones / Comentarios</label>
+              <textarea [(ngModel)]="formData.instrucciones" rows="4"
+                placeholder="Comentarios especiales del cliente o Valmarq..."></textarea>
+            </div>
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.requiresOvernight">
+          Requiere Pernocta
+        </label>
+      </div>
+    </div>
+  </div>
+</div>

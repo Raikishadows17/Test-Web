@@ -1,0 +1,40 @@
+/* Ruta */
+.route-column{
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+
+.route-column h5{
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+/* Destinos dinámicos */
+.destino-item {
+  background: rgba(243, 107, 33, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+  margin-bottom: 20px;
+}
+
+.destino-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.destino-header h6 {
+  margin: 0;
+  color: #f36b21;
+  font-size: 1.1rem;
+}
+
+.add-destino {
+  width: 100%;
+  padding: 12px;
+  margin-top: 16px;
+  font-weight: bold;
+  text-align: center;
+}

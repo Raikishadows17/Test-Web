@@ -1,0 +1,77 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">attach_money</span>
+    REGISTRO DE GASTOS
+  </h3>
+
+  <!-- Fila para agregar nuevo gasto -->
+  <!-- Fila para agregar nuevo gasto -->
+  <div class="expense-input-row">
+    <div class="form-group">
+      <label>Concepto</label>
+      <select [(ngModel)]="formData.newExpense.concept">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let c of formData.options.expenseConcepts">{{ c }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Monto</label>
+      <input type="number" [(ngModel)]="formData.newExpense.amount" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Forma Pago</label>
+      <select [(ngModel)]="formData.newExpense.paymentMethod">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let p of formData.options.paymentMethods">{{ p }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Evidencia</label>
+      <button class="btn-secondary evidence-btn">
+        <span class="material-icons">photo_camera</span>
+      </button>
+    </div>
+
+    <button class="btn-primary add-btn" (click)="addExpense()">
+      Agregar
+    </button>
+  </div>
+  <!-- Tabla de gastos registrados -->
+  <div class="table-wrapper">
+    <table class="catalog-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Concepto</th>
+          <th>Monto</th>
+          <th>Forma Pago</th>
+          <th>Evidencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of formData.expenses; let i = index">
+          <td>{{ expense.date }}</td>
+          <td>{{ expense.concept }}</td>
+          <td>${{ expense.amount | number:'1.2-2' }}</td>
+          <td>{{ expense.paymentMethod }}</td>
+          <td>
+            <button class="btn-secondary small">Ver Evidencia</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2" style="text-align: right; font-weight: bold;"></td>
+          <td tyle="font-weight: bold; color: #f36b21;">
+            Total Gastos:
+            <strong>${{ totalExpenses | number:'1.2-2' }}</strong>
+          </td>
+          <td colspan="3"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

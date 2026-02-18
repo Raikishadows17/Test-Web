@@ -1,0 +1,121 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">Solicitudes de servicio</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="newService()">Nuevo Servicio</button>
+    </div>
+  </header>
+  <div class="section-label">
+    Filtros y Búsqueda
+  </div>
+
+  <div class="form-grid">
+    <div class="form-group">
+      <label class="text">Cliente</label>
+      <input type="text" [(ngModel)]="filters.cliente" placeholder="Nombre" />
+    </div>
+
+    <div class="form-group">
+      <label class="text">Destino</label>
+      <input type="text" [(ngModel)]="filters.destino" placeholder="Ciudad o lugar" />
+    </div>
+
+    <div class="form-group">
+      <label class="text">Operador</label>
+      <input type="text" [(ngModel)]="filters.operador" placeholder="Nombre operador" />
+    </div>
+
+    <div class="form-group">
+      <label class="text">Equipo</label>
+      <input type="text" [(ngModel)]="filters.equipo" placeholder="Económico" />
+    </div>
+
+    <div class="form-group">
+      <label class="text">Local/Foráneo</label>
+      <select [(ngModel)]="filters.localForaneo">
+        <option value="">Todos</option>
+        <option value="Local">Local</option>
+        <option value="Foráneo">Foráneo</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="text">Estatus</label>
+      <select [(ngModel)]="filters.estatus">
+        <option value="">Todos</option>
+        <option *ngFor="let e of estatuses">{{ e }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn-primary" (click)="applyFilters()">Aceptar Filtros</button>
+    <button class="btn-secondary" (click)="clearFilters()">Borrar Filtros</button>
+  </div>
+
+  <!-- Tabla de solicitudes -->
+  <div class="section-label">
+    Listado de Solicitudes
+  </div>
+
+  <div class="table-wrapper">
+    <table class="catalog-table">
+      <thead>
+        <tr>
+          <th>Folio</th>
+          <th>Cliente</th>
+          <th>Tipo Viaje</th>
+          <th>Estatus</th>
+          <th>Origen</th>
+          <th>Destino</th>
+          <th>Operador</th>
+          <th>Equipo</th>
+          <th>Contenedor</th>
+          <th>Solicitud</th>
+          <th>Programada</th>
+          <th>Cita Carga</th>
+          <th>Cita Descarga</th>
+          <th>Acciones</th>
+          <th>Demoras</th>
+          <th>Incidencias</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let solicitud of filteredSolicitudes">
+          <td>{{ solicitud.folio }}</td>
+          <td>{{ solicitud.cliente }}</td>
+          <td>{{ solicitud.tripType }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(solicitud.status)">
+              {{ solicitud.status }}
+            </span>
+          </td>
+          <td>{{ solicitud.originPlace }}</td>
+          <td>{{ solicitud.destinationPlace }}</td>
+          <td>{{ solicitud.operator }}</td>
+          <td>{{ solicitud.tractor }}</td>
+          <td>{{ solicitud.containerNumber || '-' }}</td>
+          <td>{{ solicitud.solicitud | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ solicitud.programada | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ solicitud.citaCarga | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ solicitud.citaDescarga | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <button class="btn-secondary" (click)="editService(solicitud)">Editar</button>
+            <button class="btn-danger" (click)="deleteService(solicitud)">Eliminar</button>
+          </td>
+          <td>
+            <button class="btn-primary">Insertar Demoras</button>
+          </td>
+          <td>
+            <button class="btn-primary">Insertar Incidencias</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredSolicitudes.length === 0">
+          <td colspan="14" class="no-data">
+            No se encontraron solicitudes con los filtros aplicados
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

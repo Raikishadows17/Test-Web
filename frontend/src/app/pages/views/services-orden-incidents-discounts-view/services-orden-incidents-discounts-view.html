@@ -1,0 +1,188 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">warning</span>
+    Incidencias y Descuentos
+  </h3>
+
+  <!-- Taller Mecánico -->
+  <h4>Taller Mecánico</h4>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Taller Mecánico - Socio</label>
+      <input type="text" [(ngModel)]="formData.maintenancePartner" placeholder="Nombre del socio / proveedor">
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - Monto</label>
+      <input type="number" [(ngModel)]="formData.maintenanceAmount" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - Moneda</label>
+      <select [(ngModel)]="formData.maintenanceCurrency">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let m of formData.options.currencies">{{ m }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - IVA</label>
+      <input type="number" [(ngModel)]="formData.maintenanceTax" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - Por Pagar</label>
+      <input type="number" [(ngModel)]="formData.maintenanceAmountDue" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Método de Pago</label>
+      <select [(ngModel)]="formData.maintenancePaymentMethod">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let p of formData.options.paymentMethods">{{ p }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - Motivo</label>
+      <textarea [(ngModel)]="formData.maintenanceReason" rows="3" placeholder="Motivo del taller..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Taller Mecánico - Días</label>
+      <input type="number" [(ngModel)]="formData.maintenanceDays" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Taller Mecánico - Comprobante</label>
+      <div class="file-upload-group">
+        <input type="file" id="tallerComprobante" (change)="onTallerComprobanteSelected($event)" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="tallerComprobante" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Comprobante
+        </label>
+        <span class="file-name" *ngIf="formData.selectedMaintenanceReceipt">{{ formData.selectedMaintenanceReceipt
+          }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Adjudicación</label>
+      <input type="text" [(ngModel)]="formData.maintenanceReference" placeholder="Adjudicación / número">
+    </div>
+  </div>
+
+  <!-- Incidencias generales -->
+  <h3>
+    <span class="material-icons">warning</span>
+    Otras Incidencias
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Fecha Rojo</label>
+      <input type="datetime-local" [(ngModel)]="formData.redLightDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Rojo Liberación</label>
+      <input type="datetime-local" [(ngModel)]="formData.redLightReleaseDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Pernocta</label>
+      <input type="datetime-local" [(ngModel)]="formData.overnightStayDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Pernocta Liberación</label>
+      <input type="datetime-local" [(ngModel)]="formData.overnightStayReleaseDate">
+    </div>
+
+    <div class="form-group">
+      <label>Demora Entrega Atención (Hrs)</label>
+      <input type="number" [(ngModel)]="formData.deliveryDelayHours" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Movimiento en Falso</label>
+      <input type="number" [(ngModel)]="formData.dryRunMovement" placeholder="KM o Monto">
+    </div>
+
+    <div class="form-group">
+      <label>Maniobra Cancelada</label>
+      <input type="text" [(ngModel)]="formData.cancelledManeuver" placeholder="Motivo o descripción">
+    </div>
+
+    <div class="form-group">
+      <label>Entrega Cliente (Hrs)</label>
+      <input type="number" [(ngModel)]="formData.customerDeliveryHours" placeholder="Horas">
+    </div>
+
+    <div class="form-group">
+      <label>Zona de Descanso</label>
+      <input type="text" [(ngModel)]="formData.restArea" placeholder="Nombre o ubicación">
+    </div>
+
+    <div class="form-group">
+      <label>Zona de Descanso Inicio</label>
+      <input type="datetime-local" [(ngModel)]="formData.restAreaStartTime">
+    </div>
+
+    <div class="form-group">
+      <label>Zona de Descanso Fin</label>
+      <input type="datetime-local" [(ngModel)]="formData.restAreaEndTime">
+    </div>
+  </div>
+
+  <!-- Descuentos -->
+  <h3>
+    <span class="material-icons">discount</span>
+    Descuentos
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Descuentos - Cantidad</label>
+      <input type="number" [(ngModel)]="formData.discountAmount" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Descuentos - Porcentaje</label>
+      <input type="number" [(ngModel)]="formData.discountPercentage" placeholder="%">
+    </div>
+
+    <div class="form-group">
+      <label>Descuentos - KM's Recorridos</label>
+      <input type="number" [(ngModel)]="formData.discountKms" placeholder="KM">
+    </div>
+
+    <div class="form-group">
+      <label>Descuentos - Motivo</label>
+      <textarea [(ngModel)]="formData.discountReason" rows="2" placeholder="Motivo del descuento..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Descuentos - Adjudicación</label>
+      <input type="text" [(ngModel)]="formData.discountAdjudication" placeholder="Número o referencia">
+    </div>
+  </div>
+  <h3>
+    <span class="material-icons">add_circle</span>
+    Incidencia Carga Contenedor
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Carga Contenedor</label>
+      <input type="text" [(ngModel)]="formData.containerLoadingIncident" placeholder="Descripción">
+    </div>
+
+    <div class="form-group">
+      <label>Motivo</label>
+      <input type="text" [(ngModel)]="formData.loadingReason" placeholder="Motivo">
+    </div>
+
+    <div class="form-group">
+      <label>Tiempo</label>
+      <input type="text" [(ngModel)]="formData.loadingTime" placeholder="Horas o descripción">
+    </div>
+  </div>
+</div>

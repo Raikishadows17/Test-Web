@@ -1,0 +1,27 @@
+/* REGISTRO DE GASTOS - Tab 3 */
+.expense-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+
+.expense-input-row .form-group {
+  flex: 1 1 180px;
+  min-width: 180px;
+  max-width: 250px;
+}
+
+.expense-input-row .form-group label {
+  font-size: 0.9rem;
+}
+
+.expense-input-row .btn-primary.add-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  margin-top: 28px;
+}

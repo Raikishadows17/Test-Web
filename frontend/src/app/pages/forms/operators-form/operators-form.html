@@ -1,0 +1,15 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">RH / OPERADORES</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Recursos Humanos y Operadores
+  </div>
+  <app-operators-personal-data-view [formData]="formData"></app-operators-personal-data-view>
+  <app-operators-employment-data-view [formData]="formData"></app-operators-employment-data-view>
+  <app-operators-certifications-view [formData]="formData"></app-operators-certifications-view>
+</div>

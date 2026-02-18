@@ -1,0 +1,164 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { EquipmentGeneralView } from '../../views/equipment-general-view/equipment-general-view';
+import { EquipmentVisualPhotoView } from "../../views/equipment-visual-photo-view/equipment-visual-photo-view";
+import { EquipmentDocView } from "../../views/equipment-doc-view/equipment-doc-view";
+import { EquipmentMaintenanceView } from "../../views/equipment-maintenance-view/equipment-maintenance-view";
+
+@Component({
+  selector: 'app-equipment-catalog-form',
+  imports: [CommonModule, FormsModule, EquipmentGeneralView, EquipmentVisualPhotoView, EquipmentDocView, EquipmentMaintenanceView],
+  templateUrl: './equipment-catalog-form.html',
+  styleUrl: './equipment-catalog-form.css',
+})
+export class EquipmentCatalogForm {
+  isEditMode = false;
+  equipmentId: string | null = null;
+  constructor(private route: ActivatedRoute) { }
+
+  activeTab = 1;
+  selectedPhotoName = '';
+  selectedPolicyName = '';
+
+
+
+  formData = {
+    economicNumber: '',
+    unitType: '',
+    federalPlates: '',
+    fuelType: '',
+    brandModel: '',
+    year: '',
+    isSocialProvider: false,
+    isDoubleTrailer: false,
+    ejn: '',
+    color: '',
+    platePosition: '',
+    circulationCardExpiration: '',
+    insuranceExpiration: '',
+    mechanicalVerification: '',
+    verificationStatus: '',
+    purchaseInvoice: null,
+    status: '',
+    maintenanceNotes: '',
+    colorPicker: '',
+    descriptionFull: '',
+    habilitadoForaneo: false,
+    esSocioProveedor: false,
+    equipoVendidoSinPapeles: false,
+    unidadRotulada: false,
+    dieselCapacity: null,
+    trailerCapacity: null,
+    imagenReferencia: '',
+    colorDistintivo: '#0000ff',
+    ejes: '',
+    estudioMecanicoActivo: false,
+    fechaEstudioMecanico: '',
+    vigenciaEstudioMecanico: '',
+    hologramasActivo: false,
+    fechaHologramas: '',
+    vigenciaHologramas: '',
+    vigenciaVerificacion: '',
+    vencimientoPoliza: '',
+    folioPoliza: '',
+    estatusOperativo: '',
+    rojoFuncionalBloqueo: false,
+    tipoMantenimiento: '',
+    fechaIngresoTaller: '',
+    options: {
+      unitTypes:['Tracto', 'Dolly', 'Chasis 20°', 'Chasis 40°', 'Plana', 'Caja Seca'],
+      fuelTypes :['Diésel', 'Gasolina', ' Hibrido', 'Gas LP'],
+      years: Array.from({ length: 20 }, (_, i) => 2026 - i), // 2005-2025
+      states:['Vigente', 'Vencida', 'Próxima a vencer'],
+      positions:['Carril 1', 'Carril 2', 'Taller 3', 'Salida'],
+      axles: ['2', '3', '4+'],
+      currentStatus:['Disponible', 'En Ruta', 'Mantenimiento Preventivo', 'Mantenimiento Correctivo', 'Rojo (no circula)', 'Baja'],
+      typemaintenance:['Preventivo', 'Correctivo', 'Revisión General', 'Otro'],
+    },
+  };
+  // Opciones para selects (nativas)
+
+
+  ngOnInit() {
+    this.equipmentId = this.route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.equipmentId;
+    if (this.isEditMode) {
+      this.loadEquipmentData(this.equipmentId!);
+    }
+  }
+  setActiveTab(tab: number) {
+    this.activeTab = tab;
+  }
+  //simulamos el guardar
+  onSubmit() {
+    if (this.formData.economicNumber && this.formData.unitType) {
+      if (this.isEditMode) {
+        console.log('Equipo actualizado:', this.formData);
+        alert('Equipo actualizado con éxito.');
+      } else {
+        console.log('Equipo creado:', this.formData);
+        alert('Equipo guardado con éxito.');
+      }
+    } else {
+      alert('Por favor, complete los campos obligatorios.');
+    }
+  }
+  //simular subir archivo
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Archivo seleccionado:', file.name);
+    }
+  }
+  onPhotoSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Foto seleccionada:', file.name);
+      this.selectedPhotoName = file.name;
+    }
+  }
+  onPolicyPdfSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('PDF Póliza seleccionado:', file.name);
+      this.selectedPolicyName = file.name;
+      // Aquí puedes validar que sea PDF o subirlo
+    }
+  }
+  onlyLetters(event: KeyboardEvent) {
+    const pattern = /[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/;
+    const inputChar = String.fromCharCode(event.charCode || event.keyCode);
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  private loadEquipmentData(id: string) {
+    // Aquí simulas o llamas a un servicio para obtener los datos del equipo
+    const mockData = {
+      economicNumber: id,
+      unitType: 'Tracto',
+      federalPlates: '123ABC',
+      fuelType: 'Diésel',
+      brandModel: 'Kenworth T880',
+      year: '2023',
+      // ... llena todos los campos que tengas
+      colorDistintivo: '#ff0000',
+      estatusOperativo: 'Disponible',
+      // etc.
+    };
+
+    this.formData = { ...this.formData, ...mockData };
+    console.log('Editando equipo:', id, mockData);
+  }
+  // Cambiar título y botón según modo
+  get pageTitle(): string {
+    return this.isEditMode ? 'Editar Equipo' : 'Alta de Equipos';
+  }
+
+  get submitButtonText(): string {
+    return this.isEditMode ? 'Actualizar Registro' : 'Guardar Registro';
+  }
+}

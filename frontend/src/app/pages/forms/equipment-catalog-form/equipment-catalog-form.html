@@ -1,0 +1,39 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">{{ pageTitle }}</h1>
+    <div class="search-actions">
+      <button class="btn-primary" (click)="onSubmit()">{{ submitButtonText }}</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Gestión de Flota y Equipos
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. General
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Visual y Fotos
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Documentación
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 4" (click)="setActiveTab(4)">
+      4. Estado y Mantenimiento
+    </button>
+  </div>
+
+  <!-- Contenido de tabs -->
+  <div class="tab-content">
+    <!-- Tab 1: General -->
+
+    <app-equipment-general-view *ngIf="activeTab === 1" [formData]="formData"></app-equipment-general-view>
+    <app-equipment-visual-photo-view *ngIf="activeTab === 2" [formData]="formData"></app-equipment-visual-photo-view>
+    <app-equipment-doc-view *ngIf="activeTab === 3" [formData]="formData"></app-equipment-doc-view>
+    <app-equipment-maintenance-view *ngIf="activeTab === 4" [formData]="formData"></app-equipment-maintenance-view>
+
+  </div>
+</div>

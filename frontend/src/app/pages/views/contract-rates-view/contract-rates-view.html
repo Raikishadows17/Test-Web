@@ -1,0 +1,144 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">calendar_today</span>
+    VIGENCIA DEL CONTRATO
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Inicio Contrato</label>
+      <input type="date" [(ngModel)]="formData.inicioContrato">
+    </div>
+
+    <div class="form-group">
+      <label>Fin Contrato</label>
+      <input type="date" [(ngModel)]="formData.finContrato">
+    </div>
+
+    <div class="form-group">
+      <label>Moneda</label>
+      <select [(ngModel)]="formData.moneda">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let m of this.formData.monedas">{{ m }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Tipo Contrato</label>
+      <select [(ngModel)]="formData.tipoContrato">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let t of this.formData.tiposContrato">{{ t }}</option>
+      </select>
+    </div>
+  </div>
+
+  <h3>
+    <span class="material-icons">attach_money</span>
+    TARIFARIO BASE (COSTOS ESTÁNDAR)
+  </h3>
+  <div class="form-grid">
+    <!-- Fletes y Movimientos -->
+    <div class="tarifario-section">
+      <h5>Fletes y Movimientos</h5>
+      <div class="form-group">
+        <label>Flete Local (Base)</label>
+        <input type="number" [(ngModel)]="formData.fleteLocal" placeholder="$0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Movimiento en Falso</label>
+        <input type="number" [(ngModel)]="formData.movimientoFalso" placeholder="$0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Reparto Adicional</label>
+        <input type="number" [(ngModel)]="formData.repartoAdicional" placeholder="$0.00" step="0.01">
+      </div>
+    </div>
+
+    <!-- Estadías y Demoras -->
+    <div class="tarifario-section">
+      <h5>Estadías y Demoras</h5>
+      <div class="form-group">
+        <label>Estadía (por día)</label>
+        <input type="number" [(ngModel)]="formData.estadiaDia" placeholder="$0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Días Libres Carga</label>
+        <input type="number" [(ngModel)]="formData.diasLibresCarga" placeholder="Ej. 24 hrs">
+      </div>
+      <div class="form-group">
+        <label>Días Libres Descarga</label>
+        <input type="number" [(ngModel)]="formData.diasLibresDescarga" placeholder="Ej. 48 hrs">
+      </div>
+    </div>
+
+    <!-- Adicionales -->
+    <div class="tarifario-section">
+      <h5>Adicionales</h5>
+      <div class="form-group">
+        <label>Pernocta</label>
+        <input type="number" [(ngModel)]="formData.pernocta" placeholder="$0.00" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Maniobra IMO</label>
+        <input type="text" [(ngModel)]="formData.maniobraIMO" placeholder="+ % o Monto">
+      </div>
+    </div>
+  </div>
+
+  <!-- Rutas específicas -->
+  <h3>
+    <span class="material-icons">location_on</span>
+    RUTAS ESPECÍFICAS (TARIFAS)
+  </h3>
+
+  <div class="rutas-section">
+    <div class="checkbox-row">
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.requierePortalesCita">
+        Requiere Portales de Cita
+      </label>
+    </div>
+
+    <div class="rutas-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Tipo Unidad</th>
+            <th>Tarifa Pactada</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Ejemplo inicial (puedes dejarlo o hacerlo dinámico) -->
+          <tr *ngFor="let ruta of formData.rutas; let i = index">
+            <td>
+              <input type="text" [(ngModel)]="ruta.origen" placeholder="Origen">
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="ruta.destino" placeholder="Destino">
+            </td>
+            <td>
+              <select [(ngModel)]="ruta.tipoUnidad">
+                <option value="">-- Seleccionar --</option>
+                <option *ngFor="let t of this.formData.tiposUnidad">{{ t }}</option>
+              </select>
+            </td>
+            <td>
+              <input type="number" [(ngModel)]="ruta.tarifa" placeholder="$0.00" step="0.01">
+            </td>
+            <td>
+              <button class="btn-secondary small" (click)="editRuta(i)">Editar</button>
+              <button class="btn-danger small" (click)="removeRuta(i)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button class="btn-primary add-ruta" (click)="addRuta()">
+        + Agregar Nueva Ruta al Contrato
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,211 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">timeline</span>
+    Seguimiento Operativo
+  </h3>
+
+  <div class="form-grid">
+    <!-- Terminal y Socios -->
+    <div class="form-group">
+      <label>Terminal</label>
+      <input type="text" [(ngModel)]="formData.terminal" placeholder="Nombre de la terminal">
+    </div>
+
+    <div class="form-group">
+      <label>Destino Terminal</label>
+      <input type="text" [(ngModel)]="formData.terminalDestination" placeholder="Destino terminal">
+    </div>
+
+    <div class="form-group">
+      <label>Socios / Proveedores del Servicio</label>
+      <input type="text" [(ngModel)]="formData.partners" placeholder="Ej: Proveedor A, Proveedor B">
+    </div>
+  </div>
+
+  <!-- Fechas clave de autorización e inicio -->
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Fecha Autorización Servicio</label>
+      <input type="datetime-local" [(ngModel)]="formData.authorizationDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Vo.Bo. Servicio</label>
+      <input type="datetime-local" [(ngModel)]="formData.approvalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Inicio Servicio</label>
+      <input type="datetime-local" [(ngModel)]="formData.serviceStartDate">
+    </div>
+  </div>
+
+  <!-- Movimientos en Terminal (Retiro) -->
+  <h3>
+    <span class="material-icons">timeline</span>
+    Movimientos de Retiro en Terminal
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Terminal Boleta</label>
+      <input type="text" [(ngModel)]="formData.withdrawalTerminalBoleta" placeholder="Número o referencia de boleta">
+    </div>
+
+    <div class="form-group">
+      <label>Bloque Retiro + Hora</label>
+      <input type="text" [(ngModel)]="formData.withdrawalBlock" placeholder="Bloque + Hora">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Estimada Arribo a Terminal</label>
+      <input type="datetime-local" [(ngModel)]="formData.estimatedArrivalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Registro ASLA</label>
+      <input type="datetime-local" [(ngModel)]="formData.aslaRegistrationDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Llamado a Terminal</label>
+      <input type="datetime-local" [(ngModel)]="formData.terminalCallDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Ingreso Recinto</label>
+      <input type="datetime-local" [(ngModel)]="formData.facilityEntryDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Arribo Terminal</label>
+      <input type="datetime-local" [(ngModel)]="formData.terminalArrivalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Carga en Patio</label>
+      <input type="datetime-local" [(ngModel)]="formData.yardLoadingDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Retiro Patio</label>
+      <input type="datetime-local" [(ngModel)]="formData.yardWithdrawalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Salida Terminal</label>
+      <input type="datetime-local" [(ngModel)]="formData.terminalDepartureDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Salida Recinto</label>
+      <input type="datetime-local" [(ngModel)]="formData.facilityDepartureDate">
+    </div>
+  </div>
+
+  <!-- Movimientos de Regreso -->
+  <h3>
+    <span class="material-icons">calendar_today</span>
+    Movimientos de Regreso en Terminal
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Terminal Regreso</label>
+      <input type="text" [(ngModel)]="formData.returnTerminal">
+    </div>
+
+    <div class="form-group">
+      <label>Bloque Depósito + Hora</label>
+      <input type="text" [(ngModel)]="formData.depositBlock" placeholder="Bloque + Hora">
+    </div>
+
+    <div class="form-group">
+      <label>Terminal Boleta (Regreso)</label>
+      <input type="text" [(ngModel)]="formData.returnTerminalBoleta">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Arribo Terminal (Regreso)</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnTerminalArrivalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Registro ASLA (Regreso)</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnAslaRegistrationDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Ingreso Recinto (Regreso)</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnFacilityEntryDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Salida Terminal (Regreso)</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnTerminalDepartureDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Salida Recinto (Regreso)</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnFacilityDepartureDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Depósito Patio</label>
+      <input type="datetime-local" [(ngModel)]="formData.yardDepositDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Estimada Arribo a Terminal</label>
+      <input type="datetime-local" [(ngModel)]="formData.returnEstimatedArrivalDate">
+    </div>
+  </div>
+
+  <!-- Documentación adicional -->
+  <h3>
+    <span class="material-icons">calendar_today</span>
+    Fecha de Documentación</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Fecha Carta Porte</label>
+      <input type="date" [(ngModel)]="formData.waybillDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Entrega Documentación</label>
+      <input type="date" [(ngModel)]="formData.documentationDeliveryDate">
+    </div>
+  </div>
+  <h3>
+    <span class="material-icons">calendar_today</span>
+    Fecha de Cierre y Entrega</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Fecha Llegada</label>
+      <input type="datetime-local" [(ngModel)]="formData.arrivalDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Atención (Posterior a la Llegada)</label>
+      <input type="datetime-local" [(ngModel)]="formData.attentionDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha de Vacío</label>
+      <input type="datetime-local" [(ngModel)]="formData.emptyDate">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Lleno/Vacío</label>
+      <input type="datetime-local" [(ngModel)]="formData.fullEmptyDate">
+    </div>
+
+    <div class="form-group">
+      <label>Prealta</label>
+      <input type="text" [(ngModel)]="formData.preRegistration" placeholder="Número o referencia">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Conclusión de Descarga</label>
+      <input type="datetime-local" [(ngModel)]="formData.dischargeCompletionDate">
+    </div>
+  </div>
+</div>

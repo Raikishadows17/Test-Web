@@ -1,0 +1,139 @@
+/* Rutas específicas */
+.rutas-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.rutas-table th, .rutas-table td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.rutas-table th {
+  background: #2d2d2d;
+  color: #f36b21;
+}
+
+/* Direcciones */
+.direcciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.direccion-card {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+
+.card-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.add-direccion {
+  margin-top: 20px;
+  padding: 12px 24px;
+}
+/* Tarifario base - 3 columnas responsivas */
+.tarifario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.tarifario-section {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #444;
+}
+
+.tarifario-section h5 {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+}
+/* Rutas Específicas */
+.rutas-section {
+  margin-top: 32px;
+}
+
+.rutas-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.rutas-table th,
+.rutas-table td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.rutas-table th {
+  background: #2d2d2d;
+  color: #f36b21;
+  font-weight: bold;
+}
+
+.rutas-table input,
+.rutas-table select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #444;
+  background: #2d2d2d;
+  color: white;
+  border-radius: 4px;
+}
+
+.add-ruta {
+  padding: 12px 24px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.btn-secondary.small,
+.btn-danger.small {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  margin-right: 8px;
+}
+
+.btn-danger.small {
+  background: #e74c3c;
+  border-color: #c0392b;
+}
+
+.btn-danger.small:hover {
+  background: #c0392b;
+}
+/* Botón transparente con borde y texto naranja */
+.add-transparent-btn {
+  background: transparent !important; /* Fondo sin color */
+  color: #f36b21 !important;          /* Texto naranja (color principal) */
+  border: 2px solid #f36b21 !important; /* Borde naranja */
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.add-transparent-btn:hover {
+  background: rgba(243, 107, 33, 0.1) !important; /* Fondo sutil naranja al hover */
+  color: white !important;                         /* Texto blanco para contraste */
+  border-color: #e55a1c !important;                /* Borde un poco más oscuro */
+  box-shadow: 0 0 10px rgba(243, 107, 33, 0.4);    /* Sombra naranja suave */
+}
+
+.add-transparent-btn:active {
+  transform: scale(0.98);
+  background: rgba(243, 107, 33, 0.2) !important;
+}
