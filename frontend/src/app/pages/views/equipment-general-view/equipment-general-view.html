@@ -1,0 +1,102 @@
+<div class="form-section">
+
+  <h3>
+    <span class="material-icons">local_shipping</span>
+    IDENTIFICACIÓN Y CLASIFICACIÓN
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Núm. Económico *</label>
+      <input type="text" [(ngModel)]="formData.economicNumber" placeholder="Ej: ECO-001" required>
+    </div>
+    <div class="form-group">
+      <label>Tipo de Unidad</label>
+      <select [(ngModel)]="formData.unitType">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let type of formData.options.unitTypes">{{ type }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Marca/Modelo</label>
+      <input type="text" [(ngModel)]="formData.brandModel" placeholder="Ej: Kenworth T880">
+    </div>
+    <div class="form-group">
+      <label>Año</label>
+      <select [(ngModel)]="formData.year">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let y of formData.options.years">{{ y }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Placas Federales</label>
+      <input type="text" [(ngModel)]="formData.federalPlates" placeholder="Placas Federales">
+    </div>
+    <div class="form-group">
+      <label>Combustible</label>
+      <select [(ngModel)]="formData.fuelType">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let fuel of formData.options.fuelTypes">{{ fuel }}</option>
+      </select>
+    </div>
+    <div class="form-group full-width">
+      <label>Descripción Detallada</label>
+      <textarea [(ngModel)]="formData.descriptionFull" rows="4"></textarea>
+    </div>
+  </div>
+
+  <h3>
+    <span class="material-icons">
+      assignment
+    </span>
+    CONFIGURACIÓN OPERATIVA
+  </h3>
+
+  <div class="config-operativa">
+    <!-- Checkboxes principales -->
+    <div class="checkbox-row">
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.habilitadoForaneo">
+        Habilitado Foráneo (OK-NW)
+      </label>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.esSocioProveedor">
+        ¿Es de Socio/Proveedor?
+      </label>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.equipoVendidoSinPapeles">
+        Equipo Vendido / Sin Papeles (NW)
+      </label>
+    </div>
+
+    <!-- 3 inputs en una sola línea -->
+    <div class="form-grid three-columns">
+      <div class="form-group">
+        <label>Capacidad Diésel (Lts)</label>
+        <input type="number" [(ngModel)]="formData.dieselCapacity">
+      </div>
+
+      <div class="form-group">
+        <label>Capacidad Arrastre (Tons)</label>
+        <input type="number" [(ngModel)]="formData.trailerCapacity">
+      </div>
+
+      <div class="form-group">
+        <label>Ejes</label>
+        <select [(ngModel)]="formData.ejes">
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let eje of formData.options.axles">{{ eje }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Checkbox debajo de Capacidad Diésel -->
+    <div class="checkbox-row unidad-rotulada">
+      <label>
+        <input type="checkbox" [(ngModel)]="formData.unidadRotulada">
+        Unidad Rotulada (Cobre Externo)
+      </label>
+    </div>
+  </div>
+</div>

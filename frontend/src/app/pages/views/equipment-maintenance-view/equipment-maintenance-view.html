@@ -1,0 +1,111 @@
+<div class="form-section">
+  <h3>
+        <span class="material-icons">warning</span>
+        ESTADO ACTUAL Y MANTENIMIENTO
+      </h3>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Estatus Operativo</label>
+          <select [(ngModel)]="formData.estatusOperativo">
+            <option value="">-- Seleccionar --</option>
+            <option *ngFor="let estatus of formData.options.currentStatus">{{ estatus }}</option>
+          </select>
+        </div>
+
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.rojoFuncionalBloqueo">
+            Rojo Funcional (Bloqueo Administrativo)
+          </label>
+        </div>
+      </div>
+
+      <!-- Mantenimiento -->
+      <div class="mantenimiento-box">
+        <h4>Mantenimiento</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Tipo Mantenimiento</label>
+            <select [(ngModel)]="formData.tipoMantenimiento">
+              <option value="">-- Seleccionar --</option>
+              <option *ngFor="let tipo of formData.options.typemaintenance">{{ tipo }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Fecha Ingreso Taller</label>
+            <input type="date" [(ngModel)]="formData.fechaIngresoTaller">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Recibos/Relaciones / Insumos asociados</label>
+          <div class="file-upload-group">
+            <input type="file" id="recibosRelaciones" (change)="onRecibosRelacionesSelected($event)" multiple
+              style="display: none;" />
+            <label for="recibosRelaciones" class="btn-secondary">
+              <span class="material-icons">upload_file</span>
+              Seleccionar archivos
+            </label>
+            <span class="file-name" *ngIf="recibosCount > 0">
+              {{ recibosCount }} archivo(s) seleccionado(s)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documentación de Viaje Activo -->
+      <h3>
+        <span class="material-icons">
+          article
+        </span>
+        OCUMENTACIÓN DE VIAJE ACTIVO
+      </h3>
+      <p class="help-text">Documentos temporales del servicio actual / última misión</p>
+
+      <div class="documentacion-viaje-grid">
+        <!-- Boleta Terminal -->
+        <div class="document-card">
+          <h4>Boletín Terminal</h4>
+          <div class="file-upload-group">
+            <input type="file" id="boletaTerminal" (change)="onBoletaTerminalSelected($event)" style="display: none;" />
+            <label for="boletaTerminal" class="btn-secondary small">
+              Seleccionar archivo
+            </label>
+            <span class="file-name" *ngIf="boletaCount > 0">
+              {{ boletaCount }} archivo(s)
+            </span>
+          </div>
+        </div>
+
+        <!-- Carta Porte - Complemento -->
+        <div class="document-card">
+          <h4>Carta Porte - Complemento</h4>
+          <div class="file-upload-group">
+            <input type="file" id="cartaPorte" (change)="onCartaPorteSelected($event)" style="display: none;" />
+            <label for="cartaPorte" class="btn-secondary small">
+              Seleccionar archivo
+            </label>
+            <span class="file-name" *ngIf="cartaPorteCount > 0">
+              {{ cartaPorteCount }} archivo(s)
+            </span>
+          </div>
+        </div>
+
+        <!-- Fotos Revisión (Previo) -->
+        <div class="document-card">
+          <h4>Fotos Revisión (Previo)</h4>
+          <div class="file-upload-group">
+            <input type="file" id="fotosRevision" (change)="onFotosRevisionSelected($event)" multiple accept="image/*"
+              style="display: none;" />
+            <label for="fotosRevision" class="btn-secondary small">
+              Seleccionar fotos
+            </label>
+            <span class="file-name" *ngIf="fotosRevisionCount > 0">
+              {{ fotosRevisionCount }} foto(s)
+            </span>
+          </div>
+        </div>
+      </div>
+</div>

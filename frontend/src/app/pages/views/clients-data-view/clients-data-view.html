@@ -1,0 +1,107 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">card_travel</span>
+    IDENTIFICACIÓN FISCAL
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>RFC *</label>
+      <input type="text" [(ngModel)]="formData.rfc" placeholder="Ej: AAA010101AAA" required maxlength="13"
+        minlength="13" (input)="formatRfc($event)" (keypress)="onlyRfcChars($event)" pattern="[A-Z0-9]{13}"
+        (blur)="validateRfc()">
+      <small *ngIf="formData.rfc && formData.rfc.length !== 13" style="color: #ff9800;">
+        Deben ser exactamente 13 caracteres (4 letras + 6 números + 3 alfanuméricos)
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Razón Social *</label>
+      <input type="text" [(ngModel)]="formData.razonSocial" placeholder="Razón Social" required
+        (keypress)="onlyLettersWithSpaces($event)">
+    </div>
+
+    <div class="form-group">
+      <label>Nombre Comercial (Apodo)</label>
+      <input type="text" [(ngModel)]="formData.nombreComercial" placeholder="Ej: Samsung Lázaro"
+        (keypress)="onlyLettersWithSpaces($event)">
+    </div>
+
+    <div class="form-group">
+      <label>Industria/Sector</label>
+      <select [(ngModel)]="formData.industria">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let i of this.formData.industrias">{{ i }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Estatus</label>
+      <select [(ngModel)]="formData.estatus">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let e of this.formData.estatuses">{{ e }}</option>
+      </select>
+    </div>
+  </div>
+
+  <h3>
+    <span class="material-icons">group</span>
+    CLASIFICACIÓN COMERCIAL
+  </h3>
+  <div class="form-grid">
+    <div class="form-group checkbox-group">
+      <label>Tipo de Cliente</label>
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.clienteFinal">
+          Cliente Final
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.freightForwarder">
+          Freight Forwarder
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Ejecutivo de Cuenta</label>
+      <select [(ngModel)]="formData.ejecutivoCuenta">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let e of this.formData.ejecutivos">{{ e }}</option>
+      </select>
+    </div>
+  </div>
+
+  <h3>
+    <span class="material-icons">attach_money</span>
+    CONDICIONES DE CRÉDITO
+  </h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Términos de Pago</label>
+      <select [(ngModel)]="formData.terminosPago">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let t of this.formData.terminosPago">{{ t }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Límite de Crédito</label>
+      <input type="number" [(ngModel)]="formData.limiteCredito" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Constancia Fiscal</label>
+      <div class="file-upload-group">
+        <input type="file" id="constanciaFiscal" (change)="onConstanciaSelected($event)" accept=".pdf"
+          style="display: none;" />
+        <label for="constanciaFiscal" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir PDF
+        </label>
+        <span class="file-name" *ngIf="selectedConstancia">
+          {{ selectedConstancia }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

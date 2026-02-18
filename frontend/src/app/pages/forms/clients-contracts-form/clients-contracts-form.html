@@ -1,0 +1,47 @@
+<div class="catalog-container">
+  <header class="catalog-header">
+    <h1 class="title">CLIENTES Y CONTRATOS</h1>
+    <div>
+      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+    </div>
+  </header>
+
+  <div class="section-label">
+    Gestión Comercial: Clientes y Contratos
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. Datos Cliente
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Contrato y Tarifas
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Direcciones y Contactos
+    </button>
+  </div>
+
+  <!-- Contenido de tabs -->
+  <div class="tab-content">
+
+      <!-- Tab 1: Datos Cliente -->
+      <app-clients-data *ngIf="activeTab === 1"
+      [formData]="formData"
+      ></app-clients-data>
+
+      <!-- Tab 2 Contratos y Tarifas-->
+      <app-contract-rates-view *ngIf="activeTab === 2"
+      [formData]="formData"
+      ></app-contract-rates-view>
+
+      <!-- Tab 3: Direcciones y Contactos -->
+      <app-adresses-contacts-view *ngIf="activeTab === 3"
+        [formData]="formData"
+      >
+
+      </app-adresses-contacts-view>
+
+  </div>
+</div>

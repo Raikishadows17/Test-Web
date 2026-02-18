@@ -1,0 +1,105 @@
+<div class="form-section">
+  <h3>
+    <span class="material-icons">
+      photo_camera
+    </span>
+    GALERÍA 360°
+  </h3>
+  <div class="gallery-grid">
+    <div class="gallery-card">
+      <span class="material-icons">photo_camera</span>
+      <p>Frente</p>
+      <button class="btn-secondary small">Subir</button>
+    </div>
+    <div class="gallery-card">
+      <span class="material-icons">photo_camera</span>
+      <p>Izquierda</p>
+      <button class="btn-secondary small">Subir</button>
+    </div>
+    <div class="gallery-card">
+      <span class="material-icons">photo_camera</span>
+      <p>Derecha</p>
+      <button class="btn-secondary small">Subir</button>
+    </div>
+    <div class="gallery-card">
+      <span class="material-icons">photo_camera</span>
+      <p>Atrás</p>
+      <button class="btn-secondary small">Subir</button>
+    </div>
+    <div class="gallery-card">
+      <span class="material-icons">photo_camera</span>
+      <p>Arriba</p>
+      <button class="btn-secondary small">Subir</button>
+
+    </div>
+    <!-- Agrega más según necesites -->
+  </div>
+  <h3>
+    <span class="material-icons">
+      location_on
+    </span>
+    REPRESENTACIÓN VISUAL Y PATIO
+  </h3>
+
+  <div class="form-grid">
+    <!-- Izquierda: Imagen Referencia Listado -->
+    <div class="visual-column">
+      <!-- Imagen Referencia Listado (mismo tamaño y estilo que los demás inputs) -->
+      <div class="form-group">
+        <label>Imagen Referencia Listado</label>
+        <input type="text" [(ngModel)]="formData.imagenReferencia" placeholder="URL Icono/Thumb"
+          class="full-width-input">
+        <small class="help-text">URL Icono/Thumb</small>
+      </div>
+
+      <!-- Color Distintivo (debajo, con paleta) -->
+      <div class="form-group">
+        <label>Color Distintivo</label>
+        <div class="color-picker-wrapper">
+          <input type="color" [(ngModel)]="formData.colorDistintivo" value="#0000ff" class="color-picker-full">
+        </div>
+      </div>
+    </div>
+    <!-- Centro: Esquema de Armado + Color Distintivo -->
+    <div class="visual-column center">
+      <label>Esquema de Armado</label>
+      <div class="esquema-armado-preview">
+        <div class="preview-container">
+          <!-- Figura 1: Azul (por defecto) -->
+          <div class="preview-rect rect1" [style.backgroundColor]="'#0000ff'"></div>
+
+          <!-- Separador -->
+          <span class="preview-separator">-</span>
+
+          <!-- Figura 2: Blanco -->
+          <div class="preview-rect rect2" [style.backgroundColor]="'#ffffff'"></div>
+
+          <!-- Separador -->
+          <span class="preview-separator">-</span>
+
+          <!-- Figura 3: Blanco -->
+          <div class="preview-rect rect3" [style.backgroundColor]="'#ffffff'"></div>
+          <span class="preview-separator">-</span>
+          <!-- Figura 4: Blanco -->
+          <div class="preview-rect rect4" [style.backgroundColor]="'#ffffff'"></div>
+        </div>
+
+        <p class="preview-text">
+          Vista previa Tracto + Dolly + Chasis + Adicional
+        </p>
+      </div>
+    </div>
+
+    <!-- Derecha: Posición en Patio -->
+    <div class="visual-column">
+      <div class="form-group">
+        <label>Posición en Patio</label>
+        <select [(ngModel)]="formData.platePosition">
+          <option value="">-- Seleccionar --</option>
+          <option *ngFor="let pos of formData.options.positions">{{ pos }}</option>
+        </select>
+        <small class="help-text">Visualizar disponibilidad física en mapa de patio.</small>
+      </div>
+    </div>
+  </div>
+</div>
