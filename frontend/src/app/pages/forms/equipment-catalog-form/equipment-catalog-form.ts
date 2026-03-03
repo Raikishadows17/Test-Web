@@ -4,56 +4,62 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { EquipmentGeneralView } from '../../views/equipment-general-view/equipment-general-view';
 import { EquipmentVisualPhotoView } from "../../views/equipment-visual-photo-view/equipment-visual-photo-view";
-import { EquipmentDocView } from "../../views/equipment-doc-view/equipment-doc-view";
-import { EquipmentMaintenanceView } from "../../views/equipment-maintenance-view/equipment-maintenance-view";
+import { EquipmentService } from '../../catalogs/equipment/equipment.service'; // ajusta la ruta
+
 
 @Component({
   selector: 'app-equipment-catalog-form',
-  imports: [CommonModule, FormsModule, EquipmentGeneralView, EquipmentVisualPhotoView, EquipmentDocView, EquipmentMaintenanceView],
+  imports: [CommonModule, FormsModule, EquipmentGeneralView, EquipmentVisualPhotoView],
   templateUrl: './equipment-catalog-form.html',
   styleUrl: './equipment-catalog-form.css',
+  
 })
 export class EquipmentCatalogForm {
   isEditMode = false;
-  equipmentId: string | null = null;
-  constructor(private route: ActivatedRoute) { }
+  equipmentId: number | null = null;
+  constructor(private route: ActivatedRoute,private equipmentService: EquipmentService) { }
 
   activeTab = 1;
   selectedPhotoName = '';
   selectedPolicyName = '';
 
-
-
-  formData = {
+  formData: any = {
     economicNumber: '',
+    plates: '',
+    serialNumber: '',
+    brandName: '',
+    equipTypeId: null,
+    terminalId: null,
+    tripTypeId: null,
+    labeledUnit: false,
+    availablePartners: false,
+    dieselCapacity: null,
+    towingCapacity: null,
+    color: '#0000ff',
+
+    // Campos derivados de objetos anidados (no vienen directo de la API)
     unitType: '',
-    federalPlates: '',
-    fuelType: '',
-    brandModel: '',
-    year: '',
-    isSocialProvider: false,
-    isDoubleTrailer: false,
-    ejn: '',
-    color: '',
-    platePosition: '',
-    circulationCardExpiration: '',
-    insuranceExpiration: '',
-    mechanicalVerification: '',
-    verificationStatus: '',
-    purchaseInvoice: null,
-    status: '',
-    maintenanceNotes: '',
-    colorPicker: '',
-    descriptionFull: '',
+    unitTypeDescr: '',
+    terminalName: '',
+    tripTypeName: '',
+    statusName: '',
     habilitadoForaneo: false,
+
+    // Campos que aún no existen en la API pero usas en el form
+    year: '',
+    fuelType: '',
+    ejes: '',
+    descriptionFull: '',
+    unidadRotulada: false,
     esSocioProveedor: false,
     equipoVendidoSinPapeles: false,
-    unidadRotulada: false,
-    dieselCapacity: null,
-    trailerCapacity: null,
     imagenReferencia: '',
     colorDistintivo: '#0000ff',
-    ejes: '',
+    platePosition: '',
+    estatusOperativo: '',
+    rojoFuncionalBloqueo: false,
+    tipoMantenimiento: '',
+    fechaIngresoTaller: '',
     estudioMecanicoActivo: false,
     fechaEstudioMecanico: '',
     vigenciaEstudioMecanico: '',
@@ -63,27 +69,26 @@ export class EquipmentCatalogForm {
     vigenciaVerificacion: '',
     vencimientoPoliza: '',
     folioPoliza: '',
-    estatusOperativo: '',
-    rojoFuncionalBloqueo: false,
-    tipoMantenimiento: '',
-    fechaIngresoTaller: '',
+
+    fechaDocumentoSeguro: '',
+    vigenciaDocumentoSeguro:'',
+
     options: {
-      unitTypes:['Tracto', 'Dolly', 'Chasis 20°', 'Chasis 40°', 'Plana', 'Caja Seca'],
-      fuelTypes :['Diésel', 'Gasolina', ' Hibrido', 'Gas LP'],
-      years: Array.from({ length: 20 }, (_, i) => 2026 - i), // 2005-2025
-      states:['Vigente', 'Vencida', 'Próxima a vencer'],
-      positions:['Carril 1', 'Carril 2', 'Taller 3', 'Salida'],
-      axles: ['2', '3', '4+'],
-      currentStatus:['Disponible', 'En Ruta', 'Mantenimiento Preventivo', 'Mantenimiento Correctivo', 'Rojo (no circula)', 'Baja'],
-      typemaintenance:['Preventivo', 'Correctivo', 'Revisión General', 'Otro'],
+      unitTypes: ['Tractocamión', 'Chasis', 'Dolly', 'Caja Seca', 'Plataforma'], // se puede obtener
+      years: Array.from({ length: 30 }, (_, i) => 2025 - i),
+      fuelTypes: ['Diésel', 'Gasolina', 'Gas Natural'], // No se necesita
+      axles: ['2', '3', '4', '5', '6'],
+      positions: ['Patio A', 'Patio B', 'Patio C', 'En ruta'],
+      currentStatus: ['Disponible', 'En servicio', 'En mantenimiento', 'Fuera de servicio'], //NO SE NECESITA, SE CREA COMO DISPONIBLE POR DEFAULT
+      typemaintenance: ['Preventivo', 'Correctivo', 'Mayor'] //NO SE NECESITA
     },
   };
-  // Opciones para selects (nativas)
-
+  
 
   ngOnInit() {
-    this.equipmentId = this.route.snapshot.paramMap.get('id');
+    this.equipmentId = Number(this.route.snapshot.paramMap.get('id'));
     this.isEditMode = !!this.equipmentId;
+    console.log(this.isEditMode);
     if (this.isEditMode) {
       this.loadEquipmentData(this.equipmentId!);
     }
@@ -135,24 +140,28 @@ export class EquipmentCatalogForm {
       event.preventDefault();
     }
   }
-  private loadEquipmentData(id: string) {
-    // Aquí simulas o llamas a un servicio para obtener los datos del equipo
-    const mockData = {
-      economicNumber: id,
-      unitType: 'Tracto',
-      federalPlates: '123ABC',
-      fuelType: 'Diésel',
-      brandModel: 'Kenworth T880',
-      year: '2023',
-      // ... llena todos los campos que tengas
-      colorDistintivo: '#ff0000',
-      estatusOperativo: 'Disponible',
-      // etc.
-    };
+async loadEquipmentData(id: number) {
+  try {
+    const res: any = await this.equipmentService.getEquipmentById(id);
+    const eq = res.Data ?? res;
+    console.log('Equipo cargado:', eq);
 
-    this.formData = { ...this.formData, ...mockData };
-    console.log('Editando equipo:', id, mockData);
+    // Copia automática de propiedades directas
+    Object.assign(this.formData, eq);
+
+    // Mapeo de objetos anidados a campos del form
+    this.formData.unitType = eq.equipmentType?.name ?? '';
+    this.formData.unitTypeDescr = eq.equipmentType?.descr ?? '';
+    this.formData.terminalName = eq.terminal?.nameTerminal ?? '';
+    this.formData.tripTypeName = eq.tripType?.name ?? '';
+    this.formData.habilitadoForaneo = eq.tripType?.id === 2;
+    this.formData.estatusOperativo = eq.equipmentStatus?.name ?? '';
+    this.formData.statusName = eq.equipmentStatus?.name ?? '';
+  } catch (err) {
+    console.error('Error al cargar equipo:', err);
   }
+}
+  
   // Cambiar título y botón según modo
   get pageTitle(): string {
     return this.isEditMode ? 'Editar Equipo' : 'Alta de Equipos';

@@ -15,4 +15,11 @@ export class EquipmentService {
       this.http.get(`${environment.apiURL}/api/Equipment`)
     );
   }
+
+  getEquipmentById(id:number){
+    return firstValueFrom(
+      this.http.get(`${environment.apiURL}/api/Equipment/${id}`)
+    );
+  }
+
 }

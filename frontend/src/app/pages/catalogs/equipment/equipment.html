@@ -11,28 +11,28 @@
       [(ngModel)]="searchTerm" (input)="searchEquipment()">
   </div>
 
-<div class="filters-box">
-  <select [(ngModel)]="filterForaneo" (change)="applyFilters()">
-    <option value="">Todos (Foráneo)</option>
-    <option value="si">Foráneo</option>
-    <option value="no">Local</option>
-  </select>
+  <div class="filters-box">
+    <select [(ngModel)]="filterForaneo" (change)="applyFilters()">
+      <option value="">Todos (Foráneo)</option>
+      <option value="si">Foráneo</option>
+      <option value="no">Local</option>
+    </select>
 
-  <select [(ngModel)]="filterEquipType" (change)="applyFilters()">
-    <option value="">Todos (Tipo Equipo)</option>
-    <option *ngFor="let type of equipmentTypes" [value]="type">{{ type }}</option>
-  </select>
+    <select [(ngModel)]="filterEquipType" (change)="applyFilters()">
+      <option value="">Todos (Tipo Equipo)</option>
+      <option *ngFor="let type of equipmentTypes" [value]="type">{{ type }}</option>
+    </select>
 
-  <select [(ngModel)]="filterStatus" (change)="applyFilters()">
-    <option value="">Todos (Estatus)</option>
-    <option *ngFor="let status of equipmentStatuses" [value]="status">{{ status }}</option>
-  </select>
+    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+      <option value="">Todos (Estatus)</option>
+      <option *ngFor="let status of equipmentStatuses" [value]="status">{{ status }}</option>
+    </select>
 
-  <select [(ngModel)]="filterTerminal" (change)="applyFilters()">
-    <option value="">Todas (Terminal)</option>
-    <option *ngFor="let terminal of terminals" [value]="terminal">{{ terminal }}</option>
-  </select>
-</div>
+    <select [(ngModel)]="filterTerminal" (change)="applyFilters()">
+      <option value="">Todas (Terminal)</option>
+      <option *ngFor="let terminal of terminals" [value]="terminal">{{ terminal }}</option>
+    </select>
+  </div>
 
   <div *ngIf="loading" class="loading-msg">Cargando Equipos...</div>
   <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
@@ -42,7 +42,8 @@
       <thead>
         <tr>
           <th></th>
-          <th>Clave Inventario</th>
+          <th>Número Economico</th>
+          <th>Marca</th>
           <th>Tipo de Equipo</th>
           <th>Placas</th>
           <th>Foráneo</th>
@@ -58,76 +59,121 @@
             <td>
               <span class="expand-icon">{{ expandedIndex === i ? '▼' : '▶' }}</span>
             </td>
-            <td>{{ c.economicNumber }}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <img *ngIf="c.imageURL"
+                     [src]="c.imageURL"
+                     alt="{{ c.economicNumber }}"
+                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #555;">
+                <div *ngIf="!c.imageURL"
+                     style="width: 40px; height: 40px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center; border: 2px solid #555; font-size: 12px; color: #aaa;">
+                  N/A
+                </div>
+                <span>{{ c.economicNumber }}</span>
+              </div>
+            </td>
+            <td>{{ c.brandName ?? '—' }}</td>
             <td>{{ c.equipmentType?.name }}</td>
             <td>{{ c.plates }}</td>
             <td>{{ c.tripType?.id === 2 ? 'Sí' : 'No' }}</td>
             <td>{{ c.terminal?.nameTerminal }}</td>
             <td>{{ c.equipmentStatus?.name }}</td>
             <td>
-              <button class="btn-secondary" (click)="$event.stopPropagation()">Editar</button>
+              <button class="btn-secondary" (click)="editEquipment(c.equipmentId); $event.stopPropagation()">Editar</button>
               <button class="btn-danger" (click)="$event.stopPropagation()">Eliminar</button>
             </td>
           </tr>
 
           <tr *ngIf="expandedIndex === i" class="detail-row">
-            <td [attr.colspan]="8">
-              <div class="detail-container">
-                <div class="detail-section">
-                  <h4>Información General</h4>
-                  <div class="detail-grid">
-                    <div class="detail-item">
-                      <span class="label">Número Económico:</span>
-                      <span>{{ c.economicNumber }}</span>
+            <td [attr.colspan]="9">
+              <div class="detail-container" style="display: flex; gap: 24px;">
+
+                <div *ngIf="c.imageURL" style="flex-shrink: 0;">
+                  <img [src]="c.imageURL"
+                       alt="{{ c.economicNumber }}"
+                       style="width: 180px; height: 130px; object-fit: cover; border-radius: 8px; border: 2px solid #555;">
+                </div>
+
+                <div style="flex: 1;">
+                  <div class="detail-section">
+                    <h4>Información General</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Número Económico:</span>
+                        <span>{{ c.economicNumber }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Marca:</span>
+                        <span>{{ c.brandName ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Número de Serie:</span>
+                        <span>{{ c.serialNumber ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Color:</span>
+                        <span style="display: inline-flex; align-items: center; gap: 6px;">
+                          <span *ngIf="c.color"
+                                [style.background-color]="c.color"
+                                style="display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 1px solid #888;">
+                          </span>
+                          {{ c.color ?? 'Sin asignar' }}
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Tipo de Equipo:</span>
+                        <span>{{ c.equipmentType?.name }} - {{ c.equipmentType?.descr }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Terminal:</span>
+                        <span>{{ c.terminal?.nameTerminal }} ({{ c.terminal?.terminalCode }})</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Tipo de Viaje:</span>
+                        <span>{{ c.tripType?.name }} - {{ c.tripType?.desc }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Unidad Etiquetada:</span>
+                        <span>{{ c.labeledUnit ? 'Sí' : 'No' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Disponible Socios:</span>
+                        <span [class]="c.availablePartners ? 'badge-yes' : 'badge-no'">
+                          {{ c.availablePartners ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
                     </div>
-                    <div class="detail-item">
-                      <span class="label">Tipo de Equipo:</span>
-                      <span>{{ c.equipmentType?.name }} - {{ c.equipmentType?.descr }}</span>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Placas</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Número de Placas:</span>
+                        <span>{{ c.plates ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Placas Estado:</span>
+                        <span>{{ c.platesEstate ?? 'Sin asignar' }}</span>
+                      </div>
                     </div>
-                    <div class="detail-item">
-                      <span class="label">Terminal:</span>
-                      <span>{{ c.terminal?.nameTerminal }} ({{ c.terminal?.terminalCode }})</span>
-                    </div>
-                    <div class="detail-item">
-                      <span class="label">Tipo de Viaje:</span>
-                      <span>{{ c.tripType?.name }} - {{ c.tripType?.desc }}</span>
-                    </div>
-                    <div class="detail-item">
-                      <span class="label">Unidad Etiquetada:</span>
-                      <span>{{ c.labeledUnit ? 'Sí' : 'No' }}</span>
-                    </div>
-                    <div class="detail-item">
-                      <span class="label">Disponible Socios:</span>
-                      <span [class]="c.availablePartners ? 'badge-yes' : 'badge-no'">
-                        {{ c.availablePartners ? 'Sí' : 'No' }}
-                      </span>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Estatus del Equipo</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Estatus:</span>
+                        <span>{{ c.equipmentStatus?.name }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Descripción:</span>
+                        <span>{{ c.equipmentStatus?.descr }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div class="detail-section">
-                  <h4>Placas</h4>
-                  <div class="detail-grid">
-                    <div class="detail-item">
-                      <span class="label">Número de Placas:</span>
-                      <span>{{ c.plates ?? 'Sin asignar' }}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="detail-section">
-                  <h4>Estatus del Equipo</h4>
-                  <div class="detail-grid">
-                    <div class="detail-item">
-                      <span class="label">Estatus:</span>
-                      <span>{{ c.equipmentStatus?.name }}</span>
-                    </div>
-                    <div class="detail-item">
-                      <span class="label">Descripción:</span>
-                      <span>{{ c.equipmentStatus?.descr }}</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </td>
           </tr>
