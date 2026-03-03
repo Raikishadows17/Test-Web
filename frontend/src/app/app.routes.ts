@@ -16,7 +16,7 @@ import { ClientsContractsForm } from './pages/forms/clients-contracts-form/clien
 import { DashboardAnalysis } from './pages/catalogs/dashboard-analysis/dashboard-analysis';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginPage,
@@ -30,8 +30,9 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: HomePage,
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
     children: [
+      { path: '', redirectTo: 'strategic', pathMatch: 'full' },
       { path: 'strategic', component: DashboardStrategic },
       { path: 'analysis', component: DashboardAnalysis },
       {

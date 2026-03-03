@@ -18,20 +18,10 @@ namespace TLSRestApi.Controllers
 
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
         {
-            try
-            {
-                Tenant tenant = (Tenant)_httpContextAccessor.HttpContext?.Items["Tenant"];
-
-                var result = await _authService.LoginAsync(request,tenant);
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-               return BadRequest(ex.Message);
-            }
-
+            var result = await _authService.LoginAsync(request);
+            return Ok(result);
         }
 
     }

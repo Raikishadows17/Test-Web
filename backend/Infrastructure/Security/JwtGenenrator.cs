@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Application.DTOs.Auth;
+using Application.DTOs;
 
 namespace Infrastructure.Security
 {
@@ -15,9 +16,9 @@ namespace Infrastructure.Security
         public JwtGenenrator(IConfiguration configuration) 
             => _configuration = configuration;
 
-        public TokenResult GenerateToken(User user, string tenantId)
+        public TokenResultDTO GenerateToken(UserDTO user, string tenantName)
         {
-            var secretKey = _configuration["JwtSettings:SecretKey"]
+            var secretKey = _configuration["JwtSettings:JWTSecretKey"]
                 ?? throw new Exception("SecretKey no configurado");
 
             var issuer = _configuration["JwtSettings:Issuer"]
@@ -34,9 +35,9 @@ namespace Infrastructure.Security
             var claims = new[]
             {
             new Claim(ClaimTypes.NameIdentifier, user.User_id.ToString()),
-            new Claim("Rol_Id" , user.Rol_id.ToString()),
+            new Claim("Rol_Id" , user.Rol.First().RolId.ToString() ),
             new Claim("Emp_Id" , user.Emp_id.ToString()),
-            new Claim("TenantId", tenantId),
+            new Claim("TenantId", tenantName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };            
 
@@ -54,7 +55,7 @@ namespace Infrastructure.Security
                 signingCredentials: credentials
             );
 
-            return new TokenResult()
+            return new TokenResultDTO()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration

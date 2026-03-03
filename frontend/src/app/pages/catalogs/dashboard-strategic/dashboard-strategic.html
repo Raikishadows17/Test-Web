@@ -90,8 +90,7 @@
 
     <div class="modal-header">
       <h3>Detalles de
-        <a [routerLink]="['/dashboard/equipment/edit', selectedUnit?.economico]" class="unit-link"
-          (click)="closeDetailsModal()">
+        <a (click)="editSolicitudService(selectedUnit)" class="unit-link">
           {{ selectedUnit?.economico }}
         </a>
       </h3>

@@ -1,6 +1,6 @@
-﻿using Application.Interface.Service;
+﻿using Application.DTOs;
+using Application.Interface.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TLSRestApi.Controllers
@@ -10,26 +10,49 @@ namespace TLSRestApi.Controllers
     [Authorize]
     public class CustomerController : BaseApiController
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerervice _Customerervice;
 
-        public CustomerController(ICustomerService customerService)
+        public CustomerController(ICustomerervice Customerervice)
         {
-            _customerService = customerService;
+            _Customerervice = Customerervice;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCustomers()
+        public async Task<IActionResult> GetAllCustomer()
         {
-            try
-            {
-                var result = await _customerService.GetAllCustomerAsync();
+            var result = await _Customerervice.GetAllAsync();
+            return Ok(result);
+        }
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCustomerById(int id)
+        {
+            var result = await _Customerervice.GetByIdAsync(id);
+            if (result == null)
+                return NotFound("Cliente no Registrado");
+                
+            return Ok(result);
+        }
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        [HttpPost]
+        public async Task<IActionResult> CreateCustomer([FromBody] CustomerDTO customer)
+        {            
+            await _Customerervice.AddAsync(customer);
+            return Created(customer, "Cliente Creado Exitosamente");
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateCustomer([FromBody] CustomerDTO customer)
+        {
+            
+                await _Customerervice.UpdateAsync(customer);
+                return Ok(customer, "Cliente Actualizado Exitosamente");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCustomer(int id)
+        {
+            await _Customerervice.DeleteAsync(id);
+            return NoContent("Cliente Eliminado Exitosamente");
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Application.Interface.Service
 {
     public interface IAuthService
     {
-        Task<LoginResponse> LoginAsync(LoginRequest request,Tenant tenant);
+        Task<LoginResponseDTO> LoginAsync(LoginRequestDTO request);
     }
 }

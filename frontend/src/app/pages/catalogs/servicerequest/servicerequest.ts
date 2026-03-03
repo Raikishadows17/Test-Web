@@ -2,15 +2,23 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-servicerequest',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, MatButtonModule,],
   templateUrl: './servicerequest.html',
   styleUrl: './servicerequest.css',
 })
 export class Servicerequest {
   constructor(private router: Router) { }
+  showAccionesModal = false;
+  accionSeleccionada: string = '';
+  editData: any = {}; // para Editar
+  demoraData: any = {}; // para Demora
+  gastoData: any = {}; // para Gastos
+  solicitudSeleccionada: any = null;
   // Filtros
   filters = {
     cliente: '',
@@ -139,11 +147,33 @@ export class Servicerequest {
       .replace(/\s+/g, '-');
   }
   editService(solicitud: any) {
+    if (!solicitud || !solicitud.folio) {
+      alert('No se pudo identificar la solicitud');
+      return;
+    }
+    this.cerrarModal();
     this.router.navigate(['/dashboard/service-request/edit', solicitud.folio], {
-    state: { selectedService: solicitud }
-  });
+      state: { selectedService: solicitud }
+    });
   }
-  deleteService(solicitud: any) {
+  abrirModalAcciones(solicitud: any) {
+    this.solicitudSeleccionada = solicitud;
+    this.showAccionesModal = true;
+    this.accionSeleccionada = ''; // reinicia para que inicie pequeño
+  }
+  // Cierra el modal
+  cerrarModal() {
+    this.showAccionesModal = false;
+    this.accionSeleccionada = '';
+  }
 
+  // Cuando cambia la acción seleccionada
+  onAccionChange() {
+    // Aquí puedes cargar datos previos si es necesario (ej. para Editar)
+    console.log('Acción seleccionada:', this.accionSeleccionada);
+  }
+  guardarDemora() {
+    console.log('Demora registrada:', this.demoraData);
+    this.cerrarModal();
   }
 }

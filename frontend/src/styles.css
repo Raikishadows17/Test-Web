@@ -290,6 +290,24 @@ body {
 .catalog-table tbody tr:hover {
   background: #F05A22;
 }
+.btn-danger {
+  padding: 10px 24px;
+  background: #e74c3c;
+  border-color: #c0392b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #e74c3c;
+  border-color: #c0392b;
+}
+
+.btn-danger:hover {
+  background: #c0392b;
+}
 
 
 
@@ -308,3 +326,6 @@ body {
 .container-theme .catalog-container {
   background: #061B36;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,24 +1,20 @@
-﻿using Application.Interface.Repository;
+﻿using Application.DTOs;
+using Application.Interface.Repository.Entities;
 using Application.Interface.Service;
+using Application.Services.Common;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MapsterMapper;
 
 namespace Application.Services
 {
-    public class EquipmentService : IEquipmentService
+    public class EquipmentService :BaseService<EquipmentDTO>, IEquipmentService
     {
-        private readonly IRepository<Equipment> _equipmentRepository;
+        private readonly IEquipmentRepository _equipmentRepository;
 
-        public EquipmentService(IRepository<Equipment> equipmentRepository)
+        public EquipmentService(IEquipmentRepository equipmentRepository):base(equipmentRepository)
         {
             _equipmentRepository = equipmentRepository;
         }
 
-        public Task<IEnumerable<Equipment>> GetAllEquipmentAsync()
-        {
-            return _equipmentRepository.GetAllAsync();
-        }
     }
 }

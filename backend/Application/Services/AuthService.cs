@@ -1,46 +1,51 @@
 ﻿using Application.DTOs;
-using Application.Interface.Service;
-using Application.Interface.Repository;
 using Application.DTOs.Auth;
+using Application.Interface.Context;
+using Application.Interface.Repository.Entities;
+using Application.Interface.Service;
 using Domain.Entities;
-using System.Diagnostics;
+using Domain.Exceptions;
 
 namespace Application.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly ITenantService _tenantService;
+        private readonly ITenantContext _tenantContext;
         private readonly IUserRepository _userRepository;
         private readonly IJwtGenenrator _jwtGenenrator;
 
-        public AuthService(ITenantService tenantService, IUserRepository userRepository , IJwtGenenrator jwtGenenrator)
+        public AuthService(IUserRepository userRepository , IJwtGenenrator jwtGenenrator,ITenantContext tenantContext)
         {
-            _tenantService = tenantService;
+            _tenantContext = tenantContext;
             _userRepository = userRepository;
             _jwtGenenrator = jwtGenenrator;
         }
 
-        public async Task<LoginResponse> LoginAsync(LoginRequest request, Tenant tenant)
+        public async Task<LoginResponseDTO> LoginAsync(LoginRequestDTO request)
         {
             try
             {
-                var user = await _userRepository.GetUserByEmailAsync(request.Email, tenant.DatabaseConnectionString);
+                var user = await _userRepository.GetUserByUserNameAsync(request.UserName);
+                if (user == null)
+                    throw new NotFoundException("Usuario no registrado");
 
-                if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-                    throw new Exception("Credenciales Invalidas");
+                if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+                    throw new UnauthorizedAccessException("Credenciales Invalidas");
 
-                var token = _jwtGenenrator.GenerateToken(user, tenant.TenantId);
+                if (user.Rol.Count == 0)
+                    throw new UnauthorizedAccessException("Usuario no cuenta con rol valido");
 
-                return new LoginResponse
+                var tenant = _tenantContext.GetTenant();
+
+                var token = _jwtGenenrator.GenerateToken(user, tenant.TenantName);
+
+                user.Password = string.Empty; // Limpiar la contraseña antes de devolver el usuario
+
+                return new LoginResponseDTO
                 {
                     Token = token.Token,
                     TokenExpiration = token.Expiration,
-                    Usuario = new UserDTO
-                    {
-                        User_id = user.User_id,
-                        Rol_id = user.Rol_id,
-                        Emp_id = user.Emp_id
-                    }
+                    Usuario = user
                 };
 
             }

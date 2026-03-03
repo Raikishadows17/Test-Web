@@ -11,14 +11,14 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  async login(email: string, password: string): Promise<boolean> {
+  async login(UserName: string, password: string): Promise<boolean> {
 
     try {
-      const body = { email, password };
+      const body = { UserName, password };
 
       const res: any = await firstValueFrom(
         this.http.post(`${environment.apiURL}/api/Auth/Login`, body, {
-          headers: { TenantId: 'Valmarq' }
+          headers: { TenantId: 'Valmarq','X-API-KEY': '93c0f156-0173-449f-a290-d17a458918a6' }//TODO no debería esta aqui configurado, por que se requiere para todas las llamadas.
         })
       );
       const data = res.Data;

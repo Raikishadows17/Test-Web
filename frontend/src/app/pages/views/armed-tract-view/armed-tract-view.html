@@ -1,0 +1,759 @@
+<div class="form-grid">
+  <div class="form-group">
+    <!-- Asignación de Equipo -->
+    <h3>
+      <span class="material-icons">construction</span>
+      Asignación de Equipos
+    </h3>
+    <div class="form-grid">
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.isFull" (change)="onChange()">
+          Full
+        </label>
+      </div>
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.isSocio" (change)="onChange()">
+          Socio
+        </label>
+      </div>
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.noSolicitarEquipo" (change)="onNoSolicitarEquipoChange()">
+          No solicitar equipo
+        </label>
+      </div>
+    </div>
+
+    <!-- Grid de 4 bloques visuales -->
+    <div class="equipo-visual-container">
+      <!-- Botones de selección -->
+      <div class="equipo-tabs">
+        <button *ngFor="let equipo of equiposDisponibles" [class.active]="equiposSeleccionados[equipo]"
+          (click)="toggleEquipo(equipo)"
+          [disabled]="(equipo === 'dolly' || equipo === 'chasisSecundario') && !formData.isFull || formData.noSolicitarEquipo || formData.esSocio">
+          {{ getLabelEquipo(equipo) }}
+        </button>
+      </div>
+      <!-- Área donde se muestra el SVG seleccionado (acumulativo) -->
+      <div class="equipo-svg-container">
+        <svg width="1250" height="400" viewBox="0 0 1300 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1250" height="400" fill="#f0f0f0" />
+          <g *ngIf="equiposSeleccionados.tracto" transform="translate(0, 50)">
+            <svg width="400" height="300" viewBox="0 0 900 400">
+              <!-- Sombra (fija, no se pinta) -->
+              <ellipse cx="420" cy="330" rx="350" ry="18" fill="#000" opacity="0.12" />
+
+              <!-- COFRE (ahora pintable) -->
+              <path d="M360 175 Q310 155 250 165 L190 180 L190 250 L360 250 Z"
+                [attr.fill]="formData.tractoColor || '#ffffff'" stroke="#222" stroke-width="2" />
+
+              <!-- Parrilla (fija) -->
+              <rect x="175" y="195" width="25" height="40" fill="#333" />
+
+              <!-- Defensa (fija) -->
+              <rect x="150" y="225" width="35" height="15" fill="#999" stroke="#444" stroke-width="1" />
+
+              <!-- CABINA SLEEPER (también pintable, mismo color) -->
+              <path d="M360 160 Q360 120 410 110 L560 110 Q600 115 610 150 L610 250 L360 250 Z"
+                [attr.fill]="formData.tractoColor || '#f5f5f5'" stroke="#222" stroke-width="2" />
+
+              <!-- Ventana (fija, azul claro) -->
+              <rect x="480" y="155" width="90" height="55" rx="10" fill="#9ec9ff" stroke="#222" stroke-width="2" />
+
+              <!-- Puerta sleeper (fija) -->
+              <rect x="420" y="165" width="80" height="70" rx="8" fill="none" stroke="#bbb" stroke-width="2" />
+
+              <!-- Espejo (fijo) -->
+              <rect x="565" y="170" width="10" height="40" fill="#333" />
+
+              <!-- Escape trasero (fijo) -->
+              <rect x="600" y="120" width="12" height="90" fill="#888" />
+
+              <!-- Tanque lateral (fijo) -->
+              <rect x="380" y="255" width="220" height="35" rx="8" fill="#cfd8dc" stroke="#888" stroke-width="2" />
+
+              <!-- Quinta rueda (fija) -->
+              <rect x="300" y="250" width="90" height="25" fill="#222" />
+
+              <!-- ===== LLANTAS (todas fijas) ===== -->
+              <!-- Delantera -->
+              <circle cx="340" cy="300" r="45" fill="black" />
+              <circle cx="340" cy="300" r="28" fill="#d9d9d9" />
+              <circle cx="340" cy="300" r="10" fill="#888" />
+
+              <!-- Trasera 2 -->
+              <circle cx="570" cy="300" r="45" fill="black" />
+              <circle cx="570" cy="300" r="28" fill="#d9d9d9" />
+              <circle cx="570" cy="300" r="10" fill="#888" />
+            </svg>
+          </g>
+
+          <g *ngIf="equiposSeleccionados.chasisPrincipal" transform="translate(260, 100)">
+            <svg width="400" height="300" viewBox="0 0 900 400">
+              <!-- Chasis base fijo (el que me pasaste, sin cambios) -->
+              <g id="chasis-fijo">
+                <!-- Viga principal (I-beam) -->
+                <rect x="30" y="95" width="750" height="10" rx="2" fill="url(#sg1)" stroke="#999" stroke-width="0.5" />
+                <rect x="30" y="125" width="750" height="10" rx="2" fill="url(#sg1)" stroke="#999" stroke-width="0.5" />
+                <rect x="30" y="105" width="750" height="20" rx="1" fill="url(#sg2)" stroke="#777" stroke-width="0.5" />
+
+                <!-- Plataforma superior -->
+                <rect x="20" y="78" width="780" height="18" rx="3" fill="#6a6a6a" stroke="#888" stroke-width="0.8" />
+                <line x1="20" y1="87" x2="800" y2="87" stroke="#7a7a7a" stroke-width="0.3" />
+
+                <!-- Travesaños verticales -->
+                <g stroke="#666" stroke-width="1.2" fill="#555">
+                  <rect x="80" y="96" width="4" height="38" rx="1" />
+                  <rect x="160" y="96" width="4" height="38" rx="1" />
+                  <rect x="240" y="96" width="4" height="38" rx="1" />
+                  <rect x="320" y="96" width="4" height="38" rx="1" />
+                  <rect x="400" y="96" width="4" height="38" rx="1" />
+                  <rect x="480" y="96" width="4" height="38" rx="1" />
+                  <rect x="560" y="96" width="4" height="38" rx="1" />
+                  <rect x="640" y="96" width="4" height="38" rx="1" />
+                  <rect x="720" y="96" width="4" height="38" rx="1" />
+                </g>
+
+                <!-- King pin -->
+                <rect x="95" y="134" width="14" height="22" rx="2" fill="#888" stroke="#aaa" stroke-width="0.8" />
+                <rect x="99" y="154" width="6" height="10" rx="1" fill="#aaa" />
+
+                <!-- Pata de apoyo (landing gear) -->
+                <rect x="145" y="134" width="8" height="60" rx="2" fill="#777" stroke="#999" stroke-width="0.7" />
+                <rect x="139" y="190" width="20" height="6" rx="2" fill="#666" stroke="#888" stroke-width="0.5" />
+                <rect x="143" y="196" width="4" height="20" rx="1" fill="#888" />
+                <rect x="157" y="196" width="4" height="20" rx="1" fill="#888" />
+                <rect x="137" y="214" width="12" height="4" rx="1" fill="#999" />
+                <rect x="153" y="214" width="12" height="4" rx="1" fill="#999" />
+
+                <!-- Suspensión trasera (tandem) -->
+                <g>
+                  <rect x="580" y="134" width="180" height="6" rx="2" fill="#666" stroke="#888" stroke-width="0.6" />
+                  <path d="M590,140 Q630,155 670,140" fill="none" stroke="#999" stroke-width="2.5"
+                    stroke-linecap="round" />
+                  <path d="M700,140 Q740,155 780,140" fill="none" stroke="#999" stroke-width="2.5"
+                    stroke-linecap="round" />
+                  <rect x="620" y="140" width="5" height="28" rx="1.5" fill="#777" />
+                  <rect x="740" y="140" width="5" height="28" rx="1.5" fill="#777" />
+                </g>
+
+                <!-- Ejes -->
+                <rect x="615" y="168" width="30" height="5" rx="2" fill="#555" stroke="#777" stroke-width="0.5" />
+                <rect x="725" y="168" width="30" height="5" rx="2" fill="#555" stroke="#777" stroke-width="0.5" />
+
+                <!-- Neumáticos + Rines -->
+                <circle cx="625" cy="200" r="45" fill="black" />
+                <circle cx="625" cy="200" r="28" fill="#d9d9d9" />
+                <circle cx="625" cy="200" r="10" fill="#888" />
+
+                <!-- Neumáticos + Rines (eje 2) -->
+                <circle cx="740" cy="200" r="45" fill="black" />
+                <circle cx="740" cy="200" r="28" fill="#d9d9d9" />
+                <circle cx="740" cy="200" r="10" fill="#888" />
+
+                <!-- Guardafango, luces, defensa, etc. -->
+                <!-- (todo lo que ya tenías se mantiene aquí) -->
+              </g>
+
+              <!-- Contenedor(es) dinámico(s) – se dibujan según el tipo -->
+              <g id="contenedores">
+
+                <!-- ================= 20 PIES (DOS CONTENEDORES) ================= -->
+                <ng-container *ngIf="formData.containerType1 === '20 DC' || formData.containerType1 === '20 HC'">
+
+                  <!-- CONTENEDOR A -->
+                  <g transform="translate(80,10)">
+                    <!-- Sombra -->
+                    <rect x="5" y="68" width="310" height="8" fill="#000" opacity="0.15" />
+
+                    <!-- Cuerpo -->
+                    <rect width="320" height="68" rx="4" [attr.fill]="formData.colorContainer1 || '#d64545'"
+                      stroke="#222" stroke-width="3" />
+
+                    <!-- Marcos verticales -->
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="20" y1="0" x2="20" y2="68" />
+                      <line x1="60" y1="0" x2="60" y2="68" />
+                      <line x1="100" y1="0" x2="100" y2="68" />
+                      <line x1="140" y1="0" x2="140" y2="68" />
+                      <line x1="180" y1="0" x2="180" y2="68" />
+                      <line x1="220" y1="0" x2="220" y2="68" />
+                      <line x1="260" y1="0" x2="260" y2="68" />
+                      <line x1="300" y1="0" x2="300" y2="68" />
+                    </g>
+
+                    <!-- Texto -->
+                    <text x="160" y="40" font-size="22" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber1 }} {{ formData.shippingline1 || '20FT' }}
+                    </text>
+                  </g>
+
+                  <!-- CONTENEDOR B -->
+                  <g transform="translate(420,10)">
+                    <rect x="5" y="68" width="310" height="8" fill="#000" opacity="0.15" />
+
+                    <rect width="320" height="68" rx="4" [attr.fill]="formData.colorContainer1b || '#3d7dd8'"
+                      stroke="#222" stroke-width="3" />
+
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="20" y1="0" x2="20" y2="68" />
+                      <line x1="60" y1="0" x2="60" y2="68" />
+                      <line x1="100" y1="0" x2="100" y2="68" />
+                      <line x1="140" y1="0" x2="140" y2="68" />
+                      <line x1="180" y1="0" x2="180" y2="68" />
+                      <line x1="220" y1="0" x2="220" y2="68" />
+                      <line x1="260" y1="0" x2="260" y2="68" />
+                      <line x1="300" y1="0" x2="300" y2="68" />
+                    </g>
+
+                    <text x="160" y="40" font-size="22" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber1b }} {{ formData.shippingline1b || '20FT' }}
+                    </text>
+                  </g>
+
+                </ng-container>
+
+
+                <!-- ================= 40 PIES (UNO SOLO) ================= -->
+                <ng-container *ngIf="formData.containerType1 === '40 DC' || formData.containerType1 === '40 HC'">
+
+                  <g transform="translate(80,10)">
+                    <rect x="5" y="68" width="630" height="8" fill="#000" opacity="0.15" />
+
+                    <rect width="640" height="68" rx="4" [attr.fill]="formData.colorContainer1 || '#4caf50'"
+                      stroke="#222" stroke-width="3" />
+
+                    <!-- Líneas estructurales -->
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="40" y1="0" x2="40" y2="68" />
+                      <line x1="80" y1="0" x2="80" y2="68" />
+                      <line x1="120" y1="0" x2="120" y2="68" />
+                      <line x1="160" y1="0" x2="160" y2="68" />
+                      <line x1="200" y1="0" x2="200" y2="68" />
+                      <line x1="240" y1="0" x2="240" y2="68" />
+                      <line x1="280" y1="0" x2="280" y2="68" />
+                      <line x1="320" y1="0" x2="320" y2="68" />
+                      <line x1="360" y1="0" x2="360" y2="68" />
+                      <line x1="400" y1="0" x2="400" y2="68" />
+                      <line x1="440" y1="0" x2="440" y2="68" />
+                      <line x1="480" y1="0" x2="480" y2="68" />
+                      <line x1="520" y1="0" x2="520" y2="68" />
+                      <line x1="560" y1="0" x2="560" y2="68" />
+                      <line x1="600" y1="0" x2="600" y2="68" />
+                    </g>
+
+                    <text x="320" y="42" font-size="28" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber1 }} {{ formData.shippingline1 || '40FT' }}
+                    </text>
+                  </g>
+
+                </ng-container>
+
+
+                <!-- ================= PLACEHOLDER ================= -->
+                <ng-container *ngIf="!formData.containerType1">
+                  <text x="400" y="70" font-size="28" fill="#666" text-anchor="middle">
+                    Selecciona tipo de contenedor
+                  </text>
+                </ng-container>
+
+              </g>
+            </svg>
+          </g>
+
+          <g *ngIf="formData.isFull && equiposSeleccionados.dolly" transform="translate(600, 50)">
+            <svg width="400" height="300" viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+
+
+
+              <!-- Estructura principal -->
+              <rect x="120" y="130" width="500" height="40" fill="#8d8d8d" />
+
+              <!-- Parte trasera -->
+              <rect x="600" y="110" width="60" height="80" fill="#6f6f6f" />
+
+              <!-- Plataforma superior -->
+              <rect x="380" y="110" width="160" height="20" fill="#5c5c5c" />
+
+              <!-- Barra frontal larga -->
+              <rect x="40" y="145" width="80" height="10" fill="#777" />
+
+              <!-- Conector frontal -->
+              <rect x="20" y="140" width="20" height="20" fill="#555" />
+
+              <!-- Suspensión eje único -->
+              <rect x="430" y="160" width="140" height="20" fill="#444" />
+
+              <!-- LLANTAS (solo 2) -->
+              <!-- Llanta izquierda -->
+              <circle cx="470" cy="200" r="45" fill="black" />
+              <circle cx="470" cy="200" r="28" fill="#d9d9d9" />
+              <circle cx="470" cy="200" r="10" fill="#888" />
+
+              <!-- Llanta derecha -->
+              <circle cx="550" cy="200" r="45" fill="black" />
+              <circle cx="550" cy="200" r="28" fill="#d9d9d9" />
+              <circle cx="550" cy="200" r="10" fill="#888" />
+
+              <!-- Detalles estructurales -->
+              <line x1="120" y1="150" x2="620" y2="150" stroke="#555" stroke-width="2" />
+              <line x1="120" y1="165" x2="620" y2="165" stroke="#555" stroke-width="2" />
+
+            </svg>
+          </g>
+          <g *ngIf="formData.isFull && equiposSeleccionados.chasisSecundario" transform="translate(880, 100)">
+            <svg width="400" height="300" viewBox="0 0 900 400">
+              <!-- Chasis base fijo (el que me pasaste, sin cambios) -->
+              <g id="chasis-fijo">
+                <!-- Viga principal (I-beam) -->
+                <rect x="30" y="95" width="750" height="10" rx="2" fill="url(#sg1)" stroke="#999" stroke-width="0.5" />
+                <rect x="30" y="125" width="750" height="10" rx="2" fill="url(#sg1)" stroke="#999" stroke-width="0.5" />
+                <rect x="30" y="105" width="750" height="20" rx="1" fill="url(#sg2)" stroke="#777" stroke-width="0.5" />
+
+                <!-- Plataforma superior -->
+                <rect x="20" y="78" width="780" height="18" rx="3" fill="#6a6a6a" stroke="#888" stroke-width="0.8" />
+                <line x1="20" y1="87" x2="800" y2="87" stroke="#7a7a7a" stroke-width="0.3" />
+
+                <!-- Travesaños verticales -->
+                <g stroke="#666" stroke-width="1.2" fill="#555">
+                  <rect x="80" y="96" width="4" height="38" rx="1" />
+                  <rect x="160" y="96" width="4" height="38" rx="1" />
+                  <rect x="240" y="96" width="4" height="38" rx="1" />
+                  <rect x="320" y="96" width="4" height="38" rx="1" />
+                  <rect x="400" y="96" width="4" height="38" rx="1" />
+                  <rect x="480" y="96" width="4" height="38" rx="1" />
+                  <rect x="560" y="96" width="4" height="38" rx="1" />
+                  <rect x="640" y="96" width="4" height="38" rx="1" />
+                  <rect x="720" y="96" width="4" height="38" rx="1" />
+                </g>
+
+                <!-- King pin -->
+                <rect x="95" y="134" width="14" height="22" rx="2" fill="#888" stroke="#aaa" stroke-width="0.8" />
+                <rect x="99" y="154" width="6" height="10" rx="1" fill="#aaa" />
+
+                <!-- Pata de apoyo (landing gear) -->
+                <rect x="145" y="134" width="8" height="60" rx="2" fill="#777" stroke="#999" stroke-width="0.7" />
+                <rect x="139" y="190" width="20" height="6" rx="2" fill="#666" stroke="#888" stroke-width="0.5" />
+                <rect x="143" y="196" width="4" height="20" rx="1" fill="#888" />
+                <rect x="157" y="196" width="4" height="20" rx="1" fill="#888" />
+                <rect x="137" y="214" width="12" height="4" rx="1" fill="#999" />
+                <rect x="153" y="214" width="12" height="4" rx="1" fill="#999" />
+
+                <!-- Suspensión trasera (tandem) -->
+                <g>
+                  <rect x="580" y="134" width="180" height="6" rx="2" fill="#666" stroke="#888" stroke-width="0.6" />
+                  <path d="M590,140 Q630,155 670,140" fill="none" stroke="#999" stroke-width="2.5"
+                    stroke-linecap="round" />
+                  <path d="M700,140 Q740,155 780,140" fill="none" stroke="#999" stroke-width="2.5"
+                    stroke-linecap="round" />
+                  <rect x="620" y="140" width="5" height="28" rx="1.5" fill="#777" />
+                  <rect x="740" y="140" width="5" height="28" rx="1.5" fill="#777" />
+                </g>
+
+                <!-- Ejes -->
+                <rect x="615" y="168" width="30" height="5" rx="2" fill="#555" stroke="#777" stroke-width="0.5" />
+                <rect x="725" y="168" width="30" height="5" rx="2" fill="#555" stroke="#777" stroke-width="0.5" />
+
+                <!-- Neumáticos + Rines -->
+                <circle cx="620" cy="200" r="45" fill="black" />
+                <circle cx="620" cy="200" r="28" fill="#d9d9d9" />
+                <circle cx="620" cy="200" r="10" fill="#888" />
+                <!-- Neumáticos + Rines (eje 2) -->
+                <circle cx="740" cy="200" r="45" fill="black" />
+                <circle cx="740" cy="200" r="28" fill="#d9d9d9" />
+                <circle cx="740" cy="200" r="10" fill="#888" />
+                <!-- Guardafango, luces, defensa, etc. -->
+                <!-- (todo lo que ya tenías se mantiene aquí) -->
+              </g>
+
+              <!-- Contenedor(es) dinámico(s) – se dibujan según el tipo -->
+              <g id="contenedores">
+
+                <!-- ================= 20 PIES (DOS CONTENEDORES) ================= -->
+                <ng-container *ngIf="formData.containerType2 === '20 DC' || formData.containerType2 === '20 HC'">
+
+                  <!-- CONTENEDOR A -->
+                  <g transform="translate(80,10)">
+                    <!-- Sombra -->
+                    <rect x="5" y="68" width="310" height="8" fill="#000" opacity="0.15" />
+
+                    <!-- Cuerpo -->
+                    <rect width="320" height="68" rx="4" [attr.fill]="formData.colorContainer2 || '#d64545'"
+                      stroke="#222" stroke-width="3" />
+
+                    <!-- Marcos verticales -->
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="20" y1="0" x2="20" y2="68" />
+                      <line x1="60" y1="0" x2="60" y2="68" />
+                      <line x1="100" y1="0" x2="100" y2="68" />
+                      <line x1="140" y1="0" x2="140" y2="68" />
+                      <line x1="180" y1="0" x2="180" y2="68" />
+                      <line x1="220" y1="0" x2="220" y2="68" />
+                      <line x1="260" y1="0" x2="260" y2="68" />
+                      <line x1="300" y1="0" x2="300" y2="68" />
+                    </g>
+
+                    <!-- Texto -->
+                    <text x="160" y="40" font-size="22" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber2 }} {{ formData.shippingline2 || '20FT' }}
+                    </text>
+                  </g>
+
+                  <!-- CONTENEDOR B -->
+                  <g transform="translate(420,10)">
+                    <rect x="5" y="68" width="310" height="8" fill="#000" opacity="0.15" />
+
+                    <rect width="320" height="68" rx="4" [attr.fill]="formData.colorContainer2b || '#3d7dd8'"
+                      stroke="#222" stroke-width="3" />
+
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="20" y1="0" x2="20" y2="68" />
+                      <line x1="60" y1="0" x2="60" y2="68" />
+                      <line x1="100" y1="0" x2="100" y2="68" />
+                      <line x1="140" y1="0" x2="140" y2="68" />
+                      <line x1="180" y1="0" x2="180" y2="68" />
+                      <line x1="220" y1="0" x2="220" y2="68" />
+                      <line x1="260" y1="0" x2="260" y2="68" />
+                      <line x1="300" y1="0" x2="300" y2="68" />
+                    </g>
+
+                    <text x="160" y="40" font-size="22" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber2b }} {{ formData.shippingline2b || '20FT' }}
+                    </text>
+                  </g>
+
+                </ng-container>
+
+
+                <!-- ================= 40 PIES (UNO SOLO) ================= -->
+                <ng-container *ngIf="formData.containerType2 === '40 DC' || formData.containerType2 === '40 HC'">
+
+                  <g transform="translate(80,10)">
+                    <rect x="5" y="68" width="630" height="8" fill="#000" opacity="0.15" />
+
+                    <rect width="640" height="68" rx="4" [attr.fill]="formData.colorContainer2 || '#4caf50'"
+                      stroke="#222" stroke-width="3" />
+
+                    <!-- Líneas estructurales -->
+                    <g stroke="#222" stroke-width="2">
+                      <line x1="40" y1="0" x2="40" y2="68" />
+                      <line x1="80" y1="0" x2="80" y2="68" />
+                      <line x1="120" y1="0" x2="120" y2="68" />
+                      <line x1="160" y1="0" x2="160" y2="68" />
+                      <line x1="200" y1="0" x2="200" y2="68" />
+                      <line x1="240" y1="0" x2="240" y2="68" />
+                      <line x1="280" y1="0" x2="280" y2="68" />
+                      <line x1="320" y1="0" x2="320" y2="68" />
+                      <line x1="360" y1="0" x2="360" y2="68" />
+                      <line x1="400" y1="0" x2="400" y2="68" />
+                      <line x1="440" y1="0" x2="440" y2="68" />
+                      <line x1="480" y1="0" x2="480" y2="68" />
+                      <line x1="520" y1="0" x2="520" y2="68" />
+                      <line x1="560" y1="0" x2="560" y2="68" />
+                      <line x1="600" y1="0" x2="600" y2="68" />
+                    </g>
+
+                    <text x="320" y="42" font-size="28" fill="#fff" text-anchor="middle" font-weight="bold">
+                      {{ formData.containerNumber2 }} {{ formData.shippingline2 || '40FT' }}
+                    </text>
+                  </g>
+
+                </ng-container>
+
+
+                <!-- ================= PLACEHOLDER ================= -->
+                <ng-container *ngIf="!formData.containerType2">
+                  <text x="400" y="70" font-size="28" fill="#666" text-anchor="middle">
+                    Selecciona tipo de contenedor
+                  </text>
+                </ng-container>
+              </g>
+            </svg>
+          </g>
+
+        </svg>
+        <!-- Mensaje cuando no hay nada seleccionado -->
+        <div *ngIf="!hayEquiposSeleccionados()" class="no-equipo">
+          Selecciona al menos un equipo para visualizarlo
+        </div>
+      </div>
+      <div class="color-picker-wrapper">
+        <label>Color del Tracto:</label>
+        <input type="color" [(ngModel)]="formData.tractoColor" value="#0000ff" class="color-picker-full"
+          [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label>Color del Contenedor 1:</label>
+        <input type="color" [(ngModel)]="formData.colorContainer1" value="#0000ff" class="color-picker-full"
+          [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label *ngIf="formData.containerType1 === '20 DC'">Color del Contenedor 1 B:</label>
+        <input *ngIf="formData.containerType1 === '20 DC'" type="color" [(ngModel)]="formData.colorContainer1b"
+          value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label *ngIf="formData.isFull">Color del Contenedor 2:</label>
+        <input *ngIf="formData.isFull" type="color" [(ngModel)]="formData.colorContainer2" value="#0000ff"
+          class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label *ngIf="formData.containerType2 === '20 DC'">Color del Contenedor 2 B:</label>
+        <input *ngIf="formData.containerType2 === '20 DC'" type="color" [(ngModel)]="formData.colorContainer2b"
+          value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+      </div>
+    </div>
+
+  </div>
+</div>
+<h3>
+  <span class="material-icons">assignment</span>
+  Detalle del Contenedor y Carga
+</h3>
+
+<h3>
+  Contenedor 1
+</h3>
+<div class="form-grid">
+  <div class="form-group">
+    <label>Estado Carga</label>
+    <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
+      <option value="patio_externo">En Patio Externo</option>
+    </select>
+  </div>
+  <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+    <label>Motivo de Contenedor en patio externo</label>
+    <input type="text" [(ngModel)]="formData.outdoorPatioReason"
+      placeholder="Ej: Espera de documentación / Problema aduanal">
+  </div>
+  <div class="form-group">
+    <label>Sello 1</label>
+    <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+      (input)="onlyNumbers($event)" pattern="[0-9]*">
+  </div>
+  <div class="form-group">
+    <label>Sello 2</label>
+    <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+      (input)="onlyNumbers($event)" pattern="[0-9]*">
+  </div>
+  <div class="form-group">
+    <label>Tipo de Contenedor</label>
+    <select [(ngModel)]="formData.containerType1" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let t of formData.options.containerTypes">{{t.name}}</option>
+      <!-- Agrega más si necesitas -->
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Número Contenedor</label>
+    <input type="text" [(ngModel)]="formData.containerNumber1" placeholder="Num. Contenedor"
+      (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+  </div>
+  <div class="form-group">
+    <label>Linea Naviera</label>
+    <input type="text" [(ngModel)]="formData.shippingline1" placeholder="Linea Naviera">
+  </div>
+  <div class="form-group">
+    <label>Tamaño</label>
+    <input type="text" [(ngModel)]="formData.size1" placeholder="Tamaño">
+  </div>
+  <div class="form-group">
+    <label>Peso (Kg)</label>
+    <input type="text" [(ngModel)]="formData.weight1" placeholder="Peso">
+  </div>
+  <div class="form-group">
+    <label>Embalaje</label>
+    <input type="text" [(ngModel)]="formData.packaging1" placeholder="Embalaje">
+  </div>
+  <div class="form-group">
+    <label>Pedimento - Cliente</label>
+    <input type="text" [(ngModel)]="formData.pedimentoCliente1" placeholder="Pedimento - Cliente">
+  </div>
+  <div class="form-group">
+    <label>Pedimento - Numero</label>
+    <input type="text" [(ngModel)]="formData.pedimentoNumber1" placeholder="Pedimento - Numero"
+      (blur)="validatePedimento($event)" maxlength="15">
+  </div>
+  <div class="form-group">
+    <label>Fracción Arancelaria</label>
+    <input type="text" [(ngModel)]="formData.tariffClassification1" placeholder="Fracción Arancelaria">
+  </div>
+  <div class="form-group">
+    <label>IMO</label>
+    <select [(ngModel)]="formData.imo1">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let imo of formData.options.imoClasses" [value]="imo.value">
+        {{ imo.name }}: {{ imo.desc}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Fecha de Vacío</label>
+    <input type="datetime-local" [(ngModel)]="formData.emptyDate">
+  </div>
+</div>
+<div *ngIf="formData.containerType1 === '20'">
+  <h3>Contenedor 1 B</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Número Contenedor</label>
+      <input type="text" [(ngModel)]="formData.containerNumber1b" placeholder="Num. Contenedor"
+        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+    </div>
+    <div class="form-group">
+      <label>Linea Naviera</label>
+      <input type="text" [(ngModel)]="formData.shippingline1b" placeholder="Linea Naviera">
+    </div>
+    <div class="form-group">
+      <label>Tamaño</label>
+      <input type="text" [(ngModel)]="formData.size1b" placeholder="Tamaño">
+    </div>
+    <div class="form-group">
+      <label>Peso (Kg)</label>
+      <input type="text" [(ngModel)]="formData.weight1b" placeholder="Peso">
+    </div>
+    <div class="form-group">
+      <label>Embalaje</label>
+      <input type="text" [(ngModel)]="formData.packaging1b" placeholder="Embalaje">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Cliente</label>
+      <input type="text" [(ngModel)]="formData.pedimentoCliente1b" placeholder="Pedimento - Cliente">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Numero</label>
+      <input type="text" [(ngModel)]="formData.pedimentoNumber1b" placeholder="Pedimento - Numero"
+        (blur)="validatePedimento($event)" maxlength="15">
+    </div>
+    <div class="form-group">
+      <label>Fracción Arancelaria</label>
+      <input type="text" [(ngModel)]="formData.tariffClassification1b" placeholder="Fracción Arancelaria">
+    </div>
+    <div class="form-group">
+      <label>IMO</label>
+      <select [(ngModel)]="formData.imo1b">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let imo of formData.options.imoClasses" [value]="imo.value">
+          {{ imo.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+</div>
+
+<!-- Solo mostrar este bloque si es Full -->
+<div *ngIf="formData.isFull">
+  <h3>Contenedor 2</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Tipo de Contenedor</label>
+      <select [(ngModel)]="formData.containerType2" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let t of formData.options.containerTypes">{{t.name}}</option>
+        <!-- Agrega más si necesitas -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Número Contenedor</label>
+      <input type="text" [(ngModel)]="formData.containerNumber2" placeholder="Num. Contenedor"
+        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+    </div>
+    <div class="form-group">
+      <label>Linea Naviera</label>
+      <input type="text" [(ngModel)]="formData.shippingline2" placeholder="Linea Naviera">
+    </div>
+    <div class="form-group">
+      <label>Tamaño</label>
+      <input type="text" [(ngModel)]="formData.size2" placeholder="Tamaño">
+    </div>
+    <div class="form-group">
+      <label>Peso (Kg)</label>
+      <input type="text" [(ngModel)]="formData.weight2" placeholder="Peso">
+    </div>
+    <div class="form-group">
+      <label>Embalaje</label>
+      <input type="text" [(ngModel)]="formData.packaging2" placeholder="Embalaje">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Cliente</label>
+      <input type="text" [(ngModel)]="formData.pedimentoCliente2" placeholder="Pedimento - Cliente">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Numero</label>
+      <input type="text" [(ngModel)]="formData.pedimentoNumber2" placeholder="Pedimento - Numero"
+        (blur)="validatePedimento($event)" maxlength="15">
+    </div>
+    <div class="form-group">
+      <label>Fracción Arancelaria</label>
+      <input type="text" [(ngModel)]="formData.tariffClassification2" placeholder="Fracción Arancelaria">
+    </div>
+    <div class="form-group">
+      <label>IMO</label>
+      <select [(ngModel)]="formData.imo2">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let imo of formData.options.imoClasses" [value]="imo.value">
+          {{ imo.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+<div *ngIf="formData.containerType2 === '20 DC'">
+  <h3>Contenedor 2 B</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Número Contenedor</label>
+      <input type="text" [(ngModel)]="formData.containerNumber2b" placeholder="Num. Contenedor"
+        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+    </div>
+    <div class="form-group">
+      <label>Linea Naviera</label>
+      <input type="text" [(ngModel)]="formData.shippingline2b" placeholder="Linea Naviera">
+    </div>
+    <div class="form-group">
+      <label>Tamaño</label>
+      <input type="text" [(ngModel)]="formData.size2b" placeholder="Tamaño">
+    </div>
+    <div class="form-group">
+      <label>Peso (Kg)</label>
+      <input type="text" [(ngModel)]="formData.weight2b" placeholder="Peso">
+    </div>
+    <div class="form-group">
+      <label>Embalaje</label>
+      <input type="text" [(ngModel)]="formData.packaging2b" placeholder="Embalaje">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Cliente</label>
+      <input type="text" [(ngModel)]="formData.pedimentoCliente2b" placeholder="Pedimento - Cliente">
+    </div>
+    <div class="form-group">
+      <label>Pedimento - Numero</label>
+      <input type="text" [(ngModel)]="formData.pedimentoNumber2b" placeholder="Pedimento - Numero"
+        (blur)="validatePedimento($event)" maxlength="15">
+    </div>
+    <div class="form-group">
+      <label>Fracción Arancelaria</label>
+      <input type="text" [(ngModel)]="formData.tariffClassification2b" placeholder="Fracción Arancelaria">
+    </div>
+    <div class="form-group">
+      <label>IMO</label>
+      <select [(ngModel)]="formData.imo2b">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let imo of formData.options.imoClasses" [value]="imo.value">
+          {{ imo.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+<div *ngIf="formData.isSocio">
+  <h3>Socio</h3>
+  <div class="form-grid">
+
+    <div class="form-group">
+      <label>Placa</label>
+      <input type="text" [(ngModel)]="formData.placa" placeholder="Placa">
+    </div>
+    <div class="form-group">
+      <label>No. Económico</label>
+      <input type="text" [(ngModel)]="formData.noEconomico" placeholder="No. Económico">
+    </div>
+  </div>
+</div>
