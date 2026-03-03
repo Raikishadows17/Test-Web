@@ -63,8 +63,12 @@ export class Equipment implements OnInit {
     this.router.navigate(['/dashboard/equipment/new']);
   }
 
+  editEquipment(id: number) {
+    this.router.navigate(['/dashboard/equipment/edit', id]);
+  }
+
   toggleDetail(index: number) {
-  this.expandedIndex = this.expandedIndex === index ? null : index;
+    this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
   extractFilterOptions() {
