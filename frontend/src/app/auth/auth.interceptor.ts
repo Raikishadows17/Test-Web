@@ -7,7 +7,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
 
    let headers: any = {
-    TenantId: 'Valmarq'
+    TenantId: 'Valmarq',
+    'X-API-KEY': '93c0f156-0173-449f-a290-d17a458918a6'
   };
 
   if (token) {

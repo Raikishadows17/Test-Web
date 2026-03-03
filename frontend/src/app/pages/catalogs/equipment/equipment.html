@@ -1,62 +1,150 @@
 <div class="catalog-container">
   <header class="catalog-header">
     <h1 class="title">Equipos</h1>
-
     <div class="search-actions">
       <button class="btn-primary" (click)="newEquipment()">Nuevo Equipo</button>
     </div>
   </header>
+
   <div class="search-box">
-    <input type="text" placeholder="Buscar por Clave de Inventario o Placas" [(ngModel)]="searchTerm"
-      (input)="searchEquipment()">
+    <input type="text" placeholder="Buscar por Clave de Inventario o Placas"
+      [(ngModel)]="searchTerm" (input)="searchEquipment()">
   </div>
-  <!-- Loading -->
+
+<div class="filters-box">
+  <select [(ngModel)]="filterForaneo" (change)="applyFilters()">
+    <option value="">Todos (Foráneo)</option>
+    <option value="si">Foráneo</option>
+    <option value="no">Local</option>
+  </select>
+
+  <select [(ngModel)]="filterEquipType" (change)="applyFilters()">
+    <option value="">Todos (Tipo Equipo)</option>
+    <option *ngFor="let type of equipmentTypes" [value]="type">{{ type }}</option>
+  </select>
+
+  <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+    <option value="">Todos (Estatus)</option>
+    <option *ngFor="let status of equipmentStatuses" [value]="status">{{ status }}</option>
+  </select>
+
+  <select [(ngModel)]="filterTerminal" (change)="applyFilters()">
+    <option value="">Todas (Terminal)</option>
+    <option *ngFor="let terminal of terminals" [value]="terminal">{{ terminal }}</option>
+  </select>
+</div>
+
   <div *ngIf="loading" class="loading-msg">Cargando Equipos...</div>
+  <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
 
-
-  <!-- Error -->
-  <div *ngIf="errorMessage" class="error-msg">
-    {{ errorMessage }}
-  </div>
-
-  <!-- Lista de clientes -->
   <div *ngIf="!loading && !errorMessage" class="table-wrapper">
-
     <table class="catalog-table">
       <thead>
         <tr>
-          <th>Clave de Inventario</th>
-          <th>Foraneo</th>
-          <th>Equipo Completo</th>
-          <th>Numero de Placas</th>
-          <th>Año de Vigencia</th>
-          <th>Capacidad de diesel</th>
-          <th>Fecha de Validación</th>
-          <th>Ruta al documento de factura</th>
-          <th>Ruta al documento verificación fisica</th>
+          <th></th>
+          <th>Clave Inventario</th>
+          <th>Tipo de Equipo</th>
+          <th>Placas</th>
+          <th>Foráneo</th>
+          <th>Terminal</th>
+          <th>Estatus</th>
           <th>Acciones</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let c of filteredEquipments">
-          <td>{{ c.numero_Economico }}</td>
-          <td>{{ c.foreign }}</td>
-          <td>{{ c.full }}</td>
-          <td>{{ c.plates }}</td>
-          <td>{{ c.plates_validation_Year }}</td>
-          <td>{{ c.diesel_Capacity }}</td>
-          <td>{{ c.physycal_check_Validation_Date }}</td>
-          <td>{{ c.invoice_Document_Path }}</td>
-          <td>{{ c.physycal_check_Document_Path }}</td>
-          <td>
-            <button class="btn-secondary" >Editar</button>
-            <button class="btn-danger">Eliminar</button>
-          </td>
-        </tr>
+        <ng-container *ngFor="let c of paginatedEquipments; let i = index">
+          <tr (click)="toggleDetail(i)" class="clickable-row">
+            <td>
+              <span class="expand-icon">{{ expandedIndex === i ? '▼' : '▶' }}</span>
+            </td>
+            <td>{{ c.economicNumber }}</td>
+            <td>{{ c.equipmentType?.name }}</td>
+            <td>{{ c.plates }}</td>
+            <td>{{ c.tripType?.id === 2 ? 'Sí' : 'No' }}</td>
+            <td>{{ c.terminal?.nameTerminal }}</td>
+            <td>{{ c.equipmentStatus?.name }}</td>
+            <td>
+              <button class="btn-secondary" (click)="$event.stopPropagation()">Editar</button>
+              <button class="btn-danger" (click)="$event.stopPropagation()">Eliminar</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="expandedIndex === i" class="detail-row">
+            <td [attr.colspan]="8">
+              <div class="detail-container">
+                <div class="detail-section">
+                  <h4>Información General</h4>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <span class="label">Número Económico:</span>
+                      <span>{{ c.economicNumber }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Tipo de Equipo:</span>
+                      <span>{{ c.equipmentType?.name }} - {{ c.equipmentType?.descr }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Terminal:</span>
+                      <span>{{ c.terminal?.nameTerminal }} ({{ c.terminal?.terminalCode }})</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Tipo de Viaje:</span>
+                      <span>{{ c.tripType?.name }} - {{ c.tripType?.desc }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Unidad Etiquetada:</span>
+                      <span>{{ c.labeledUnit ? 'Sí' : 'No' }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Disponible Socios:</span>
+                      <span [class]="c.availablePartners ? 'badge-yes' : 'badge-no'">
+                        {{ c.availablePartners ? 'Sí' : 'No' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section">
+                  <h4>Placas</h4>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <span class="label">Número de Placas:</span>
+                      <span>{{ c.plates ?? 'Sin asignar' }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section">
+                  <h4>Estatus del Equipo</h4>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <span class="label">Estatus:</span>
+                      <span>{{ c.equipmentStatus?.name }}</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Descripción:</span>
+                      <span>{{ c.equipmentStatus?.descr }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
-
+    <div class="pagination">
+      <span class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize > filteredEquipments.length ? filteredEquipments.length : currentPage * pageSize }} de {{ filteredEquipments.length }}
+      </span>
+      <div class="page-buttons">
+        <button (click)="goToPage(1)" [disabled]="currentPage === 1">«</button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+        <span class="current-page">{{ currentPage }} / {{ totalPages }}</span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">»</button>
+      </div>
+    </div>
   </div>
-
 </div>

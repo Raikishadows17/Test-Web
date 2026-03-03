@@ -75,9 +75,7 @@
           <th>Programada</th>
           <th>Cita Carga</th>
           <th>Cita Descarga</th>
-          <th>Acciones</th>
-          <th>Demoras</th>
-          <th>Incidencias</th>
+          <th>Eventos</th>
         </tr>
       </thead>
       <tbody>
@@ -100,16 +98,10 @@
           <td>{{ solicitud.citaCarga | date:'dd/MM/yyyy HH:mm' }}</td>
           <td>{{ solicitud.citaDescarga | date:'dd/MM/yyyy HH:mm' }}</td>
           <td>
-            <button class="btn-secondary" (click)="editService(solicitud)">Editar</button>
-            <button class="btn-danger" (click)="deleteService(solicitud)">Eliminar</button>
+            <div class="button-row">
+              <button class="btn-primary" (click)="abrirModalAcciones(solicitud)">Insertar Eventos</button>
+            </div>
           </td>
-          <td>
-            <button class="btn-primary">Insertar Demoras</button>
-          </td>
-          <td>
-            <button class="btn-primary">Insertar Incidencias</button>
-          </td>
-        </tr>
         <tr *ngIf="filteredSolicitudes.length === 0">
           <td colspan="14" class="no-data">
             No se encontraron solicitudes con los filtros aplicados
@@ -117,5 +109,125 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+<!-- Modal de Acciones -->
+<div *ngIf="showAccionesModal" class="modal-overlay">
+  <div class="modal-content" [ngClass]="{'modal-small': !accionSeleccionada, 'modal-large': accionSeleccionada}">
+    <!-- Botón cerrar (X) -->
+    <button class="modal-close" (click)="cerrarModal()">×</button>
+
+    <h2 class="modal-title">Eventos</h2>
+
+    <!-- Select de acciones -->
+    <div class="form-group">
+      <label>Seleccionar evento</label>
+      <select [(ngModel)]="accionSeleccionada" (ngModelChange)="onAccionChange()">
+        <option value="">Seleccionar...</option>
+        <option value="editar">Editar Solicitud</option>
+        <option value="demora">Insertar Demora</option>
+        <option value="gastos">Insertar Gastos</option>
+        <option value="vacio">Retorno de Vacio</option>
+        <!-- Gastos Monto - Evidencia, Retorno de Vacio Cambio de Ruta, informacion-->
+      </select>
+    </div>
+
+    <!-- Contenido dinámico según la acción -->
+    <div class="accion-content" *ngIf="accionSeleccionada">
+
+      <!-- Editar Solicitud -->
+      <ng-container *ngIf="accionSeleccionada === 'editar'">
+        <p>
+          <button class="btn-primary" (click)="editService(solicitudSeleccionada)">Editar</button>
+        </p>
+      </ng-container>
+
+      <!-- Insertar Demora -->
+      <ng-container *ngIf="accionSeleccionada === 'demora'">
+        <div class="form-group">
+          <label>Motivo de la demora</label>
+          <textarea [(ngModel)]="demoraData.motivo" rows="3"
+            placeholder="Ej: Tráfico, falla mecánica, espera en aduana..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Minutos de demora</label>
+          <input type="number" [(ngModel)]="demoraData.minutos" min="1" placeholder="Minutos" />
+        </div>
+        <div class="form-group">
+          <label>Fecha/Hora de inicio de demora</label>
+          <input type="datetime-local" [(ngModel)]="demoraData.inicio" />
+        </div>
+        <p>
+          <button class="btn-primary" (click)="guardarDemora()">Registrar Demora</button>
+        </p>
+      </ng-container>
+      <ng-container *ngIf="accionSeleccionada === 'gastos'">
+        <div class="form-group">
+          <label>Concepto de gasto</label>
+          <select [(ngModel)]="gastoData.concepto">
+            <option value="">Seleccionar...</option>
+            <option value="Disel">Disel</option>
+            <option value="Casetas">Casetas (Tag)</option>
+            <option value="Maniobras">Maniobras</option>
+            <option value="Talachas">Talachas</option>
+            <option value="Estadia">Estadia</option>
+            <option value="Comidas">Comidas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Monto del gasto</label>
+          <input type="number" [(ngModel)]="gastoData.monto" min="0" placeholder="Monto en MXN" />
+        </div>
+        <div class="form-group">
+          <label>Forma de Pago</label>
+          <select [(ngModel)]="gastoData.formaPago">
+            <option value="">Seleccionar...</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="Tarjeta">Tag</option>
+            <option value="vale">Vale</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Evidencia del gasto</label>
+          <input type="file" />
+        </div>
+
+        <div class="form-group">
+          <label>Fecha/Hora del gasto</label>
+          <input type="datetime-local" [(ngModel)]="gastoData.fecha" />
+        </div>
+        <p>
+          <button class="btn-primary">Registrar Gasto</button>
+        </p>
+
+      </ng-container>
+      <ng-container *ngIf="accionSeleccionada === 'vacio'">
+        <div class="form-group">
+          <label>Nuevo Origen</label>
+          <input type="text" [(ngModel)]="editData.nuevoOrigen" placeholder="Ciudad o lugar" />
+        </div>
+        <div class="form-group">
+          <label>Nuevo Destino</label>
+          <input type="text" [(ngModel)]="editData.nuevoDestino" placeholder="Ciudad o lugar" />
+        </div>
+        <div class="form-group">
+          <label>Km Estimados</label>
+          <input type="number" [(ngModel)]="editData.kmEstimados" min="0" placeholder="Kilómetros estimados" />
+        </div>
+        <div class="form-group">
+          <label>Tiempo Estimado (horas)</label>
+          <input type="number" [(ngModel)]="editData.tiempoEstimado" min="0" placeholder="Horas estimadas" />
+        </div>
+        <div class="form-group">
+          <label>Fecha/Hora de nuevo viaje</label>
+          <input type="datetime-local" [(ngModel)]="editData.nuevaFecha" />
+        </div>
+        <p>
+          <button class="btn-primary">Registrar Retorno de Vacio</button>
+        </p>
+
+      </ng-container>
+    </div>
   </div>
 </div>

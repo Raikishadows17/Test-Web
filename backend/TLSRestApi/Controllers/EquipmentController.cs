@@ -7,6 +7,7 @@ namespace TLSRestApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EquipmentController : BaseApiController
     {
         private readonly IEquipmentService _equipmentService;
@@ -17,18 +18,10 @@ namespace TLSRestApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetEquipment()
         {
-            try
-            {
-                var equipmentList = await _equipmentService.GetAllEquipmentAsync();
-                return Ok(equipmentList);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var equipmentList = await _equipmentService.GetAllAsync();
+            return Ok(equipmentList);
         }
     }
 }

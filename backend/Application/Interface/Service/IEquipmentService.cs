@@ -1,12 +1,10 @@
-﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Application.DTOs;
+using Application.Interface.Service.Common;
 
 namespace Application.Interface.Service
 {
-    public interface IEquipmentService
+    public interface IEquipmentService : IService<EquipmentDTO>
     {
-        Task<IEnumerable<Equipment>> GetAllEquipmentAsync();
+        
     }
 }

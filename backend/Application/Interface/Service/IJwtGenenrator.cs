@@ -1,10 +1,11 @@
-﻿using Application.DTOs.Auth;
+﻿using Application.DTOs;
+using Application.DTOs.Auth;
 using Domain.Entities;
 
 namespace Application.Interface.Service
 {
     public interface IJwtGenenrator
     {
-        TokenResult GenerateToken(User user, string tenantId);
+        TokenResultDTO GenerateToken(UserDTO user, string tenantId);
     }
 }

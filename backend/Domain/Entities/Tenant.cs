@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
     public class Tenant
-    {
-        public string TenantId { get; set; } = string.Empty;
+    {    
+        public int TenantId { get; set; }
         public string TenantName { get; set; } = string.Empty;
-        public string DatabaseConnectionString { get; set; } = string.Empty;
-        public string StorageConnectionString { get; set; } = string.Empty;
-        public string StorageContainerName { get; set; } = string.Empty;
-        public bool Active { get; set; } = true;
-        public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+        public string TenantKeyName { get; set; } = string.Empty;
+        public string? DatabaseConnectionString { get; set; }
+        public bool Active { get; set; }
     }
 }

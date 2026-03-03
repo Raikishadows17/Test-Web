@@ -7,6 +7,7 @@ import { ServicesOrdenEvidenceView } from "../../views/services-orden-evidence-v
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicesOrdenOperationalMonitoringView } from "../../views/services-orden-operational-monitoring-view/services-orden-operational-monitoring-view";
 import { ServicesOrdenIncidentsDiscountsView } from "../../views/services-orden-incidents-discounts-view/services-orden-incidents-discounts-view";
+import { ServicesOrdenServices } from '../../services/servicesorden.service';
 
 @Component({
   selector: 'app-service-orders-form',
@@ -18,8 +19,13 @@ export class ServiceOrdersForm {
   activeTab = 1;
   isEditMode = false;
   folio: string | null = null;
+  isSubmitting = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private servicesOrdenServices: ServicesOrdenServices) { }
+
+
 
   // Datos del formulario (puedes separarlos por tab si quieres)
   formData = {
@@ -55,14 +61,15 @@ export class ServiceOrdersForm {
     noSolicitarEquipo: false,
 
     tractor: '',
-    tractoColor: '#ffffff',
     chasisMain: '',
     containerNumber1: '',
     dolly: '',
     containerNumber2: '',
-    chasisPrincipalColor: '#ffffff',
-    dollyColor: '#ffffff',
-    chasisSecundarioColor: '#ffffff',
+    tractoColor: '#ffffff',
+    colorContainer1: '#ffffff',
+    colorContainer1b: '#ffffff',
+    colorContainer2: '#ffffff',
+    colorContainer2b: '#ffffff',
     chasisSecundario: '',
 
 
@@ -84,6 +91,25 @@ export class ServiceOrdersForm {
     tariffClassification2: '',
     imo1: '',
     imo2: '',
+
+    containerNumber1b: '',
+    containerNumber2b: '',
+    shippingline1b: '',
+    shippingline2b: '',
+    size1b: '',
+    size2b: '',
+    weight1b: '',
+    weight2b: '',
+    packaging1b: '',
+    packaging2b: '',
+    pedimentoCliente1b: '',
+    pedimentoCliente2b: '',
+    pedimentoNumber1b: '',
+    pedimentoNumber2b: '',
+    tariffClassification1b: '',
+    tariffClassification2b: '',
+    imo1b: '',
+    imo2b: '',
 
     placa: '',
     noEconomico: '',
@@ -188,42 +214,25 @@ export class ServiceOrdersForm {
 
     options: {
       clients: ['Walmart', 'Samsung Lázaro Cárdenas', 'Proveedor Automotriz'],
-      tripTypes: ['Local', 'Foráneo'],
-      statuses: ['Programado', 'En Tránsito', 'En Planta', 'Finalizado', 'Facturado'],
-      operators: ['Juan Pérez (Disponible)', 'Luis López (Disponible)', 'Ana Gómez'],
+      tripTypes: [],
+       statuses: ['Programado', 'En Tránsito', 'En Planta', 'Finalizado', 'Facturado'],
+      operators: [],
       tractors: ['ECO-55 (Kenworth)', 'ECO-90 (Freightliner)'],
       trailers: ['Chasis 40ft - CH01', 'Plana - PL02'],
-      containerTypes: ['20 DC', '40 DC', '40 HC', 'Refrigerado'],
+      containerTypes: [],
       loadStatuses: ['Lleno', 'Vacío'],
       expenseConcepts: ['Diesel', 'Casetas (Tag)', 'Maniobra', 'Talachas', 'Estadia', 'Comidas'],
       paymentMethods: ['Efectivo', 'Transferencia', 'Tag', 'Vale'],
       placesOrigin: ['Puerto Lázaro Cárdenas', 'Patio Regulador', 'Bodega Cliente'],
       placesDestination: ['CDMX Pantaco', 'Planta Querétaro', 'Guadalajara'],
-      dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
+       dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
       currencies: ['USD', 'MXN', 'EUR'],
-      imoClasses: [
-        { value: '1', label: 'Clase 1 - Explosivos' },
-        { value: '2.1', label: 'Clase 2.1 - Gases inflamables' },
-        { value: '2.2', label: 'Clase 2.2 - Gases no inflamables, no tóxicos' },
-        { value: '2.3', label: 'Clase 2.3 - Gases tóxicos' },
-        { value: '3', label: 'Clase 3 - Líquidos inflamables' },
-        { value: '4.1', label: 'Clase 4.1 - Sólidos inflamables' },
-        { value: '4.2', label: 'Clase 4.2 - Sustancias que pueden inflamarse espontáneamente' },
-        { value: '4.3', label: 'Clase 4.3 - Sustancias que al contacto con agua emiten gases inflamables' },
-        { value: '5.1', label: 'Clase 5.1 - Sustancias oxidantes' },
-        { value: '5.2', label: 'Clase 5.2 - Peróxidos orgánicos' },
-        { value: '6.1', label: 'Clase 6.1 - Sustancias tóxicas' },
-        { value: '6.2', label: 'Clase 6.2 - Material infeccioso' },
-        { value: '7', label: 'Clase 7 - Material radiactivo' },
-        { value: '8', label: 'Clase 8 - Sustancias corrosivas' },
-        { value: '9', label: 'Clase 9 - Sustancias peligrosas varias' },
-        { value: 'NA', label: 'No aplica / Mercancía general' }
-      ]
-    },
-
+      imoClasses: [],
+    }
 
   };
   ngOnInit() {
+    this.loadOptions();
     // Detectar si viene folio en la URL (modo edición)
     this.folio = this.route.snapshot.paramMap.get('folio');
     this.isEditMode = !!this.folio;
@@ -247,7 +256,28 @@ export class ServiceOrdersForm {
   }
   onSubmit() {
     console.log('Orden de servicio enviada:', this.formData);
-    alert('Orden guardada con éxito');
+
+    if (this.isSubmitting) return; // evita doble envío
+    this.isSubmitting = true;
+
+    const operacion = this.isEditMode ? 'actualizar' : 'crear';
+    const mensajeExito = `Orden ${this.isEditMode ? 'actualizada' : 'creada'} con éxito`;
+
+    const observable = this.isEditMode
+      ? this.servicesOrdenServices.updateOrdenService(this.folio!, this.formData)
+      : this.servicesOrdenServices.newOrdenService(this.formData);
+
+    observable.subscribe({
+      next: (response) => {
+        alert(mensajeExito);
+        this.router.navigate(['/dashboard/service-request']);
+      },
+      error: (error) => {
+        console.error(`Error al ${operacion} orden:`, error);
+        alert(`Error al ${operacion} orden. Por favor, intenta de nuevo.`);
+      },
+      complete: () => this.isSubmitting = false
+    });
   }
 
   get pageTitle(): string {
@@ -255,5 +285,28 @@ export class ServiceOrdersForm {
   }
   get submitButtonText(): string {
     return this.isEditMode ? 'Actualizar Orden de Servicio' : 'Crear Orden de Servicio';
+  }
+  private loadOptions() {
+    this.servicesOrdenServices.getServiceCreationOptions().subscribe({
+
+      next: (data) => {
+        const backendData = data.Data;
+
+        // Mapear correctamente lo que viene del backend
+        this.formData.options = {
+          ...this.formData.options,
+          operators: backendData.operator || [],
+          tripTypes: backendData.tripType || [],
+          imoClasses: backendData.imo || [],
+          containerTypes: backendData.containerType || []
+
+        };
+
+        console.log('Operadores cargados:', this.formData.options.operators);
+      },
+      error: (error) => {
+        console.error('Error al cargar opciones:', error);
+      }
+    })
   }
 }

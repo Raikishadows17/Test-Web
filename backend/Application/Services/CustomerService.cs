@@ -1,20 +1,20 @@
-﻿using Application.Interface.Repository;
+﻿using Application.DTOs;
+using Application.Interface.Repository.Entities;
 using Application.Interface.Service;
+using Application.Services.Common;
 using Domain.Entities;
+using MapsterMapper;
 
 namespace Application.Services
 {
-    public class CustomerService : ICustomerService
+    public class Customerervice : BaseService<CustomerDTO>, ICustomerervice
     {
-        private readonly IRepository<Customer> _customerRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerService(IRepository<Customer> customerRepository)
+        public Customerervice(ICustomerRepository customerRepository) : base(customerRepository)
         {
             _customerRepository = customerRepository;
         }
-        public async Task<IEnumerable<Customer>> GetAllCustomerAsync()
-        {
-            return await _customerRepository.GetAllAsync();
-        }
+
     }
 }

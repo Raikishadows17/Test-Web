@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" height="200" width="400">
+  
+  <g id="chasis">
+    
+    <rect stroke-width="4" stroke="#222" fill="#444" height="60" width="360" y="120" x="20"></rect>
+    
+    <circle stroke-width="3" stroke="#111" fill="#222" r="30" cy="170" cx="80"></circle>
+    <circle stroke-width="3" stroke="#111" fill="#222" r="30" cy="170" cx="320"></circle>
+    <circle stroke-width="3" stroke="#111" fill="#222" r="30" cy="170" cx="140"></circle>
+    <circle stroke-width="3" stroke="#111" fill="#222" r="30" cy="170" cx="260"></circle>
+  </g>
+
+  
+  <g id="contenedor">
+    <rect stroke-width="4" stroke="#333" fill="#cccccc" rx="8" height="100" width="320" y="20" x="40"></rect>
+    
+    <line stroke-width="4" stroke="#333" y2="120" x2="200" y1="20" x1="200"></line>
+    
+    <text font-weight="bold" text-anchor="middle" fill="#ffffff" font-size="28" y="70" x="200">
+      CONTAINER
+    </text>
+  </g>
+</svg>

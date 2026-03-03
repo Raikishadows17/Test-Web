@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ServicesOrdenGeneralRutaView {
   @Input() formData: any;
+  @Input() options: any;
 
   addDestino() {
     this.formData.destinations.push({ place: '', address: '', mapUrl: '' });

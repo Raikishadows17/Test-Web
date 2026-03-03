@@ -4,6 +4,7 @@ import { Sidebar } from "../../components/sidebar/sidebar";
 import { RouterOutlet } from "@angular/router";
 import { AuthService } from "../../auth/auth.service";
 import { LoadingService } from "../../components/loading/loading.service";
+import { DashboardStrategic } from "../catalogs/dashboard-strategic/dashboard-strategic";
 
 @Component({
   selector: 'app-home-page',
@@ -14,9 +15,9 @@ import { LoadingService } from "../../components/loading/loading.service";
 })
 
 export class HomePage {
-  fecha: Date =  new Date();
-  usertype = "Admin";
-  name = "Fernando Gonzalez";
+  fecha: Date = new Date();
+  usertype = "";
+  name = "";
 
 
   containerTheme = false;
@@ -33,7 +34,7 @@ export class HomePage {
     console.log("TOKEN AL ABRIR HOME:", token);
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     // Simulación de carga
     this.loading.show();
     setTimeout(() => {
@@ -46,6 +47,19 @@ export class HomePage {
     this.intervalId = setInterval(() => {
       this.fecha = new Date();
     }, 1000);
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+
+      // Nombre completo del empleado
+      this.name = user.employeeName || '';
+
+      // Rol (viene en arreglo)
+      this.usertype = user.rol && user.rol.length > 0
+        ? user.rol[0].name
+        : 'Sin Rol';
+    }
   }
   ngOnDestroy(): void {
     // Limpiar el interval para evitar memory leaks

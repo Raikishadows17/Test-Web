@@ -14,7 +14,7 @@ import { LoadingService } from "../../components/loading/loading.service";
   styleUrls: ['./login.css'],
 })
 export class LoginPage{
-  email: string = '' ;
+  UserName: string = '' ;
   password: string = "" ;
   errorMessage: string = '';
   tenantId: string = '';
@@ -29,11 +29,11 @@ export class LoginPage{
   async handleLogin() {
     this.errorMessage = '';
 
-    const ok =  await this.auth.login(this.email, this.password);
+    const ok =  await this.auth.login(this.UserName, this.password);
     if (ok) {
       this.router.navigate(['/dashboard']);
     } else {
-      this.errorMessage = 'Correo o contraseña incorrectos.';
+      this.errorMessage = 'Usuario o contraseña incorrectos.';
     }
   }
 }
