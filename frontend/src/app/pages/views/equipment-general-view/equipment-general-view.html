@@ -11,9 +11,9 @@
     </div>
     <div class="form-group">
       <label>Tipo de Unidad</label>
-      <select [(ngModel)]="formData.unitType">
-        <option value="">-- Seleccionar --</option>
-        <option *ngFor="let type of formData.options.unitTypes" [value]="type">{{ type }}</option>
+      <select [(ngModel)]="formData.equipTypeId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let type of formData.options.unitType" [ngValue]="type.id">{{ type.name }}</option>
       </select>
     </div>
     <div class="form-group">
@@ -25,10 +25,10 @@
       <input type="text" [(ngModel)]="formData.serialNumber" placeholder="Ej: 3JJL402M4RE000953">
     </div>
     <div class="form-group">
-      <label>Año</label>
-      <select [(ngModel)]="formData.year">
-        <option value="">-- Seleccionar --</option>
-        <option *ngFor="let y of formData.options.years" [value]="y">{{ y }}</option>
+      <label>Año / Modelo</label>
+      <select [(ngModel)]="formData.modelYear">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let y of formData.options.years" [ngValue]="y">{{ y }}</option>
       </select>
     </div>
     <div class="form-group">
@@ -37,7 +37,7 @@
     </div>
     <div class="form-group full-width">
       <label>Descripción Detallada</label>
-      <textarea [(ngModel)]="formData.descriptionFull" rows="4"></textarea>
+      <textarea [(ngModel)]="formData.description" rows="4"></textarea>
     </div>
   </div>
 
@@ -49,16 +49,13 @@
   <div class="config-operativa">
     <div class="checkbox-row">
       <label>
-        <input type="checkbox" [(ngModel)]="formData.habilitadoForaneo">
+        <input type="checkbox" [checked]="formData.tripTypeId === 2"
+          (change)="formData.tripTypeId = $event.target.checked ? 2 : 1">
         Habilitado Foráneo (OK-NW)
       </label>
       <label>
         <input type="checkbox" [(ngModel)]="formData.availablePartners">
         ¿Es de Socio/Proveedor?
-      </label>
-      <label>
-        <input type="checkbox" [(ngModel)]="formData.equipoVendidoSinPapeles">
-        Equipo Vendido / Sin Papeles (NW)
       </label>
     </div>
 
@@ -70,13 +67,6 @@
       <div class="form-group">
         <label>Capacidad Arrastre (Tons)</label>
         <input type="number" [(ngModel)]="formData.towingCapacity">
-      </div>
-      <div class="form-group">
-        <label>Ejes</label>
-        <select [(ngModel)]="formData.ejes">
-          <option value="">-- Seleccionar --</option>
-          <option *ngFor="let eje of formData.options.axles" [value]="eje">{{ eje }}</option>
-        </select>
       </div>
     </div>
 

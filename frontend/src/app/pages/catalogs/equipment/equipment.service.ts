@@ -22,10 +22,23 @@ export class EquipmentService {
     );
   }
 
+  getEquipmentType(){
+    return firstValueFrom(
+      this.http.get(`${environment.apiURL}/api/EquipmentType`)
+    );
+  }
+
   updateEquipment(formData: FormData) {
     return firstValueFrom(
       this.http.put(`${environment.apiURL}/api/Equipment`, formData)
     );
   }
+
+  createEquipment(formData: FormData) {
+    return firstValueFrom(
+      this.http.post(`${environment.apiURL}/api/Equipment`, formData)
+    );
+  }
+  
 
 }

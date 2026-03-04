@@ -119,167 +119,165 @@
     </div>
   </div>
 
-<h3>
-  <span class="material-icons">check_box</span>
-  CUMPLIMIENTO Y VIGENCIAS
-</h3>
+  <h3>
+    <span class="material-icons">check_box</span>
+    CUMPLIMIENTO Y VIGENCIAS
+  </h3>
 
-<div class="cumplimiento-grid">
-  <!-- Estudio Mecánico -->
-  <div class="cumplimiento-card">
-    <div class="checkbox-top-right">
-      <label>
-        <input type="checkbox" 
-          [checked]="formData.docs.estudioMecanico.state === 'Activo'"
-          (change)="formData.docs.estudioMecanico.state = $event.target.checked ? 'Activo' : null">
-        Activo
-      </label>
-    </div>
-    <h4>Estudio Mecánico</h4>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Fecha Estudio</label>
-        <input type="date" [(ngModel)]="formData.docs.estudioMecanico.dateApply">
+  <div class="cumplimiento-grid">
+    <!-- Estudio Mecánico -->
+    <div class="cumplimiento-card">
+      <div class="checkbox-top-right">
+        <label>
+          <input type="checkbox" [checked]="formData.docs.estudioMecanico.state === 'Activo'"
+            (change)="formData.docs.estudioMecanico.state = $event.target.checked ? 'Activo' : null">
+          Activo
+        </label>
       </div>
-      <div class="form-group">
-        <label>Vigencia</label>
-        <input type="date" [(ngModel)]="formData.docs.estudioMecanico.dateExp">
+      <h4>Estudio Mecánico</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha Estudio</label>
+          <input type="date" [(ngModel)]="formData.docs.estudioMecanico.dateApply">
+        </div>
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.docs.estudioMecanico.dateExp">
+        </div>
+      </div>
+      <div class="file-upload-group" style="margin-top: 12px;">
+        <input type="file" id="estudioMecanico" (change)="onDocFileSelected($event, 'estudioMecanico')"
+          accept=".pdf,image/*" style="display: none;" />
+        <label for="estudioMecanico" class="btn-secondary small">
+          <span class="material-icons">upload_file</span>
+          {{ formData.docs.estudioMecanico.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
+        </label>
+        <span class="file-name" *ngIf="formData.docs.estudioMecanico.fileName">{{ formData.docs.estudioMecanico.fileName
+          }}</span>
+        <a *ngIf="formData.docs.estudioMecanico.urlDocumentPath && !formData.docs.estudioMecanico.fileName"
+          [href]="getImageUrl(formData.docs.estudioMecanico.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver
+        </a>
       </div>
     </div>
-    <div class="file-upload-group" style="margin-top: 12px;">
-      <input type="file" id="estudioMecanico" (change)="onDocFileSelected($event, 'estudioMecanico')"
-        accept=".pdf,image/*" style="display: none;" />
-      <label for="estudioMecanico" class="btn-secondary small">
-        <span class="material-icons">upload_file</span>
-        {{ formData.docs.estudioMecanico.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
-      </label>
-      <span class="file-name" *ngIf="formData.docs.estudioMecanico.fileName">{{ formData.docs.estudioMecanico.fileName
-        }}</span>
-      <a *ngIf="formData.docs.estudioMecanico.urlDocumentPath && !formData.docs.estudioMecanico.fileName"
-        [href]="getImageUrl(formData.docs.estudioMecanico.urlDocumentPath)" target="_blank" class="file-link">
-        <span class="material-icons">visibility</span> Ver
-      </a>
+
+    <!-- Hologramas Cumplimiento -->
+    <div class="cumplimiento-card">
+      <div class="checkbox-top-right">
+        <label>
+          <input type="checkbox" [checked]="formData.docs.hologramas.state === 'Activo'"
+            (change)="formData.docs.hologramas.state = $event.target.checked ? 'Activo' : null">
+          Activo
+        </label>
+      </div>
+      <h4>Hologramas Cumplimiento</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha Emisión</label>
+          <input type="date" [(ngModel)]="formData.docs.hologramas.dateApply">
+        </div>
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.docs.hologramas.dateExp">
+        </div>
+      </div>
+      <div class="file-upload-group" style="margin-top: 12px;">
+        <input type="file" id="hologramas" (change)="onDocFileSelected($event, 'hologramas')" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="hologramas" class="btn-secondary small">
+          <span class="material-icons">upload_file</span>
+          {{ formData.docs.hologramas.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
+        </label>
+        <span class="file-name" *ngIf="formData.docs.hologramas.fileName">{{ formData.docs.hologramas.fileName }}</span>
+        <a *ngIf="formData.docs.hologramas.urlDocumentPath && !formData.docs.hologramas.fileName"
+          [href]="getImageUrl(formData.docs.hologramas.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver
+        </a>
+      </div>
+    </div>
+
+    <!-- Verificación Vehicular -->
+    <div class="cumplimiento-card">
+      <h4>Verificación Vehicular</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.docs.verificacion.dateExp">
+        </div>
+      </div>
+      <div class="file-upload-group" style="margin-top: 12px;">
+        <input type="file" id="verificacion" (change)="onDocFileSelected($event, 'verificacion')" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="verificacion" class="btn-secondary small">
+          <span class="material-icons">upload_file</span>
+          {{ formData.docs.verificacion.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
+        </label>
+        <span class="file-name" *ngIf="formData.docs.verificacion.fileName">{{ formData.docs.verificacion.fileName
+          }}</span>
+        <a *ngIf="formData.docs.verificacion.urlDocumentPath && !formData.docs.verificacion.fileName"
+          [href]="getImageUrl(formData.docs.verificacion.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver
+        </a>
+      </div>
+    </div>
+
+    <!-- Póliza de Seguro -->
+    <div class="cumplimiento-card">
+      <h4>Póliza de Seguro</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Vencimiento</label>
+          <input type="date" [(ngModel)]="formData.docs.polizaSeguro.dateExp">
+        </div>
+        <div class="form-group">
+          <label>Folio Póliza</label>
+          <input type="text" [(ngModel)]="formData.docs.polizaSeguro.comments" placeholder="Folio póliza">
+        </div>
+      </div>
+      <div class="file-upload-group" style="margin-top: 12px;">
+        <input type="file" id="polizaSeguro" (change)="onDocFileSelected($event, 'polizaSeguro')" accept=".pdf,image/*"
+          style="display: none;" />
+        <label for="polizaSeguro" class="btn-secondary small">
+          <span class="material-icons">upload_file</span>
+          {{ formData.docs.polizaSeguro.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
+        </label>
+        <span class="file-name" *ngIf="formData.docs.polizaSeguro.fileName">{{ formData.docs.polizaSeguro.fileName
+          }}</span>
+        <a *ngIf="formData.docs.polizaSeguro.urlDocumentPath && !formData.docs.polizaSeguro.fileName"
+          [href]="getImageUrl(formData.docs.polizaSeguro.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver
+        </a>
+      </div>
+    </div>
+
+    <!-- Documento Seguro -->
+    <div class="cumplimiento-card">
+      <h4>Documento Seguro</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" [(ngModel)]="formData.docs.documentoSeguro.dateApply">
+        </div>
+        <div class="form-group">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.docs.documentoSeguro.dateExp">
+        </div>
+      </div>
+      <div class="file-upload-group" style="margin-top: 12px;">
+        <input type="file" id="documentoSeguro" (change)="onDocFileSelected($event, 'documentoSeguro')"
+          accept=".pdf,image/*" style="display: none;" />
+        <label for="documentoSeguro" class="btn-secondary small">
+          <span class="material-icons">upload_file</span>
+          {{ formData.docs.documentoSeguro.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
+        </label>
+        <span class="file-name" *ngIf="formData.docs.documentoSeguro.fileName">{{ formData.docs.documentoSeguro.fileName
+          }}</span>
+        <a *ngIf="formData.docs.documentoSeguro.urlDocumentPath && !formData.docs.documentoSeguro.fileName"
+          [href]="getImageUrl(formData.docs.documentoSeguro.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver
+        </a>
+      </div>
     </div>
   </div>
-
-  <!-- Hologramas Cumplimiento -->
-  <div class="cumplimiento-card">
-    <div class="checkbox-top-right">
-      <label>
-        <input type="checkbox" 
-          [checked]="formData.docs.hologramas.state === 'Activo'"
-          (change)="formData.docs.hologramas.state = $event.target.checked ? 'Activo' : null">
-        Activo
-      </label>
-    </div>
-    <h4>Hologramas Cumplimiento</h4>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Fecha Emisión</label>
-        <input type="date" [(ngModel)]="formData.docs.hologramas.dateApply">
-      </div>
-      <div class="form-group">
-        <label>Vigencia</label>
-        <input type="date" [(ngModel)]="formData.docs.hologramas.dateExp">
-      </div>
-    </div>
-    <div class="file-upload-group" style="margin-top: 12px;">
-      <input type="file" id="hologramas" (change)="onDocFileSelected($event, 'hologramas')" accept=".pdf,image/*"
-        style="display: none;" />
-      <label for="hologramas" class="btn-secondary small">
-        <span class="material-icons">upload_file</span>
-        {{ formData.docs.hologramas.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
-      </label>
-      <span class="file-name" *ngIf="formData.docs.hologramas.fileName">{{ formData.docs.hologramas.fileName }}</span>
-      <a *ngIf="formData.docs.hologramas.urlDocumentPath && !formData.docs.hologramas.fileName"
-        [href]="getImageUrl(formData.docs.hologramas.urlDocumentPath)" target="_blank" class="file-link">
-        <span class="material-icons">visibility</span> Ver
-      </a>
-    </div>
-  </div>
-
-  <!-- Verificación Vehicular -->
-  <div class="cumplimiento-card">
-    <h4>Verificación Vehicular</h4>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Vigencia</label>
-        <input type="date" [(ngModel)]="formData.docs.verificacion.dateExp">
-      </div>
-    </div>
-    <div class="file-upload-group" style="margin-top: 12px;">
-      <input type="file" id="verificacion" (change)="onDocFileSelected($event, 'verificacion')" accept=".pdf,image/*"
-        style="display: none;" />
-      <label for="verificacion" class="btn-secondary small">
-        <span class="material-icons">upload_file</span>
-        {{ formData.docs.verificacion.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
-      </label>
-      <span class="file-name" *ngIf="formData.docs.verificacion.fileName">{{ formData.docs.verificacion.fileName
-        }}</span>
-      <a *ngIf="formData.docs.verificacion.urlDocumentPath && !formData.docs.verificacion.fileName"
-        [href]="getImageUrl(formData.docs.verificacion.urlDocumentPath)" target="_blank" class="file-link">
-        <span class="material-icons">visibility</span> Ver
-      </a>
-    </div>
-  </div>
-
-  <!-- Póliza de Seguro -->
-  <div class="cumplimiento-card">
-    <h4>Póliza de Seguro</h4>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Vencimiento</label>
-        <input type="date" [(ngModel)]="formData.docs.polizaSeguro.dateExp">
-      </div>
-      <div class="form-group">
-        <label>Folio Póliza</label>
-        <input type="text" [(ngModel)]="formData.docs.polizaSeguro.comments" placeholder="Folio póliza">
-      </div>
-    </div>
-    <div class="file-upload-group" style="margin-top: 12px;">
-      <input type="file" id="polizaSeguro" (change)="onDocFileSelected($event, 'polizaSeguro')" accept=".pdf,image/*"
-        style="display: none;" />
-      <label for="polizaSeguro" class="btn-secondary small">
-        <span class="material-icons">upload_file</span>
-        {{ formData.docs.polizaSeguro.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
-      </label>
-      <span class="file-name" *ngIf="formData.docs.polizaSeguro.fileName">{{ formData.docs.polizaSeguro.fileName
-        }}</span>
-      <a *ngIf="formData.docs.polizaSeguro.urlDocumentPath && !formData.docs.polizaSeguro.fileName"
-        [href]="getImageUrl(formData.docs.polizaSeguro.urlDocumentPath)" target="_blank" class="file-link">
-        <span class="material-icons">visibility</span> Ver
-      </a>
-    </div>
-  </div>
-
-  <!-- Documento Seguro -->
-  <div class="cumplimiento-card">
-    <h4>Documento Seguro</h4>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Fecha</label>
-        <input type="date" [(ngModel)]="formData.docs.documentoSeguro.dateApply">
-      </div>
-      <div class="form-group">
-        <label>Vigencia</label>
-        <input type="date" [(ngModel)]="formData.docs.documentoSeguro.dateExp">
-      </div>
-    </div>
-    <div class="file-upload-group" style="margin-top: 12px;">
-      <input type="file" id="documentoSeguro" (change)="onDocFileSelected($event, 'documentoSeguro')"
-        accept=".pdf,image/*" style="display: none;" />
-      <label for="documentoSeguro" class="btn-secondary small">
-        <span class="material-icons">upload_file</span>
-        {{ formData.docs.documentoSeguro.urlDocumentPath ? 'Cambiar' : 'Subir' }} Archivo
-      </label>
-      <span class="file-name" *ngIf="formData.docs.documentoSeguro.fileName">{{ formData.docs.documentoSeguro.fileName
-        }}</span>
-      <a *ngIf="formData.docs.documentoSeguro.urlDocumentPath && !formData.docs.documentoSeguro.fileName"
-        [href]="getImageUrl(formData.docs.documentoSeguro.urlDocumentPath)" target="_blank" class="file-link">
-        <span class="material-icons">visibility</span> Ver
-      </a>
-    </div>
-  </div>
-</div>
 
 </div>
