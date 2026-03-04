@@ -18,7 +18,9 @@ import { Router } from '@angular/router';
 export class EquipmentCatalogForm {
   isEditMode = false;
   equipmentId: number | null = null;
-  constructor(private route: ActivatedRoute,private equipmentService: EquipmentService,private router: Router) { }
+  constructor(private route: ActivatedRoute,private equipmentService: EquipmentService,private router: Router) {  }
+
+  equipmentTypes: any[] = [];
 
   apiURL = environment.apiURL;
 
@@ -42,9 +44,7 @@ export class EquipmentCatalogForm {
     imageURLFront: null,
     imageURLSide: null,
     imageURLBack: null,
-    imageURLUp: null,
-
-    // Campos derivados de objetos anidados (no vienen directo de la API)
+    imageURLUp: null,    
     unitType: '',
     unitTypeDescr: '',
     terminalName: '',
@@ -52,11 +52,10 @@ export class EquipmentCatalogForm {
     statusName: '',
     habilitadoForaneo: false,
 
-    // Campos que aún no existen en la API pero usas en el form
-    year: '',
     fuelType: '',
     ejes: '',
-    descriptionFull: '',
+    description: '',
+    modelYear: null,    
     unidadRotulada: false,
     esSocioProveedor: false,
     equipoVendidoSinPapeles: false,
@@ -91,21 +90,24 @@ export class EquipmentCatalogForm {
     },
 
     options: {
-      unitTypes: ['Tractocamión', 'Chasis', 'Dolly', 'Caja Seca', 'Plataforma'], // se puede obtener
+      unitType: [],
       years: Array.from({ length: 30 }, (_, i) => 2025 - i),
       fuelTypes: ['Diésel', 'Gasolina', 'Gas Natural'], // No se necesita
-      axles: ['2', '3', '4', '5', '6'],
-      positions: ['Patio A', 'Patio B', 'Patio C', 'En ruta'],
+      axles: ['2', '3', '4', '5', '6'],//No se necesita
+      positions: ['Patio A', 'Patio B', 'Patio C', 'En ruta'],//No se necesita
       currentStatus: ['Disponible', 'En servicio', 'En mantenimiento', 'Fuera de servicio'], //NO SE NECESITA, SE CREA COMO DISPONIBLE POR DEFAULT
       typemaintenance: ['Preventivo', 'Correctivo', 'Mayor'] //NO SE NECESITA
     },
   };
   
 
-  ngOnInit() {
+  async ngOnInit() {
     this.equipmentId = Number(this.route.snapshot.paramMap.get('id'));
-    this.isEditMode = !!this.equipmentId;
-    console.log(this.isEditMode);
+    this.isEditMode = !!this.equipmentId;    
+
+    const res: any = await this.equipmentService.getEquipmentType();    
+    this.formData.options.unitType = res.Data ?? res ?? [];
+    
     if (this.isEditMode) {
       this.loadEquipmentData(this.equipmentId!);
     }
@@ -121,12 +123,14 @@ export class EquipmentCatalogForm {
   }
 
   const fd = new FormData();
-  fd.append('EquipmentId', this.formData.equipmentId ?? '');
+  //fd.append('EquipmentId', this.formData.equipmentId ?? '');
   fd.append('EquipTypeId', this.formData.equipTypeId ?? '');
-  fd.append('TerminalId', this.formData.terminalId ?? '');
-  fd.append('TripTypeId', this.formData.tripTypeId ?? '');
+  //fd.append('TerminalId', this.formData.terminalId ?? '');
+  fd.append('TripTypeId', this.formData.tripTypeId === 2 ? '2' : '1');
   fd.append('EconomicNumber', this.formData.economicNumber ?? '');
   fd.append('Plates', this.formData.plates ?? '');
+  fd.append('Description', this.formData.description ?? '');
+  fd.append('ModelYear', this.formData.modelYear ?? '');
   fd.append('PlatesEstate', this.formData.platesEstate ?? '');
   fd.append('DieselCapacity', this.formData.dieselCapacity ?? '');
   fd.append('TowingCapacity', this.formData.towingCapacity ?? '');
@@ -167,18 +171,21 @@ export class EquipmentCatalogForm {
 
   try {
     if (this.isEditMode) {
+      fd.append('EquipmentId', this.formData.equipmentId);
       await this.equipmentService.updateEquipment(fd);
       alert('Equipo actualizado con éxito.');
     } else {
-      console.log('Crear equipo - pendiente');
+      await this.equipmentService.createEquipment(fd);
+      alert('Equipo creado con éxito.');
     }
-
     this.router.navigate(['/dashboard/equipment']);
-
   } catch (err) {
-    console.error('Error al guardar:', err);
+    const error = err as any;
+    console.error('Error al guardar:', error);
+    console.error('Detalle:', error.error);
     alert('Error al guardar el equipo.');
   }
+  
 }
   
   onFileSelected(event: any) {
@@ -215,8 +222,7 @@ export class EquipmentCatalogForm {
   async loadEquipmentData(id: number) {
     try {
       const res: any = await this.equipmentService.getEquipmentById(id);
-      const eq = res.Data ?? res;
-      console.log('Equipo cargado:', eq);
+      const eq = res.Data ?? res;      
 
       Object.assign(this.formData, eq);
 
