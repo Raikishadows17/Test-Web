@@ -22,4 +22,10 @@ export class EquipmentService {
     );
   }
 
+  updateEquipment(formData: FormData) {
+    return firstValueFrom(
+      this.http.put(`${environment.apiURL}/api/Equipment`, formData)
+    );
+  }
+
 }

@@ -49,6 +49,7 @@ export class ServiceOrdersForm {
     requiresOvernight: false,
     destinations: [{ place: '', address: '', mapUrl: '' }],
 
+
     //Tab 2 - Carga y asignación
     operator: '',
     loadStatus: '',
@@ -215,19 +216,27 @@ export class ServiceOrdersForm {
     options: {
       clients: ['Walmart', 'Samsung Lázaro Cárdenas', 'Proveedor Automotriz'],
       tripTypes: [],
-       statuses: ['Programado', 'En Tránsito', 'En Planta', 'Finalizado', 'Facturado'],
+      statuses: ['Programado', 'En Tránsito', 'En Planta', 'Finalizado', 'Facturado'],
       operators: [],
       tractors: ['ECO-55 (Kenworth)', 'ECO-90 (Freightliner)'],
       trailers: ['Chasis 40ft - CH01', 'Plana - PL02'],
       containerTypes: [],
-      loadStatuses: ['Lleno', 'Vacío'],
+      loadStatuses: ['Lleno', 'Vacio'],
       expenseConcepts: ['Diesel', 'Casetas (Tag)', 'Maniobra', 'Talachas', 'Estadia', 'Comidas'],
       paymentMethods: ['Efectivo', 'Transferencia', 'Tag', 'Vale'],
       placesOrigin: ['Puerto Lázaro Cárdenas', 'Patio Regulador', 'Bodega Cliente'],
       placesDestination: ['CDMX Pantaco', 'Planta Querétaro', 'Guadalajara'],
-       dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
+      dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
       currencies: ['USD', 'MXN', 'EUR'],
       imoClasses: [],
+      routes: [
+        { origen: 'CDMX Pantaco', destino: 'Planta Querétaro', urlMapa: 'https://maps.app.goo.gl/ejemplo1' },
+        { origen: 'Lázaro Cárdenas', destino: 'CDMX Pantaco', urlMapa: 'https://maps.app.goo.gl/ejemplo2' },
+        { origen: 'Guadalajara', destino: 'Monterrey', urlMapa: 'https://maps.app.goo.gl/ejemplo3' },
+        { origen: 'Puerto Lázaro Cárdenas', destino: 'Tijuana', urlMapa: 'https://maps.app.goo.gl/ejemplo4' },
+        { origen: 'Manzanillo', destino: 'León Guanajuato', urlMapa: 'https://maps.app.goo.gl/ejemplo5' },
+        { origen: 'Veracruz', destino: 'Puebla', urlMapa: 'https://maps.app.goo.gl/ejemplo6' }
+      ]
     }
 
   };
@@ -302,7 +311,7 @@ export class ServiceOrdersForm {
 
         };
 
-        console.log('Operadores cargados:', this.formData.options.operators);
+        console.log('Operadores cargados:', this.formData.options.containerTypes);
       },
       error: (error) => {
         console.error('Error al cargar opciones:', error);

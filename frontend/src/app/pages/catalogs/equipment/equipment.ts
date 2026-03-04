@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { EquipmentService } from './equipment.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-equipment',
@@ -71,6 +72,11 @@ export class Equipment implements OnInit {
     this.expandedIndex = this.expandedIndex === index ? null : index;
   }
 
+  getFirstImage(c: any): string | null {
+    const img = c.imageURLFront || c.imageURLSide || c.imageURLBack || c.imageURLUp;
+    return img ? `${environment.apiURL}${img}` : null;
+  }
+  
   extractFilterOptions() {
     this.equipmentTypes = [...new Set(
       this.equipments.map(e => e.equipmentType?.name).filter(Boolean)
