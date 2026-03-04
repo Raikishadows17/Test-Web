@@ -7,12 +7,12 @@
   <div class="form-grid">
     <!-- Terminal y Socios -->
     <div class="form-group">
-      <label>Terminal</label>
-      <input type="text" [(ngModel)]="formData.terminal" placeholder="Nombre de la terminal">
+      <label>Terminal Origen</label>
+      <input type="text" [(ngModel)]="formData.terminalOrigen" placeholder="Nombre de la terminal">
     </div>
 
     <div class="form-group">
-      <label>Destino Terminal</label>
+      <label>Terminal Destino</label>
       <input type="text" [(ngModel)]="formData.terminalDestination" placeholder="Destino terminal">
     </div>
 
@@ -30,12 +30,12 @@
     </div>
 
     <div class="form-group">
-      <label>Fecha Vo.Bo. Servicio</label>
+      <label>Autorizacion Comercial</label>
       <input type="datetime-local" [(ngModel)]="formData.approvalDate">
     </div>
 
     <div class="form-group">
-      <label>Fecha Inicio Servicio</label>
+      <label>Fecha Programada del Servicio</label>
       <input type="datetime-local" [(ngModel)]="formData.serviceStartDate">
     </div>
   </div>
@@ -43,7 +43,7 @@
   <!-- Movimientos en Terminal (Retiro) -->
   <h3>
     <span class="material-icons">timeline</span>
-    Movimientos de Retiro en Terminal
+    Terminal Origen
   </h3>
   <div class="form-grid">
     <div class="form-group">
@@ -52,8 +52,8 @@
     </div>
 
     <div class="form-group">
-      <label>Bloque Retiro + Hora</label>
-      <input type="text" [(ngModel)]="formData.withdrawalBlock" placeholder="Bloque + Hora">
+      <label>Hora de Retiro</label>
+      <input type="text" [(ngModel)]="formData.withdrawalBlock" placeholder="Hora">
     </div>
 
     <div class="form-group">
@@ -105,7 +105,7 @@
   <!-- Movimientos de Regreso -->
   <h3>
     <span class="material-icons">calendar_today</span>
-    Movimientos de Regreso en Terminal
+    Terminal Destino
   </h3>
   <div class="form-grid">
     <div class="form-group">
@@ -188,13 +188,12 @@
       <input type="datetime-local" [(ngModel)]="formData.attentionDate">
     </div>
     <div class="form-group">
-      <label>Fecha Lleno/Vacío</label>
-      <input type="datetime-local" [(ngModel)]="formData.fullEmptyDate">
+      <label>Fecha de Prealta</label>
+      <input type="datetime-local" [(ngModel)]="formData.preRegistration">
     </div>
-
-    <div class="form-group">
-      <label>Prealta</label>
-      <input type="text" [(ngModel)]="formData.preRegistration" placeholder="Número o referencia">
+    <div class="form-grouo">
+      <label>Archivo PDF Prelta</label>
+      <button></button>
     </div>
 
     <div class="form-group">

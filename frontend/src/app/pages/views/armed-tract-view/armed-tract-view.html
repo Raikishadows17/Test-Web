@@ -486,14 +486,14 @@
         <label>Color del Contenedor 1:</label>
         <input type="color" [(ngModel)]="formData.colorContainer1" value="#0000ff" class="color-picker-full"
           [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-        <label *ngIf="formData.containerType1 === '20 DC'">Color del Contenedor 1 B:</label>
-        <input *ngIf="formData.containerType1 === '20 DC'" type="color" [(ngModel)]="formData.colorContainer1b"
+        <label *ngIf="formData.containerType1 === '20'">Color del Contenedor 1 B:</label>
+        <input *ngIf="formData.containerType1 === '20'" type="color" [(ngModel)]="formData.colorContainer1b"
           value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
         <label *ngIf="formData.isFull">Color del Contenedor 2:</label>
         <input *ngIf="formData.isFull" type="color" [(ngModel)]="formData.colorContainer2" value="#0000ff"
           class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-        <label *ngIf="formData.containerType2 === '20 DC'">Color del Contenedor 2 B:</label>
-        <input *ngIf="formData.containerType2 === '20 DC'" type="color" [(ngModel)]="formData.colorContainer2b"
+        <label *ngIf="formData.containerType2 === '20'">Color del Contenedor 2 B:</label>
+        <input *ngIf="formData.containerType2 === '20'" type="color" [(ngModel)]="formData.colorContainer2b"
           value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
       </div>
     </div>
@@ -522,12 +522,12 @@
     <input type="text" [(ngModel)]="formData.outdoorPatioReason"
       placeholder="Ej: Espera de documentación / Problema aduanal">
   </div>
-  <div class="form-group">
+  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
     <label>Sello 1</label>
     <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
       (input)="onlyNumbers($event)" pattern="[0-9]*">
   </div>
-  <div class="form-group">
+  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
     <label>Sello 2</label>
     <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
       (input)="onlyNumbers($event)" pattern="[0-9]*">
@@ -590,6 +590,29 @@
 </div>
 <div *ngIf="formData.containerType1 === '20'">
   <h3>Contenedor 1 B</h3>
+  <div class="form-group">
+    <label>Estado Carga</label>
+    <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
+      <option value="patio_externo">En Patio Externo</option>
+    </select>
+  </div>
+  <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+    <label>Motivo de Contenedor en patio externo</label>
+    <input type="text" [(ngModel)]="formData.outdoorPatioReason"
+      placeholder="Ej: Espera de documentación / Problema aduanal">
+  </div>
+  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <label>Sello 1</label>
+    <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+      (input)="onlyNumbers($event)" pattern="[0-9]*">
+  </div>
+  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <label>Sello 2</label>
+    <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+      (input)="onlyNumbers($event)" pattern="[0-9]*">
+  </div>
   <div class="form-grid">
     <div class="form-group">
       <label>Número Contenedor</label>
@@ -634,6 +657,10 @@
         </option>
       </select>
     </div>
+    <div class="form-group">
+      <label>Fecha de Vacío</label>
+      <input type="datetime-local" [(ngModel)]="formData.emptyDate">
+    </div>
   </div>
 
 </div>
@@ -642,6 +669,29 @@
 <div *ngIf="formData.isFull">
   <h3>Contenedor 2</h3>
   <div class="form-grid">
+    <div class="form-group">
+      <label>Estado Carga</label>
+      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
+        <option value="patio_externo">En Patio Externo</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+      <label>Motivo de Contenedor en patio externo</label>
+      <input type="text" [(ngModel)]="formData.outdoorPatioReason"
+        placeholder="Ej: Espera de documentación / Problema aduanal">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 1</label>
+      <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 2</label>
+      <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
     <div class="form-group">
       <label>Tipo de Contenedor</label>
       <select [(ngModel)]="formData.containerType2" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
@@ -693,11 +743,38 @@
         </option>
       </select>
     </div>
+    <div class="form-group">
+      <label>Fecha de Vacío</label>
+      <input type="datetime-local" [(ngModel)]="formData.emptyDate">
+    </div>
   </div>
 </div>
-<div *ngIf="formData.containerType2 === '20 DC'">
+<div *ngIf="formData.containerType2 === '20'">
   <h3>Contenedor 2 B</h3>
   <div class="form-grid">
+    <div class="form-group">
+      <label>Estado Carga</label>
+      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
+        <option value="patio_externo">En Patio Externo</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+      <label>Motivo de Contenedor en patio externo</label>
+      <input type="text" [(ngModel)]="formData.outdoorPatioReason"
+        placeholder="Ej: Espera de documentación / Problema aduanal">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 1</label>
+      <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 2</label>
+      <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
     <div class="form-group">
       <label>Número Contenedor</label>
       <input type="text" [(ngModel)]="formData.containerNumber2b" placeholder="Num. Contenedor"
@@ -740,6 +817,10 @@
           {{ imo.label }}
         </option>
       </select>
+    </div>
+    <div class="form-group">
+      <label>Fecha de Vacío</label>
+      <input type="datetime-local" [(ngModel)]="formData.emptyDate">
     </div>
   </div>
 </div>

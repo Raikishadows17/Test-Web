@@ -1,44 +1,10 @@
 <div class="form-section">
 
-   <h3>
-    <span class="material-icons">photo_camera</span>
-    FOTO DEL EQUIPO
-  </h3>
-
-
-
   <h3>
     <span class="material-icons">local_shipping</span>
     IDENTIFICACIÓN Y CLASIFICACIÓN
   </h3>
-  <div class="form-grid">
-      <div class="photo-upload-container" style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px;">
-    <div style="width: 160px; height: 120px; border-radius: 8px; overflow: hidden; background-color: #2a2a2a; display: flex; align-items: center; justify-content: center; border: 2px solid #555;">
-      <img *ngIf="formData.imageURL"
-           [src]="formData.imageURL"
-           alt="Foto del equipo"
-           style="width: 100%; height: 100%; object-fit: cover;">
-      <div *ngIf="!formData.imageURL" style="text-align: center; color: #888;">
-        <span class="material-icons" style="font-size: 48px; color: #666;">local_shipping</span>
-        <p style="margin: 4px 0 0; font-size: 12px;">Sin foto</p>
-      </div>
-    </div>
-
-    <label style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background-color: #333; border: 1px solid #555; border-radius: 6px; cursor: pointer; color: #ccc; font-size: 13px; transition: background-color 0.2s;"
-           onmouseover="this.style.backgroundColor='#444'"
-           onmouseout="this.style.backgroundColor='#333'">
-      <span class="material-icons" style="font-size: 18px;">photo_camera</span>
-      Seleccionar Imagen
-      <input type="file"
-             accept="image/*"
-             (change)="onImageSelected($event)"
-             style="display: none;">
-    </label>
-
-    <span *ngIf="formData.imageURL" style="font-size: 11px; color: #888; max-width: 200px; text-align: center; word-break: break-all;">
-      {{ formData.imageURL }}
-    </span>
-  </div>
+  <div class="form-grid">      
     <div class="form-group">
       <label>Núm. Económico *</label>
       <input type="text" [(ngModel)]="formData.economicNumber" placeholder="Ej: ECO-001" required>

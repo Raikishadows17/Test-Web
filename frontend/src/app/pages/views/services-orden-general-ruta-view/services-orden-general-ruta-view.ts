@@ -12,6 +12,15 @@ export class ServicesOrdenGeneralRutaView {
   @Input() formData: any;
   @Input() options: any;
 
+  ngOnInit() {
+    const now = new Date();
+    this.formData.daterequest = this.formatDate(now);
+  }
+  formatDate(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
   addDestino() {
     this.formData.destinations.push({ place: '', address: '', mapUrl: '' });
   }
