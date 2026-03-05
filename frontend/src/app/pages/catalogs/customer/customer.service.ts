@@ -15,4 +15,21 @@ export class CustomerService {
       this.http.get(`${environment.apiURL}/api/Customer`)
     );
   }
+  getCustomerById(id: number) {
+    return firstValueFrom(
+      this.http.get(`${environment.apiURL}/api/Customer/${id}`)
+    );
+  }
+
+  createCustomer(formData: FormData) {
+    return firstValueFrom(
+      this.http.post(`${environment.apiURL}/api/Customer`, formData)
+    );
+  }
+
+  updateCustomer(formData: FormData) {
+    return firstValueFrom(
+      this.http.put(`${environment.apiURL}/api/Customer`, formData)
+    );
+  }
 }

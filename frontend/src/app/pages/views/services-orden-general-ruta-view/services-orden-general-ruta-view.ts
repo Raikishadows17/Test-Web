@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-services-orden-general-ruta-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatAutocompleteModule, MatInputModule ],
   templateUrl: './services-orden-general-ruta-view.html',
   styleUrl: './services-orden-general-ruta-view.css',
 })
 export class ServicesOrdenGeneralRutaView {
   @Input() formData: any;
   @Input() options: any;
+
+   filteredRoutes: { origen: string; destino: string; urlMapa: string }[] = [];
 
   ngOnInit() {
     const now = new Date();
@@ -63,4 +67,20 @@ export class ServicesOrdenGeneralRutaView {
     event.target.value = value;
     this.formData.estimatedTime = value;
   }
+  onSearch(term: string):void {
+    const query = term.toLowerCase();
+    this.filteredRoutes = this.formData.options.routes.filter(
+      (r: any) =>
+        r.origen.toLowerCase().includes(query) ||
+        r.destino.toLowerCase().includes(query)
+    );
+  }
+  selectRoute(route: { origen: string; destino: string; urlMapa: string }): void {
+    this.formData.route.selectedRoute = route;
+  }
+
+  displayRoute(route: any): string {
+    return route ? `${route.origen} → ${route.destino}` : '';
+  }
+
 }

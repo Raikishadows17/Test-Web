@@ -160,7 +160,7 @@ body {
 
 .checkbox-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 32px;
   margin-top: 16px;
 }
@@ -171,6 +171,7 @@ body {
   gap: 8px;
   color: #e0e0e0;
   font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 /* BOTONES SECUNDARIOS (Subir Foto, PDF, Ver, etc.) */

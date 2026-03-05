@@ -6,23 +6,23 @@
   <div class="form-grid">
     <div class="form-group">
       <label>RFC *</label>
-      <input type="text" [(ngModel)]="formData.rfc" placeholder="Ej: AAA010101AAA" required maxlength="13"
+      <input type="text" [(ngModel)]="formData.rfcCompany" placeholder="Ej: AAA010101AAA" required maxlength="13"
         minlength="13" (input)="formatRfc($event)" (keypress)="onlyRfcChars($event)" pattern="[A-Z0-9]{13}"
         (blur)="validateRfc()">
-      <small *ngIf="formData.rfc && formData.rfc.length !== 13" style="color: #ff9800;">
+      <small *ngIf="formData.rfcCompany && formData.rfcCompany.length !== 13" style="color: #ff9800;">
         Deben ser exactamente 13 caracteres (4 letras + 6 números + 3 alfanuméricos)
       </small>
     </div>
 
     <div class="form-group">
       <label>Razón Social *</label>
-      <input type="text" [(ngModel)]="formData.razonSocial" placeholder="Razón Social" required
+      <input type="text" [(ngModel)]="formData.companyName" placeholder="Razón Social" required
         (keypress)="onlyLettersWithSpaces($event)">
     </div>
 
     <div class="form-group">
-      <label>Nombre Comercial (Apodo)</label>
-      <input type="text" [(ngModel)]="formData.nombreComercial" placeholder="Ej: Samsung Lázaro"
+      <label>Nombre Comercial (Apodo) *</label>
+      <input type="text" [(ngModel)]="formData.nickname" placeholder="Ej: Samsung Lázaro"
         (keypress)="onlyLettersWithSpaces($event)">
     </div>
 
@@ -30,7 +30,7 @@
       <label>Industria/Sector</label>
       <select [(ngModel)]="formData.industria">
         <option value="">-- Seleccionar --</option>
-        <option *ngFor="let i of this.formData.industrias">{{ i }}</option>
+        <option *ngFor="let i of formData.options.industrias" [value]="i">{{ i }}</option>
       </select>
     </div>
 
@@ -38,7 +38,7 @@
       <label>Estatus</label>
       <select [(ngModel)]="formData.estatus">
         <option value="">-- Seleccionar --</option>
-        <option *ngFor="let e of this.formData.estatuses">{{ e }}</option>
+        <option *ngFor="let e of formData.options.estatuses" [value]="e">{{ e }}</option>
       </select>
     </div>
   </div>
@@ -52,12 +52,12 @@
       <label>Tipo de Cliente</label>
       <div class="checkbox-row">
         <label>
-          <input type="checkbox" [(ngModel)]="formData.clienteFinal">
-          Cliente Final
+          <input type="checkbox" [(ngModel)]="formData.certificatedCustomer">
+          Cliente Certificado
         </label>
         <label>
-          <input type="checkbox" [(ngModel)]="formData.freightForwarder">
-          Freight Forwarder
+          <input type="checkbox" [(ngModel)]="formData.contractActual">
+          Contrato Actual
         </label>
       </div>
     </div>
@@ -66,7 +66,7 @@
       <label>Ejecutivo de Cuenta</label>
       <select [(ngModel)]="formData.ejecutivoCuenta">
         <option value="">-- Seleccionar --</option>
-        <option *ngFor="let e of this.formData.ejecutivos">{{ e }}</option>
+        <option *ngFor="let e of formData.options.ejecutivos" [value]="e">{{ e }}</option>
       </select>
     </div>
   </div>
@@ -80,7 +80,7 @@
       <label>Términos de Pago</label>
       <select [(ngModel)]="formData.terminosPago">
         <option value="">-- Seleccionar --</option>
-        <option *ngFor="let t of this.formData.terminosPago">{{ t }}</option>
+        <option *ngFor="let t of formData.options.terminosPago" [value]="t">{{ t }}</option>
       </select>
     </div>
 
@@ -90,18 +90,47 @@
     </div>
 
     <div class="form-group">
+      <label>Comentarios</label>
+      <textarea [(ngModel)]="formData.comments" rows="3" placeholder="Notas adicionales del cliente"></textarea>
+    </div>
+
+    <div class="form-group">
       <label>Constancia Fiscal</label>
       <div class="file-upload-group">
         <input type="file" id="constanciaFiscal" (change)="onConstanciaSelected($event)" accept=".pdf"
           style="display: none;" />
         <label for="constanciaFiscal" class="btn-secondary">
           <span class="material-icons">upload_file</span>
-          Subir PDF
+          {{ formData.docs.constanciaFiscal.urlDocumentPath ? 'Cambiar' : 'Subir' }} PDF
         </label>
         <span class="file-name" *ngIf="selectedConstancia">
           {{ selectedConstancia }}
         </span>
+        <a *ngIf="formData.docs.constanciaFiscal.urlDocumentPath && !selectedConstancia"
+          [href]="getDocUrl(formData.docs.constanciaFiscal.urlDocumentPath)" target="_blank" class="file-link">
+          <span class="material-icons">visibility</span> Ver archivo
+        </a>
       </div>
     </div>
+    
+      <div class="form-group">
+        <label>CSR</label>
+        <div class="file-upload-group">
+          <input type="file" id="csrFile" (change)="onCsrSelected($event)" accept=".pdf"
+            style="display: none;" />
+          <label for="csrFile" class="btn-secondary">
+            <span class="material-icons">upload_file</span>
+            Subir PDF
+          </label>
+          <span class="file-name" *ngIf="selectedCsr">
+            {{ selectedCsr }}
+          </span>
+          <a *ngIf="formData.docs.csr.urlDocumentPath && !selectedCsr"
+            [href]="getDocUrl(formData.docs.csr.urlDocumentPath)" target="_blank" class="file-link">
+            <span class="material-icons">visibility</span> Ver archivo
+          </a>
+        </div>
+      </div>
+
   </div>
 </div>

@@ -72,8 +72,8 @@ export class ArmedTractView {
     this.equiposSeleccionados[equipo] = !this.equiposSeleccionados[equipo];
   }
   hayEquiposSeleccionados(): boolean {
-  return Object.values(this.equiposSeleccionados).some(activo => activo);
-}
+    return Object.values(this.equiposSeleccionados).some(activo => activo);
+  }
   getLabelEquipo(equipo: string): string {
     switch (equipo) {
       case 'tracto': return 'Tracto';
@@ -101,7 +101,7 @@ export class ArmedTractView {
       (this.formData as any)[field] = event.target.value;
     }
   }
-   onChange() {
+  onChange() {
     if (this.formData.isFull || this.formData.isSocio) {
       // Por default: activar 2 contenedores y 4 equipos
       this.formData.dolly = '';
@@ -136,5 +136,28 @@ export class ArmedTractView {
       this.formData.chasisSecundario = '';
     }
   }
+  get is20ft1(): boolean {
+    return this.formData.containerType1 === "20'";
+  }
 
+  get is40ft1(): boolean {
+    return this.formData.containerType1 === "40'";
+  }
+
+  get is20ft2(): boolean {
+    return this.formData.containerType2 === "20'";
+  }
+
+  get is40ft2(): boolean {
+    return this.formData.containerType2 === "40'";
+  }
+  onSelectContainer1(): void {
+    const c = this.formData.selectedContainer1;
+    if (c) {
+      this.formData.containerType1 = c.containerType.name;  // "20'" o "40'"
+      this.formData.containerNumber1 = c.containerNumber;
+      this.formData.shippingline1 = c.shippingLineId;
+      this.formData.size1 = c.size;
+    }
+  }
 }
