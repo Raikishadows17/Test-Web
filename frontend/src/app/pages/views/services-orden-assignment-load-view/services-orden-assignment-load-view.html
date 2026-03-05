@@ -5,13 +5,14 @@
   </h3>
   <div class="form-grid">
     <div class="form-group">
-      <label>Operador *</label>
-      <select [(ngModel)]="formData.operator" style="width: 250px;">
-        <option value="">-- Seleccionar --</option>
-        <option *ngFor="let o of formData.options.operators" [value]="o.fullName">
+      <input type="text" placeholder="Buscar Operador ..." [matAutocomplete]="autoOperador"
+        (input)="onSearchOperador($event.target.value)" style="width: 250px;" />
+      <mat-autocomplete #autoOperador [displayWith]="displayOperador"
+        (optionSelected)="selectOperador($event.option.value)">
+        <mat-option *ngFor="let o of filteredOperators" [value]="o">
           {{ o.fullName }}
-        </option>
-      </select>
+        </mat-option>
+      </mat-autocomplete>
     </div>
   </div>
 

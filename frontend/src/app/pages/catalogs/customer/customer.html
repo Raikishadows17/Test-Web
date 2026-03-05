@@ -5,50 +5,168 @@
       <button class="btn-primary" (click)="newClient()">Nuevo Cliente</button>
     </div>
   </header>
+
   <div class="search-box">
-    <input type="text" placeholder="Buscar por Nombre o RFC" [(ngModel)]="searchTerm"
-      (input)="searchCustomers()">
+    <input type="text" placeholder="Buscar por Nombre, RFC o Razón Social"
+      [(ngModel)]="searchTerm" (input)="searchCustomers()">
   </div>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="loading-msg">Cargando clientes...</div>
+  <div class="filters-box">
+    <select [(ngModel)]="filterEstatus" (change)="applyFilters()">
+      <option value="">Todos (Contrato)</option>
+      <option value="con">Con Contrato</option>
+      <option value="sin">Sin Contrato</option>
+    </select>
 
-
-  <!-- Error -->
-  <div *ngIf="errorMessage" class="error-msg">
-    {{ errorMessage }}
+    <select [(ngModel)]="filterExecutive" (change)="applyFilters()">
+      <option value="">Todos (Ejecutivo)</option>
+      <option *ngFor="let exec of executives" [value]="exec">{{ exec }}</option>
+    </select>
   </div>
 
-  <!-- Lista de clientes -->
+  <div *ngIf="loading" class="loading-msg">Cargando Clientes...</div>
+  <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
   <div *ngIf="!loading && !errorMessage" class="table-wrapper">
-
     <table class="catalog-table">
       <thead>
         <tr>
-          <th>Nombre</th>
+          <th></th>
+          <th>Nombre Comercial</th>
           <th>RFC</th>
-          <th>Teléfono</th>
-          <th>Email</th>
-          <th>Dirección</th>
+          <th>Razón Social</th>
+          <th>Contrato</th>
+          <th>Certificado</th>
           <th>Acciones</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let c of filteredCustomers">
-          <td>{{ c.name }}</td>
-          <td>{{ c.rfc }}</td>
-          <td>{{ c.phone }}</td>
-          <td>{{ c.email }}</td>
-          <td>{{ c.address }}</td>
-          <td>
-            <button class="btn-secondary" >Editar</button>
-            <button class="btn-danger">Eliminar</button>
-          </td>
-        </tr>
+        <ng-container *ngFor="let c of paginatedCustomers; let i = index">
+          <tr (click)="toggleDetail(i)" class="clickable-row">
+            <td>
+              <span class="expand-icon">{{ expandedIndex === i ? '▼' : '▶' }}</span>
+            </td>
+            <td>{{ c.nickname }}</td>
+            <td>{{ c.rfcCompany }}</td>
+            <td>{{ c.companyName }}</td>
+            <td>
+              <span [class]="c.contractActual ? 'badge-yes' : 'badge-no'">
+                {{ c.contractActual ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span [class]="c.certificatedCustomer ? 'badge-yes' : 'badge-no'">
+                {{ c.certificatedCustomer ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-secondary" (click)="editCustomer(c.customerId); $event.stopPropagation()">Editar</button>
+              <button class="btn-danger" (click)="$event.stopPropagation()">Eliminar</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="expandedIndex === i" class="detail-row">
+            <td [attr.colspan]="7">
+              <div class="detail-container">
+                <div style="flex: 1;">
+                  <div class="detail-section">
+                    <h4>Información General</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Nombre Comercial:</span>
+                        <span>{{ c.nickname }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Razón Social:</span>
+                        <span>{{ c.companyName ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">RFC:</span>
+                        <span>{{ c.rfcCompany ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Nombre Completo:</span>
+                        <span>{{ c.fullName ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Puesto:</span>
+                        <span>{{ c.custPosition ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Página Web:</span>
+                        <span>
+                          <a *ngIf="c.urlWebPage" [href]="c.urlWebPage" target="_blank" style="color: #f36b21;">
+                            {{ c.urlWebPage }}
+                          </a>
+                          <span *ngIf="!c.urlWebPage">Sin asignar</span>
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Portal Facturación:</span>
+                        <span>
+                          <a *ngIf="c.urlInvoicing" [href]="c.urlInvoicing" target="_blank" style="color: #f36b21;">
+                            {{ c.urlInvoicing }}
+                          </a>
+                          <span *ngIf="!c.urlInvoicing">Sin asignar</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Contratos y Certificaciones</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Contrato Actual:</span>
+                        <span [class]="c.contractActual ? 'badge-yes' : 'badge-no'">
+                          {{ c.contractActual ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Cliente Certificado:</span>
+                        <span [class]="c.certificatedCustomer ? 'badge-yes' : 'badge-no'">
+                          {{ c.certificatedCustomer ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Contrato Base:</span>
+                        <span [class]="c.baseContract ? 'badge-yes' : 'badge-no'">
+                          {{ c.baseContract ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Contrato Personalizado:</span>
+                        <span [class]="c.contractPersonalized ? 'badge-yes' : 'badge-no'">
+                          {{ c.contractPersonalized ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section" *ngIf="c.comments">
+                    <h4>Comentarios</h4>
+                    <p style="color: #ccc;">{{ c.comments }}</p>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
 
+    <div class="pagination">
+      <span class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize > filteredCustomers.length ? filteredCustomers.length : currentPage * pageSize }} de {{ filteredCustomers.length }}
+      </span>
+      <div class="page-buttons">
+        <button (click)="goToPage(1)" [disabled]="currentPage === 1">«</button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+        <span class="current-page">{{ currentPage }} / {{ totalPages }}</span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">»</button>
+      </div>
+    </div>
   </div>
-
 </div>

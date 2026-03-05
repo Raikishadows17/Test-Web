@@ -161,7 +161,7 @@
               <g id="contenedores">
 
                 <!-- ================= 20 PIES (DOS CONTENEDORES) ================= -->
-                <ng-container *ngIf="formData.containerType1 === '20 DC' || formData.containerType1 === '20 HC'">
+                <ng-container *ngIf="is20ft1">
 
                   <!-- CONTENEDOR A -->
                   <g transform="translate(80,10)">
@@ -217,7 +217,7 @@
 
 
                 <!-- ================= 40 PIES (UNO SOLO) ================= -->
-                <ng-container *ngIf="formData.containerType1 === '40 DC' || formData.containerType1 === '40 HC'">
+                <ng-container *ngIf="is40ft1">
 
                   <g transform="translate(80,10)">
                     <rect x="5" y="68" width="630" height="8" fill="#000" opacity="0.15" />
@@ -372,7 +372,7 @@
               <g id="contenedores">
 
                 <!-- ================= 20 PIES (DOS CONTENEDORES) ================= -->
-                <ng-container *ngIf="formData.containerType2 === '20 DC' || formData.containerType2 === '20 HC'">
+                <ng-container *ngIf="is20ft2">
 
                   <!-- CONTENEDOR A -->
                   <g transform="translate(80,10)">
@@ -428,7 +428,7 @@
 
 
                 <!-- ================= 40 PIES (UNO SOLO) ================= -->
-                <ng-container *ngIf="formData.containerType2 === '40 DC' || formData.containerType2 === '40 HC'">
+                <ng-container *ngIf="is40ft2">
 
                   <g transform="translate(80,10)">
                     <rect x="5" y="68" width="630" height="8" fill="#000" opacity="0.15" />
@@ -486,15 +486,15 @@
         <label>Color del Contenedor 1:</label>
         <input type="color" [(ngModel)]="formData.colorContainer1" value="#0000ff" class="color-picker-full"
           [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-        <label *ngIf="formData.containerType1 === '20'">Color del Contenedor 1 B:</label>
-        <input *ngIf="formData.containerType1 === '20'" type="color" [(ngModel)]="formData.colorContainer1b"
-          value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label *ngIf="is20ft1">Color del Contenedor 1 B:</label>
+        <input *ngIf="is20ft1" type="color" [(ngModel)]="formData.colorContainer1b" value="#0000ff"
+          class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
         <label *ngIf="formData.isFull">Color del Contenedor 2:</label>
         <input *ngIf="formData.isFull" type="color" [(ngModel)]="formData.colorContainer2" value="#0000ff"
           class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-        <label *ngIf="formData.containerType2 === '20'">Color del Contenedor 2 B:</label>
-        <input *ngIf="formData.containerType2 === '20'" type="color" [(ngModel)]="formData.colorContainer2b"
-          value="#0000ff" class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+        <label *ngIf="is20ft2">Color del Contenedor 2 B:</label>
+        <input *ngIf="is20ft2" type="color" [(ngModel)]="formData.colorContainer2b" value="#0000ff"
+          class="color-picker-full" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
       </div>
     </div>
 
@@ -541,17 +541,35 @@
     </select>
   </div>
   <div class="form-group">
-    <label>Número Contenedor</label>
-    <input type="text" [(ngModel)]="formData.containerNumber1" placeholder="Num. Contenedor"
-      (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+    <label>Numero de Contenedor </label>
+    <select [(ngModel)]="formData.containerNumber1" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let numberc of formData.options.numberContainers">{{numberc.containerNumber}} </option>
+    </select>
   </div>
   <div class="form-group">
     <label>Linea Naviera</label>
-    <input type="text" [(ngModel)]="formData.shippingline1" placeholder="Linea Naviera">
+    <select [(ngModel)]="formData.shippingline1">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let ln of formData.options.numberContainers">{{ln.shippingLineId}} </option>
+    </select>
   </div>
   <div class="form-group">
     <label>Tamaño</label>
-    <input type="text" [(ngModel)]="formData.size1" placeholder="Tamaño">
+    <select [(ngModel)]="formData.size1">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let st of formData.options.numberContainers">{{st.size}} </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Contenedor</label>
+    <select [(ngModel)]="formData.selectedContainer1" [disabled]="formData.noSolicitarEquipo || formData.esSocio"
+      (change)="onSelectContainer1()">
+      <option value="">-- Seleccionar --</option>
+      <option *ngFor="let c of formData.options.numberContainers" [ngValue]="c">
+        {{ c.containerType.name }} - {{ c.containerNumber }} - {{ c.size }} - {{ c.shippingLineId }}
+      </option>
+    </select>
   </div>
   <div class="form-group">
     <label>Peso (Kg)</label>
@@ -588,32 +606,32 @@
     <input type="datetime-local" [(ngModel)]="formData.emptyDate">
   </div>
 </div>
-<div *ngIf="formData.containerType1 === '20'">
+<div *ngIf="is20ft1">
   <h3>Contenedor 1 B</h3>
-  <div class="form-group">
-    <label>Estado Carga</label>
-    <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
-      <option value="">-- Seleccionar --</option>
-      <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
-      <option value="patio_externo">En Patio Externo</option>
-    </select>
-  </div>
-  <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
-    <label>Motivo de Contenedor en patio externo</label>
-    <input type="text" [(ngModel)]="formData.outdoorPatioReason"
-      placeholder="Ej: Espera de documentación / Problema aduanal">
-  </div>
-  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
-    <label>Sello 1</label>
-    <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
-      (input)="onlyNumbers($event)" pattern="[0-9]*">
-  </div>
-  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
-    <label>Sello 2</label>
-    <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
-      (input)="onlyNumbers($event)" pattern="[0-9]*">
-  </div>
   <div class="form-grid">
+    <div class="form-group">
+      <label>Estado Carga</label>
+      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+        <option value="">-- Seleccionar --</option>
+        <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
+        <option value="patio_externo">En Patio Externo</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+      <label>Motivo de Contenedor en patio externo</label>
+      <input type="text" [(ngModel)]="formData.outdoorPatioReason"
+        placeholder="Ej: Espera de documentación / Problema aduanal">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 1</label>
+      <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
+    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+      <label>Sello 2</label>
+      <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
+        (input)="onlyNumbers($event)" pattern="[0-9]*">
+    </div>
     <div class="form-group">
       <label>Número Contenedor</label>
       <input type="text" [(ngModel)]="formData.containerNumber1b" placeholder="Num. Contenedor"
@@ -749,7 +767,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="formData.containerType2 === '20'">
+<div *ngIf="is20ft2">
   <h3>Contenedor 2 B</h3>
   <div class="form-grid">
     <div class="form-group">

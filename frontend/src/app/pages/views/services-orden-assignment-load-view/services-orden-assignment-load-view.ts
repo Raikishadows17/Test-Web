@@ -2,15 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ArmedTractView } from "../armed-tract-view/armed-tract-view";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-services-orden-assignment-load-view',
-  imports: [CommonModule, FormsModule, ArmedTractView],
+  imports: [CommonModule, FormsModule, ArmedTractView, MatAutocompleteModule, MatInputModule],
   templateUrl: './services-orden-assignment-load-view.html',
   styleUrl: './services-orden-assignment-load-view.css',
 })
 export class ServicesOrdenAssignmentLoadView {
   @Input() formData: any;
+  filteredOperators: any[] = [];
 
   onlyNumbers(event: any) {
     // Solo permite dígitos 0-9
@@ -86,5 +89,19 @@ export class ServicesOrdenAssignmentLoadView {
       this.formData.dolly = '';
       this.formData.chasisSecundario = '';
     }
+  }
+  onSearchOperador(term: string): void {
+    const query = term.toLowerCase();
+    this.filteredOperators = this.formData.options.operators.filter((o: any) =>
+      o.fullName.toLowerCase().includes(query)
+    );
+  }
+
+  selectOperador(operador: any): void {
+    this.formData.operator = operador.fullName;
+  }
+
+  displayOperador(operador: any): string {
+    return operador ? operador.fullName : '';
   }
 }

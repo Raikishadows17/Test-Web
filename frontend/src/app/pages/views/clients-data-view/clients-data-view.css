@@ -137,3 +137,12 @@
   transform: scale(0.98);
   background: rgba(243, 107, 33, 0.2) !important;
 }
+.file-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #f36b21;
+  font-size: 13px;
+  text-decoration: none;
+  margin-top: 8px;
+}

@@ -229,6 +229,7 @@ export class ServiceOrdersForm {
       dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
       currencies: ['USD', 'MXN', 'EUR'],
       imoClasses: [],
+      numberContainers: [],
       routes: [
         { origen: 'CDMX Pantaco', destino: 'Planta Querétaro', urlMapa: 'https://maps.app.goo.gl/ejemplo1' },
         { origen: 'Lázaro Cárdenas', destino: 'CDMX Pantaco', urlMapa: 'https://maps.app.goo.gl/ejemplo2' },
@@ -237,6 +238,9 @@ export class ServiceOrdersForm {
         { origen: 'Manzanillo', destino: 'León Guanajuato', urlMapa: 'https://maps.app.goo.gl/ejemplo5' },
         { origen: 'Veracruz', destino: 'Puebla', urlMapa: 'https://maps.app.goo.gl/ejemplo6' }
       ]
+    },
+    route: {
+      selectedRoute: null as { origen: string; destino: string; urlMapa: string } | null
     }
 
   };
@@ -307,6 +311,7 @@ export class ServiceOrdersForm {
           operators: backendData.operator || [],
           tripTypes: backendData.tripType || [],
           imoClasses: backendData.imo || [],
+          numberContainers: backendData.container || [],
           containerTypes: backendData.containerType || []
 
         };
