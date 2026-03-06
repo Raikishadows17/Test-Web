@@ -32,13 +32,6 @@
         <option *ngFor="let s of formData.options.statuses">{{ s }}</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="formData.status == 'Programado'">
-      <label>Estatus Programado</label>
-      <select [(ngModel)]="formData.statuProgram">
-        <option value="">-- Seleccionar --</option>
-        <option *ngFor="let s of formData.options.statusesProgram">{{ s }}</option>
-      </select>
-    </div>
     <div class="checkbox-row">
       <label>
         <input type="checkbox" [(ngModel)]="formData.provisionalLocalTeam">
