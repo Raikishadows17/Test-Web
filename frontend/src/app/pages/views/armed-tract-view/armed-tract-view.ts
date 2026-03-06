@@ -1,18 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 type EquipoType = 'tracto' | 'chasisPrincipal' | 'dolly' | 'chasisSecundario';
 
 @Component({
   selector: 'app-armed-tract-view',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatAutocompleteModule, MatInputModule],
   templateUrl: './armed-tract-view.html',
   styleUrl: './armed-tract-view.css',
 })
 export class ArmedTractView {
   @Input() formData: any;
   equiposDisponibles: EquipoType[] = ['tracto', 'chasisPrincipal', 'dolly', 'chasisSecundario'];
+  filteredContainers: any[] = [];
+
 
   // Estado de selección (acumulativo)
   equiposSeleccionados: Record<EquipoType, boolean> = {
@@ -151,6 +155,18 @@ export class ArmedTractView {
   get is40ft2(): boolean {
     return this.formData.containerType2 === "40'";
   }
+  onSearchContainer(term: string): void {
+    const query = term.toLowerCase();
+    this.filteredContainers = this.formData.options.containers.filter((c: any) =>
+      c.containerType.name.toLowerCase().includes(query) ||
+      c.containerNumber.toLowerCase().includes(query) ||
+      c.size.toLowerCase().includes(query)
+    );
+  }
+  selectContainer1(c: any): void {
+    this.formData.selectedContainer1 = c;
+    this.onSelectContainer1();
+  }
   onSelectContainer1(): void {
     const c = this.formData.selectedContainer1;
     if (c) {
@@ -160,4 +176,8 @@ export class ArmedTractView {
       this.formData.size1 = c.size;
     }
   }
+  displayContainer(c: any): string {
+  return c ? `${c.containerType.name} - ${c.containerNumber} - ${c.size} - ${c.shippingLineId}` : '';
+}
+
 }

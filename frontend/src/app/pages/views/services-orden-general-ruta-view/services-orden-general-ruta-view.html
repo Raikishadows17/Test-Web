@@ -17,7 +17,7 @@
     </div>
 
 
-    <div class="form-group" *ngIf="formData.provisionalLocalTeam">
+    <div class="form-group">
       <label>Tipo Viaje</label>
       <select [(ngModel)]="formData.tripType">
         <option value="">-- Seleccionar --</option>
@@ -95,11 +95,6 @@
         <div class="form-group">
           <label>Destino</label>
           <input type="text" [value]="formData.route.selectedRoute.destino" readonly class="input-readonly" />
-        </div>
-        <div class="form-group">
-          <label>URL del Mapa</label>
-          <input type="url" [(ngModel)]="formData.route.selectedRoute.urlMapa" placeholder="https://maps.app.goo.gl/xxxx">
-          <small class="help-text">Pega el enlace de Google Maps</small>
         </div>
       </div>
     </div>

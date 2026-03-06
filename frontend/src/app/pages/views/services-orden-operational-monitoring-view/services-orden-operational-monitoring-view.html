@@ -25,7 +25,7 @@
   <!-- Fechas clave de autorización e inicio -->
   <div class="form-grid">
     <div class="form-group">
-      <label>Fecha Autorización Servicio</label>
+      <label>Fecha Autorización Finanzas</label>
       <input type="datetime-local" [(ngModel)]="formData.authorizationDate">
     </div>
 
@@ -47,8 +47,15 @@
   </h3>
   <div class="form-grid">
     <div class="form-group">
-      <label>Terminal Boleta</label>
-      <input type="text" [(ngModel)]="formData.withdrawalTerminalBoleta" placeholder="Número o referencia de boleta">
+      <div class="file-upload-group">
+        <input type="file" id="pedimentoFile"  accept=".pdf"
+          style="display: none;" />
+        <label for="pedimentoFile" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Archivo Terminal Boleta
+        </label>
+        <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
+      </div>
     </div>
 
     <div class="form-group">
@@ -109,13 +116,20 @@
   </h3>
   <div class="form-grid">
     <div class="form-group">
-      <label>Terminal Regreso</label>
-      <input type="text" [(ngModel)]="formData.returnTerminal">
+      <div class="file-upload-group">
+        <input type="file" id="pedimentoFile"  accept=".pdf"
+          style="display: none;" />
+        <label for="pedimentoFile" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Archivo Terminal Boleta
+        </label>
+        <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
+      </div>
     </div>
 
     <div class="form-group">
-      <label>Bloque Depósito + Hora</label>
-      <input type="text" [(ngModel)]="formData.depositBlock" placeholder="Bloque + Hora">
+      <label>Hora de Retiro</label>
+      <input type="text" [(ngModel)]="formData.depositBlock" placeholder="Hora de Retiro">
     </div>
 
     <div class="form-group">
@@ -162,7 +176,8 @@
   <!-- Documentación adicional -->
   <h3>
     <span class="material-icons">calendar_today</span>
-    Fecha de Documentación</h3>
+    Fecha de Documentación
+  </h3>
   <div class="form-grid">
     <div class="form-group">
       <label>Fecha Carta Porte</label>
@@ -176,7 +191,8 @@
   </div>
   <h3>
     <span class="material-icons">calendar_today</span>
-    Fecha de Cierre y Entrega</h3>
+    Fecha de Cierre y Entrega
+  </h3>
   <div class="form-grid">
     <div class="form-group">
       <label>Fecha Llegada</label>
@@ -188,17 +204,24 @@
       <input type="datetime-local" [(ngModel)]="formData.attentionDate">
     </div>
     <div class="form-group">
+      <label>Fecha Conclusión de Descarga</label>
+      <input type="datetime-local" [(ngModel)]="formData.dischargeCompletionDate">
+    </div>
+    <div class="form-group">
       <label>Fecha de Prealta</label>
       <input type="datetime-local" [(ngModel)]="formData.preRegistration">
     </div>
-    <div class="form-grouo">
-      <label>Archivo PDF Prelta</label>
-      <button></button>
-    </div>
+     <div class="form-grouo">
+      <div class="file-upload-group">
+        <input type="file" id="pedimentoFile"  accept=".pdf"
+          style="display: none;" />
+        <label for="pedimentoFile" class="btn-secondary">
+          <span class="material-icons">upload_file</span>
+          Subir Archivo PreAlta
+        </label>
+        <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
+      </div>
 
-    <div class="form-group">
-      <label>Fecha Conclusión de Descarga</label>
-      <input type="datetime-local" [(ngModel)]="formData.dischargeCompletionDate">
     </div>
   </div>
 </div>
