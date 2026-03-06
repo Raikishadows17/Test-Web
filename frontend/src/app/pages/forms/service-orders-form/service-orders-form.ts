@@ -30,6 +30,7 @@ export class ServiceOrdersForm {
   // Datos del formulario (puedes separarlos por tab si quieres)
   formData = {
     //tab 1 - Datos generales
+    serviceId: null,
     folio: '',
     client: '',
     tripType: '',
@@ -48,6 +49,7 @@ export class ServiceOrdersForm {
     estimatedTime: '',
     requiresOvernight: false,
     destinations: [{ place: '', address: '', mapUrl: '' }],
+    statuProgram: '',
 
 
     //Tab 2 - Carga y asignación
@@ -230,6 +232,7 @@ export class ServiceOrdersForm {
       imoClasses: [],
       containers: [],
       equipments: [],
+      statusesProgram: ['Default', 'Informativo'],
       routes: [
         { origen: 'CDMX Pantaco', destino: 'Planta Querétaro', urlMapa: 'https://maps.app.goo.gl/ejemplo1' },
         { origen: 'Lázaro Cárdenas', destino: 'CDMX Pantaco', urlMapa: 'https://maps.app.goo.gl/ejemplo2' },
@@ -267,30 +270,35 @@ export class ServiceOrdersForm {
   setActiveTab(tab: number) {
     this.activeTab = tab;
   }
-  onSubmit() {
-    console.log('Orden de servicio enviada:', this.formData);
+  async onSubmit() {
+    if (!this.formData.folio) {
+      alert('Po favo, complete los campos obligatorios!');
+      return;
+    }
+    const fd = new FormData();
+    fd.append('Folio', this.formData.folio ?? '')
 
-    if (this.isSubmitting) return; // evita doble envío
-    this.isSubmitting = true;
 
-    const operacion = this.isEditMode ? 'actualizar' : 'crear';
-    const mensajeExito = `Orden ${this.isEditMode ? 'actualizada' : 'creada'} con éxito`;
 
-    const observable = this.isEditMode
-      ? this.servicesOrdenServices.updateOrdenService(this.folio!, this.formData)
-      : this.servicesOrdenServices.newOrdenService(this.formData);
+    try {
+      if (this.isEditMode) {
+        fd.append('ServiceId', this.formData.folio);
+        await this.servicesOrdenServices.updateService(fd);
+        alert('Servicio actualizado con éxito!');
+      } else {
+        await this.servicesOrdenServices.createService(fd);
+        alert('Servicio creado con éxito');
+      }
+      this.router.navigate(['dashboard/service-request']);
+    } catch (err) {
+      const error = err as any;
+      console.error('Error al guardar:', error);
+      console.error('Detalle:', error.error);
+      alert('Error al guardar el equipo.');
+    }
 
-    observable.subscribe({
-      next: (response) => {
-        alert(mensajeExito);
-        this.router.navigate(['/dashboard/service-request']);
-      },
-      error: (error) => {
-        console.error(`Error al ${operacion} orden:`, error);
-        alert(`Error al ${operacion} orden. Por favor, intenta de nuevo.`);
-      },
-      complete: () => this.isSubmitting = false
-    });
+
+
   }
 
   get pageTitle(): string {
