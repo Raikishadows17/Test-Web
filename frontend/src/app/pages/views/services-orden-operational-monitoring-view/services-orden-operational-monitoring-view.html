@@ -47,66 +47,18 @@
   </h3>
   <div class="form-grid">
     <div class="form-group">
-      <div class="file-upload-group">
-        <input type="file" id="pedimentoFile"  accept=".pdf"
-          style="display: none;" />
-        <label for="pedimentoFile" class="btn-secondary">
-          <span class="material-icons">upload_file</span>
-          Subir Archivo Terminal Boleta
-        </label>
-        <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
-      </div>
-    </div>
-
-    <div class="form-group">
       <label>Hora de Retiro</label>
       <input type="text" [(ngModel)]="formData.withdrawalBlock" placeholder="Hora">
     </div>
-
-    <div class="form-group">
-      <label>Fecha Estimada Arribo a Terminal</label>
-      <input type="datetime-local" [(ngModel)]="formData.estimatedArrivalDate">
+    <div class="file-upload-group">
+      <input type="file" id="pedimentoFile" accept=".pdf" style="display: none;" />
+      <label for="pedimentoFile" class="btn-secondary">
+        <span class="material-icons">upload_file</span>
+        Subir Archivo Terminal Boleta
+      </label>
+      <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
     </div>
 
-    <div class="form-group">
-      <label>Fecha Registro ASLA</label>
-      <input type="datetime-local" [(ngModel)]="formData.aslaRegistrationDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Llamado a Terminal</label>
-      <input type="datetime-local" [(ngModel)]="formData.terminalCallDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Ingreso Recinto</label>
-      <input type="datetime-local" [(ngModel)]="formData.facilityEntryDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Arribo Terminal</label>
-      <input type="datetime-local" [(ngModel)]="formData.terminalArrivalDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Carga en Patio</label>
-      <input type="datetime-local" [(ngModel)]="formData.yardLoadingDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Retiro Patio</label>
-      <input type="datetime-local" [(ngModel)]="formData.yardWithdrawalDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Salida Terminal</label>
-      <input type="datetime-local" [(ngModel)]="formData.terminalDepartureDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Salida Recinto</label>
-      <input type="datetime-local" [(ngModel)]="formData.facilityDepartureDate">
-    </div>
   </div>
 
   <!-- Movimientos de Regreso -->
@@ -115,62 +67,21 @@
     Terminal Destino
   </h3>
   <div class="form-grid">
-    <div class="form-group">
-      <div class="file-upload-group">
-        <input type="file" id="pedimentoFile"  accept=".pdf"
-          style="display: none;" />
-        <label for="pedimentoFile" class="btn-secondary">
-          <span class="material-icons">upload_file</span>
-          Subir Archivo Terminal Boleta
-        </label>
-        <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
-      </div>
-    </div>
+
 
     <div class="form-group">
       <label>Hora de Retiro</label>
       <input type="text" [(ngModel)]="formData.depositBlock" placeholder="Hora de Retiro">
     </div>
-
-    <div class="form-group">
-      <label>Terminal Boleta (Regreso)</label>
-      <input type="text" [(ngModel)]="formData.returnTerminalBoleta">
+    <div class="file-upload-group">
+      <input type="file" id="pedimentoFile" accept=".pdf" style="display: none;" />
+      <label for="pedimentoFile" class="btn-secondary">
+        <span class="material-icons">upload_file</span>
+        Subir Archivo Terminal Boleta
+      </label>
+      <span class="file-name" *ngIf="formData.selectedPedimento">{{ formData.selectedPedimento }}</span>
     </div>
 
-    <div class="form-group">
-      <label>Fecha Arribo Terminal (Regreso)</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnTerminalArrivalDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Registro ASLA (Regreso)</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnAslaRegistrationDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Ingreso Recinto (Regreso)</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnFacilityEntryDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Salida Terminal (Regreso)</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnTerminalDepartureDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Salida Recinto (Regreso)</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnFacilityDepartureDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Depósito Patio</label>
-      <input type="datetime-local" [(ngModel)]="formData.yardDepositDate">
-    </div>
-
-    <div class="form-group">
-      <label>Fecha Estimada Arribo a Terminal</label>
-      <input type="datetime-local" [(ngModel)]="formData.returnEstimatedArrivalDate">
-    </div>
   </div>
 
   <!-- Documentación adicional -->
@@ -211,10 +122,9 @@
       <label>Fecha de Prealta</label>
       <input type="datetime-local" [(ngModel)]="formData.preRegistration">
     </div>
-     <div class="form-grouo">
+    <div class="form-grouo">
       <div class="file-upload-group">
-        <input type="file" id="pedimentoFile"  accept=".pdf"
-          style="display: none;" />
+        <input type="file" id="pedimentoFile" accept=".pdf" style="display: none;" />
         <label for="pedimentoFile" class="btn-secondary">
           <span class="material-icons">upload_file</span>
           Subir Archivo PreAlta

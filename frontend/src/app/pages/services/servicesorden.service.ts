@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs';
 
 
@@ -60,25 +60,16 @@ export class ServicesOrdenServices {
       )
     );
   }
-  newOrdenService(orden: any): Observable<any> {
-    return this.http.post(`${environment.apiURL}/api/Service`, orden).pipe(
-      tap(response => console.log('Orden de servicio creada:', response)),
-      catchError(error => {
-        console.error('Error al crear orden', error);
-        throw error;
-      })
+  createService(formData: FormData) {
+      return firstValueFrom(
+        this.http.post(`${environment.apiURL}/api/Service`, formData)
+      );
+    }
+    updateService(formData: FormData) {
+    return firstValueFrom(
+      this.http.put(`${environment.apiURL}/api/Service`, formData)
     );
   }
-
-  updateOrdenService(folio: string, orden: any): Observable<any> {
-  return this.http.put<any>(`${environment.apiURL}/ServiceCreation/${folio}`, orden).pipe(
-    tap(response => console.log('Orden actualizada:', response)),
-    catchError(error => {
-      console.error('Error al actualizar orden', error);
-      throw error;
-    })
-  );
-}
 
 
 

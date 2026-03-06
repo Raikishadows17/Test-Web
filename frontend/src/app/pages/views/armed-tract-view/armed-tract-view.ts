@@ -147,6 +147,18 @@ export class ArmedTractView {
   get is40ft1(): boolean {
     return this.formData.containerType1 === "40'";
   }
+  get is45ft1(): boolean {
+    return this.formData.containerType1 === "45'"
+  }
+  get isOTft1(): boolean {
+    return this.formData.containerType1 === "OT"
+  }
+  get isRFft1(): boolean {
+    return this.formData.containerType1 === "RF"
+  }
+  get isTKft1(): boolean {
+    return this.formData.containerType1 === "TF"
+  }
 
   get is20ft2(): boolean {
     return this.formData.containerType2 === "20'";
@@ -154,6 +166,18 @@ export class ArmedTractView {
 
   get is40ft2(): boolean {
     return this.formData.containerType2 === "40'";
+  }
+  get is45ft2(): boolean {
+    return this.formData.containerType1 === "45'"
+  }
+  get isOTft2(): boolean {
+    return this.formData.containerType1 === "OT"
+  }
+  get isRFft2(): boolean {
+    return this.formData.containerType1 === "RF"
+  }
+  get isTKft2(): boolean {
+    return this.formData.containerType1 === "TF"
   }
   onSearchContainer(term: string): void {
     const query = term.toLowerCase();
@@ -177,7 +201,7 @@ export class ArmedTractView {
     }
   }
   displayContainer(c: any): string {
-  return c ? `${c.containerType.name} - ${c.containerNumber} - ${c.size} - ${c.shippingLineId}` : '';
-}
+    return c ? `${c.containerType.name} - ${c.containerNumber} - ${c.size} - ${c.shippingLineId}` : '';
+  }
 
 }
