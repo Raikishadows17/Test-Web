@@ -1,39 +1,55 @@
-<!-- DATOS LABORALES -->
-  <section class="form-section">
-    <h3>
-      <span class="material-icons">work</span>
-      DATOS LABORALES
-    </h3>
+<section class="form-section">
+  <h3>
+    <span class="material-icons">work</span>
+    DATOS LABORALES
+  </h3>
 
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Puesto / Rol *</label>
-        <select [(ngModel)]="formData.position" required>
-          <option value="">-- Seleccionar --</option>
-          <option *ngFor="let p of formData.options.positions">{{ p }}</option>
-        </select>
-      </div>
+  <div class="form-grid">
+   <!-- <div class="form-group">
+      <label>Categoría / Puesto *</label>
+      <select [(ngModel)]="formData.empCatId" required>
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let cat of formData.options.employeeCategories"
+                [ngValue]="cat.id">{{ cat.name }}</option>
+      </select>
+    </div>
+    -->
 
-      <div class="form-group">
-        <label>Fecha Ingreso</label>
-        <input type="date" [(ngModel)]="formData.hireDate">
-      </div>
-
-      <div class="form-group">
-        <label>Salario Diario</label>
-        <input type="number" [(ngModel)]="formData.dailySalary" placeholder="0.00">
-      </div>
-
-      <div class="form-group">
-        <label>Fecha Baja</label>
-        <input type="date" [(ngModel)]="formData.downDate">
-      </div>
+    <div class="form-group">
+      <label>No. Empleado</label>
+      <input type="text" [(ngModel)]="formData.employeeNumber" placeholder="No. Empleado">
     </div>
 
-    <div class="checkbox-row">
-      <label>
-        <input type="checkbox" [(ngModel)]="formData.isUnionMember">
-        ¿Es Agremiado? (Sindicato)
-      </label>
+    <div class="form-group">
+      <label>Empresa</label>
+      <input type="text" [(ngModel)]="formData.company" placeholder="Empresa">
     </div>
-  </section>
+
+    <div class="form-group">
+      <label>Fecha Ingreso</label>
+      <input type="date" [(ngModel)]="formData.entryDate">
+    </div>
+
+    <div class="form-group">
+      <label>Salario Diario</label>
+      <input type="number" [(ngModel)]="formData.salary" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label>Fecha Baja</label>
+      <input type="date" [(ngModel)]="formData.terminationDate">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Comentarios</label>
+    <textarea [(ngModel)]="formData.comments" placeholder="Observaciones..." rows="3"></textarea>
+  </div>
+
+  <div class="checkbox-row">
+    <label>
+      <input type="checkbox" [(ngModel)]="formData.guild">
+      ¿Es Agremiado? (Sindicato)
+    </label>
+  </div>
+</section>

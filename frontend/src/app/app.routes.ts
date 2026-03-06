@@ -9,7 +9,7 @@ import { Customer } from './pages/catalogs/customer/customer';
 import { Equipment } from './pages/catalogs/equipment/equipment';
 import { DashboardStrategic } from './pages/catalogs/dashboard-strategic/dashboard-strategic';
 import { EquipmentCatalogForm } from './pages/forms/equipment-catalog-form/equipment-catalog-form';
-import { OperatorsFrom } from './pages/forms/operators-form/operators-form';
+import { OperatorsForm } from './pages/forms/operators-form/operators-form';
 import { ServiceOrdersForm } from './pages/forms/service-orders-form/service-orders-form';
 import { Operators } from './pages/catalogs/operators/operators';
 import { ClientsContractsForm } from './pages/forms/clients-contracts-form/clients-contracts-form';
@@ -61,8 +61,8 @@ export const routes: Routes = [
         path: 'operator',
         children: [
           { path: '', component: Operators },
-          { path: 'new', component: OperatorsFrom },
-          { path: 'edit/:id', component: OperatorsFrom }
+          { path: 'new', component: OperatorsForm },
+          { path: 'edit/:id', component: OperatorsForm }
         ]
       },
     ]

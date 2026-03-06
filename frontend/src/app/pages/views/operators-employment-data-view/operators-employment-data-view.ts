@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-operators-employment-data-view',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './operators-employment-data-view.html',
   styleUrl: './operators-employment-data-view.css',
 })
 export class OperatorsEmploymentDataView {
   @Input() formData: any;
-
 }
