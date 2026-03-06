@@ -1,5 +1,5 @@
 
 export const environment = {
   production: true,
-  apiURL: "https://argue-symbol-neo-andrea.trycloudflare.com"
+  apiURL: "https://protected-caps-vpn-produced.trycloudflare.com"
 };
