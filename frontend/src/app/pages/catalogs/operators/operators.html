@@ -2,63 +2,262 @@
   <header class="catalog-header">
     <h1 class="title">Operadores</h1>
     <div class="search-actions">
-      <button class="btn-primary" (click)="newOperator()">Nuevo Operador</button>
+      <button type="button" class="btn-primary" (click)="newOperator()">Nuevo Operador</button>
     </div>
   </header>
+
   <div class="search-box">
-    <input type="text" placeholder="Buscar por Nombre o RFC" [(ngModel)]="searchTerm"
-      (input)="searchOperator()">
-  </div>
-  <div class="section-label">
-    Listado de Operadores Activos
+    <input type="text" placeholder="Buscar por Nombre, RFC o No. Empleado"
+      [(ngModel)]="searchTerm" (input)="searchOperator()">
   </div>
 
-  <div class="table-wrapper">
+  <div class="filters-box">
+    <select [(ngModel)]="filterExecutive" (change)="applyFilters()">
+      <option value="">Todos (Ejecutivo)</option>
+      <option *ngFor="let exec of executives" [value]="exec">{{ exec }}</option>
+    </select>
+
+    <select [(ngModel)]="filterCompany" (change)="applyFilters()">
+      <option value="">Todas (Empresa)</option>
+      <option *ngFor="let comp of companies" [value]="comp">{{ comp }}</option>
+    </select>
+
+    <select [(ngModel)]="filterLicense" (change)="applyFilters()">
+      <option value="">Todos (Licencia Federal)</option>
+      <option value="con">Con Licencia</option>
+      <option value="sin">Sin Licencia</option>
+    </select>
+
+    <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+      <option value="">Todos (Estatus)</option>
+      <option value="activo">Activos</option>
+      <option value="baja">Baja</option>
+    </select>
+
+    <select [(ngModel)]="filterCertForeign" (change)="applyFilters()">
+      <option value="">Todos (Cert. Extranjero)</option>
+      <option value="si">Certificado</option>
+      <option value="no">No Certificado</option>
+    </select>
+  </div>
+
+  <div *ngIf="loading" class="loading-msg">Cargando Operadores...</div>
+  <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && !errorMessage" class="table-wrapper">
     <table class="catalog-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Foto</th>
+          <th></th>
           <th>Nombre Completo</th>
+          <th>No. Empleado</th>
           <th>RFC</th>
-          <th>CURP</th>
-          <th>NSS</th>
-          <th>Puesto</th>
+          <th>Empresa</th>
           <th>Fecha Ingreso</th>
-          <th>Teléfono</th>
-          <th>Tipo Sangre</th>
           <th>Licencia Federal</th>
-          <th>Vigencia Licencia</th>
+          <th>Cert. Extranjero</th>
           <th>Acciones</th>
         </tr>
       </thead>
+
       <tbody>
-        <tr *ngFor="let op of operadores; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td class="photo-cell">
-            <img
-              [src]="op.fotoUrl || 'https://via.placeholder.com/60?text=' + (op.nombre | slice:0:1)"
-              alt="{{ op.nombre }}"
-              class="operator-photo"
-              (error)="onImageError($event)"
-            >
-          </td>
-          <td>{{ op.nombre }}</td>
-          <td>{{ op.rfc }}</td>
-          <td>{{ op.curp }}</td>
-          <td>{{ op.nss }}</td>
-          <td>{{ op.puesto }}</td>
-          <td>{{ op.fechaIngreso }}</td>
-          <td>{{ op.telefono }}</td>
-          <td>{{ op.tipoSangre }}</td>
-          <td>{{ op.licencia }}</td>
-          <td>{{ op.vigenciaLicencia }}</td>
-          <td>
-            <button class="btn-secondary" >Editar</button>
-            <button class="btn-danger" >Eliminar</button>
-          </td>
-        </tr>
+        <ng-container *ngFor="let op of paginatedOperators; let i = index">
+          <tr (click)="toggleDetail(i)" class="clickable-row">
+            <td>
+              <span class="expand-icon">{{ expandedIndex === i ? '▼' : '▶' }}</span>
+            </td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <img *ngIf="op.photoUrl"
+                    [src]="op.photoUrl"
+                    [alt]="op.fullName"
+                    style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #555;"
+                    (error)="onImageError($event)">
+                <div *ngIf="!op.photoUrl"
+                    style="width: 40px; height: 40px; border-radius: 50%; background-color: #333; display: flex; align-items: center; justify-content: center; border: 2px solid #555; font-size: 12px; color: #aaa;">
+                  N/A
+                </div>
+                <span>{{ op.fullName }}</span>
+              </div>
+            </td>
+            <td>{{ op.employeeNumber ?? '—' }}</td>
+            <td>{{ op.rfc ?? '—' }}</td>
+            <td>{{ op.company ?? '—' }}</td>
+            <td>{{ op.entryDate ? (op.entryDate | date:'dd/MM/yyyy') : '—' }}</td>
+            <td>
+              <span [class]="op.driveLicense ? 'badge-yes' : 'badge-no'">
+                {{ op.driveLicense ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <span [class]="op.certificatedForeignDriver ? 'badge-yes' : 'badge-no'">
+                {{ op.certificatedForeignDriver ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-secondary" (click)="editOperator(op.empId); $event.stopPropagation()">Editar</button>
+              <button class="btn-danger" (click)="$event.stopPropagation()">Eliminar</button>
+            </td>
+          </tr>
+
+          <!-- Detalle expandible -->
+          <tr *ngIf="expandedIndex === i" class="detail-row">
+            <td [attr.colspan]="9">
+              <div class="detail-container">
+                <div style="flex: 1;">
+
+                  <div class="detail-section">
+                    <h4>Información Personal</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Nombres:</span>
+                        <span>{{ op.names ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Apellido Paterno:</span>
+                        <span>{{ op.middleName ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Apellido Materno:</span>
+                        <span>{{ op.lastName ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Email:</span>
+                        <span>{{ op.email ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Fecha Nacimiento:</span>
+                        <span>{{ op.birthDate ? (op.birthDate | date:'dd/MM/yyyy') : 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Género:</span>
+                        <span>{{ op.gender ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Estado Civil:</span>
+                        <span>{{ op.maritalStatus ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Tipo de Sangre:</span>
+                        <span>{{ op.bloodType ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Nivel Educativo:</span>
+                        <span>{{ op.educationLevel ?? 'Sin asignar' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Documentos</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">RFC:</span>
+                        <span>{{ op.rfc ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">CURP:</span>
+                        <span>{{ op.curp ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">NSS:</span>
+                        <span>{{ op.nss ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">INE:</span>
+                        <span>{{ op.ine ?? 'Sin asignar' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Información Laboral</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">No. Empleado:</span>
+                        <span>{{ op.employeeNumber ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Categoría:</span>
+                        <span>{{ op.employeeCategory?.name ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Empresa:</span>
+                        <span>{{ op.company ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Agremiado:</span>
+                        <span>{{ op.guild ? 'Sí' : 'No' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Salario:</span>
+                        <span>{{ op.salary ? (op.salary | currency:'MXN') : 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Fecha Ingreso:</span>
+                        <span>{{ op.entryDate ? (op.entryDate | date:'dd/MM/yyyy') : 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Fecha Baja:</span>
+                        <span>{{ op.terminationDate ? (op.terminationDate | date:'dd/MM/yyyy') : 'Sin asignar' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section">
+                    <h4>Licencias y Certificaciones</h4>
+                    <div class="detail-grid">
+                      <div class="detail-item">
+                        <span class="label">Licencia Federal:</span>
+                        <span>{{ op.driveLicense ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Vigencia Licencia:</span>
+                        <span>{{ op.driveLicenseDateExp ? (op.driveLicenseDateExp | date:'dd/MM/yyyy') : 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Cert. Extranjero:</span>
+                        <span [class]="op.certificatedForeignDriver ? 'badge-yes' : 'badge-no'">
+                          {{ op.certificatedForeignDriver ? 'Sí' : 'No' }}
+                        </span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Folio Cert. Médico:</span>
+                        <span>{{ op.medicalCertificateFolio ?? 'Sin asignar' }}</span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="label">Venc. Cert. Médico:</span>
+                        <span>{{ op.medicalCertificateExp ? (op.medicalCertificateExp | date:'dd/MM/yyyy') : 'Sin asignar' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-section" *ngIf="op.comments">
+                    <h4>Comentarios</h4>
+                    <p style="color: #ccc;">{{ op.comments }}</p>
+                  </div>
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
+
+    <div class="pagination">
+      <span class="page-info">
+        {{ (currentPage - 1) * pageSize + 1 }} -
+        {{ currentPage * pageSize > filteredOperators.length ? filteredOperators.length : currentPage * pageSize }}
+        de {{ filteredOperators.length }}
+      </span>
+      <div class="page-buttons">
+        <button (click)="goToPage(1)" [disabled]="currentPage === 1">«</button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+        <span class="current-page">{{ currentPage }} / {{ totalPages }}</span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">»</button>
+      </div>
+    </div>
   </div>
 </div>

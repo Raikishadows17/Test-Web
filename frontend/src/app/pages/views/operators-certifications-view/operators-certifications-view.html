@@ -1,131 +1,81 @@
-<!-- LICENCIAS Y CERTIFICACIONES -->
-  <section class="form-section">
-    <h3>
-      <span class="material-icons">check_box</span>
-      LICENCIAS Y CERTIFICACIONES
-    </h3>
+<section class="form-section">
+  <h3>
+    <span class="material-icons">check_box</span>
+    LICENCIAS Y CERTIFICACIONES
+  </h3>
 
-    <div class="form-grid">
-      <!-- Columna izquierda: Licencia Federal -->
-      <div class="license-column">
-        <h4>Licencia Federal</h4>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Número</label>
-            <input type="text" [(ngModel)]="formData.licenseNumber" placeholder="Número" maxlength="15"
-              (keypress)="onlyNumbers($event)" pattern="[0-9]+">
-          </div>
-
-          <div class="form-group">
-            <label>Vigencia</label>
-            <input type="date" [(ngModel)]="formData.licenseExpiration">
-          </div>
+  <div class="form-grid">
+    <div class="license-column">
+      <h4>Licencia Federal</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Número</label>
+          <input type="text" [(ngModel)]="formData.driveLicense" placeholder="Número"
+            maxlength="15" (keypress)="onlyNumbers($event)">
         </div>
 
         <div class="form-group">
-          <label>Tipo</label>
-          <input type="text" [(ngModel)]="formData.licenseType" placeholder="Ej. B, E" maxlength="1"
-            (keypress)="onlyLettersType($event)" pattern="[A-Za-z]">
+          <label>Vigencia</label>
+          <input type="date" [(ngModel)]="formData.driveLicenseDateExp">
         </div>
-
-        <button type="button" class="btn-secondary">
-          <span class="material-icons">visibility</span>
-          Ver Foto Licencia
-        </button>
       </div>
 
-      <!-- Columna derecha: Certificado Médico / Aptitud -->
-      <div class="license-column">
-        <h4>Certificado Médico / Aptitud</h4>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Folio</label>
-            <input type="text" [(ngModel)]="formData.medicalCertificateFolio" placeholder="Folio" maxlength="20"
-              (keypress)="onlyNumbers($event)" pattern="[0-9]+">
-          </div>
-
-          <div class="form-group">
-            <label>Vencimiento</label>
-            <input type="date" [(ngModel)]="formData.medicalCertificateExpiration">
-          </div>
-        </div>
-        <!-- Nuevo campo: Certificado Foráneo (FK) -->
-        <div class="form-group">
-          <label>Certificado Foráneo (Documento Aprobatorio)</label>
-          <div class="file-upload-group">
-            <input type="file" id="certificadoForaneo" (change)="onCertificadoForaneoSelected($event)" accept=".pdf"
-              style="display:none;">
-            <label for="certificadoForaneo" class="btn-secondary">
-              <span class="material-icons">upload_file</span>
-              Subir Certificado Foráneo
-            </label>
-            <span class="file-name" *ngIf="selectedCertificadoForaneo">{{ selectedCertificadoForaneo }}</span>
-          </div>
+      <div class="form-group">
+        <label>Foto de Licencia</label>
+        <div class="file-upload-group">
+          <input type="file" id="licenseFile" (change)="onLicenseFileSelected($event)"
+            accept="image/*,.pdf" style="display:none;">
+          <label for="licenseFile" class="btn-secondary">
+            <span class="material-icons">upload_file</span>
+            Subir Licencia
+          </label>
+          <span class="file-name" *ngIf="formData.licenseFileName">{{ formData.licenseFileName }}</span>
+          <a *ngIf="formData.driveLicenseUrl && !formData.licenseFileName"
+            [href]="getImageUrl(formData.driveLicenseUrl)" target="_blank" class="file-link">
+            <span class="material-icons">visibility</span> Ver archivo
+          </a>
         </div>
       </div>
     </div>
-  </section>
 
-  <section class="form-section">
-    <h3>
-      <span class="material-icons">event</span>
-      VIGENCIAS Y ESTADOS ESPECIALES
-    </h3>
+    <div class="license-column">
+      <h4>Certificado Médico / Aptitud</h4>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Folio</label>
+          <input type="text" [(ngModel)]="formData.medicalCertificateFolio"
+            placeholder="Folio" maxlength="20" (keypress)="onlyNumbers($event)">
+        </div>
 
-    <div class="form-grid">
-      <!-- Columna izquierda: Vigencias -->
-      <div class="license-column">
-        <h4>Vigencias</h4>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Vencimiento de Vigencias de Operador</label>
-            <input type="date" [(ngModel)]="formData.okVencimientoVigencias">
-          </div>
+        <div class="form-group">
+          <label>Vencimiento</label>
+          <input type="date" [(ngModel)]="formData.medicalCertificateExp">
         </div>
       </div>
 
-      <!-- Columna derecha: Bloqueos/Incapacidad -->
-      <div class="license-column">
-        <h4>Bloqueos/Incapacidad</h4>
-        <div class="form-group">
-          <label>Empleado Bloqueado Terminal (ID Terminal)</label>
-          <input type="text" [(ngModel)]="formData.okIdTerminalBloqueo" placeholder="ID Terminal">
+      <div class="form-group">
+        <label>Certificado Foráneo</label>
+        <div class="file-upload-group">
+          <input type="file" id="foreignCertFile" (change)="onForeignCertFileSelected($event)"
+            accept=".pdf" style="display:none;">
+          <label for="foreignCertFile" class="btn-secondary">
+            <span class="material-icons">upload_file</span>
+            Subir Certificado Foráneo
+          </label>
+          <span class="file-name" *ngIf="formData.foreignCertFileName">{{ formData.foreignCertFileName }}</span>
+          <a *ngIf="formData.foreignCertificateUrl && !formData.foreignCertFileName"
+            [href]="getImageUrl(formData.foreignCertificateUrl)" target="_blank" class="file-link">
+            <span class="material-icons">visibility</span> Ver archivo
+          </a>
         </div>
-        <div class="form-grid">
-          <div>
-            <div class="form-group">
-              <label>Fecha Inicio Bloqueo</label>
-              <input type="date" [(ngModel)]="formData.okFechaInicioBloqueo">
-            </div>
-            <div class="form-group">
-              <label>Fecha Fin Bloqueo</label>
-              <input type="date" [(ngModel)]="formData.okFechaFinBloqueo">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Empleado Incapacitado</label>
-            <div class="checkbox-row">
-              <label>
-                <input type="checkbox" [(ngModel)]="formData.okIncapacitado">
-                Sí
-              </label>
-              <label>
-                <input type="checkbox" [(ngModel)]="formData.okIncapacitado">
-                No
-              </label>
-            </div>
-          </div>
-          <div>
-            <div class="form-group">
-              <label>Fecha Inicio Incapacidad</label>
-              <input type="date" [(ngModel)]="formData.okFechaInicioIncapacidad">
-            </div>
-            <div class="form-group">
-              <label>Fecha Fin Incapacidad</label>
-              <input type="date" [(ngModel)]="formData.okFechaFinIncapacidad">
-            </div>
-          </div>
-        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <label>
+          <input type="checkbox" [(ngModel)]="formData.certificatedForeignDriver">
+          Conductor Certificado en el Extranjero
+        </label>
       </div>
     </div>
-  </section>
+  </div>
+</section>

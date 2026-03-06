@@ -25,6 +25,16 @@ export class Customer implements OnInit {
 
   executives: string[] = [];
 
+  get paginatedCustomers(): any[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredCustomers.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredCustomers.length / this.pageSize);
+  }
+
+
   constructor(private customerService: CustomerService, private router: Router) {}
 
   async ngOnInit() {
@@ -39,15 +49,6 @@ export class Customer implements OnInit {
     } finally {
       this.loading = false;
     }
-  }
-
-  get paginatedCustomers(): any[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredCustomers.slice(start, start + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredCustomers.length / this.pageSize);
   }
 
   searchCustomers() {

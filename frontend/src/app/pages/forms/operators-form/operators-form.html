@@ -1,15 +1,32 @@
 <div class="catalog-container">
   <header class="catalog-header">
-    <h1 class="title">RH / OPERADORES</h1>
+    <h1 class="title">{{ isEdit ? 'Editar Operador' : 'Nuevo Operador' }}</h1>
     <div class="search-actions">
-      <button class="btn-primary" (click)="onSubmit()">Guardar Registro</button>
+      <button class="btn-primary" (click)="onSubmit()">
+        {{ isEdit ? 'Actualizar Registro' : 'Guardar Registro' }}
+      </button>
     </div>
   </header>
 
   <div class="section-label">
-    Recursos Humanos y Operadores
+    Operadores
   </div>
-  <app-operators-personal-data-view [formData]="formData"></app-operators-personal-data-view>
-  <app-operators-employment-data-view [formData]="formData"></app-operators-employment-data-view>
-  <app-operators-certifications-view [formData]="formData"></app-operators-certifications-view>
+
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="activeTab === 1" (click)="setActiveTab(1)">
+      1. Información Personal
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 2" (click)="setActiveTab(2)">
+      2. Información Laboral
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 3" (click)="setActiveTab(3)">
+      3. Certificaciones
+    </button>
+  </div>
+
+  <div class="tab-content">
+    <app-operators-personal-data-view *ngIf="activeTab === 1" [formData]="formData"></app-operators-personal-data-view>
+    <app-operators-employment-data-view *ngIf="activeTab === 2" [formData]="formData"></app-operators-employment-data-view>
+    <app-operators-certifications-view *ngIf="activeTab === 3" [formData]="formData"></app-operators-certifications-view>
+  </div>
 </div>
