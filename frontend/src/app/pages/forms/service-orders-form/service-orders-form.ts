@@ -220,7 +220,6 @@ export class ServiceOrdersForm {
       operators: [],
       tractors: ['ECO-55 (Kenworth)', 'ECO-90 (Freightliner)'],
       trailers: ['Chasis 40ft - CH01', 'Plana - PL02'],
-      containerTypes: [],
       loadStatuses: ['Lleno', 'Vacio'],
       expenseConcepts: ['Diesel', 'Casetas (Tag)', 'Maniobra', 'Talachas', 'Estadia', 'Comidas'],
       paymentMethods: ['Efectivo', 'Transferencia', 'Tag', 'Vale'],
@@ -229,7 +228,8 @@ export class ServiceOrdersForm {
       dollies: ['Dolly 01', 'Dolly 02', 'Dolly 03'],
       currencies: ['USD', 'MXN', 'EUR'],
       imoClasses: [],
-      numberContainers: [],
+      containers: [],
+      equipments: [],
       routes: [
         { origen: 'CDMX Pantaco', destino: 'Planta Querétaro', urlMapa: 'https://maps.app.goo.gl/ejemplo1' },
         { origen: 'Lázaro Cárdenas', destino: 'CDMX Pantaco', urlMapa: 'https://maps.app.goo.gl/ejemplo2' },
@@ -311,12 +311,12 @@ export class ServiceOrdersForm {
           operators: backendData.operator || [],
           tripTypes: backendData.tripType || [],
           imoClasses: backendData.imo || [],
-          numberContainers: backendData.container || [],
-          containerTypes: backendData.containerType || []
+          containers: backendData.container || [],
+          equipments: backendData.equipment || []
 
         };
 
-        console.log('Operadores cargados:', this.formData.options.containerTypes);
+        console.log('Operadores cargados:', this.formData.options.equipments);
       },
       error: (error) => {
         console.error('Error al cargar opciones:', error);
