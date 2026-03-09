@@ -60,17 +60,24 @@ export class ServicesOrdenServices {
       )
     );
   }
+  getAllServices(){
+    return firstValueFrom(
+      this.http.get(`${environment.apiURL}/api/Service`)
+    );
+  }
+  getServiceById(id:number){
+    return firstValueFrom(
+      this.http.get(`${environment.apiURL}/api/Service/${id}`)
+    );
+  }
   createService(formData: FormData) {
-      return firstValueFrom(
-        this.http.post(`${environment.apiURL}/api/Service`, formData)
-      );
-    }
-    updateService(formData: FormData) {
+    return firstValueFrom(
+      this.http.post(`${environment.apiURL}/api/Service`, formData)
+    );
+  }
+  updateService(formData: FormData) {
     return firstValueFrom(
       this.http.put(`${environment.apiURL}/api/Service`, formData)
     );
   }
-
-
-
 }

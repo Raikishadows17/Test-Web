@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OperatorService } from './operators.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-operators',
@@ -27,6 +28,7 @@ export class Operators implements OnInit {
   loading = true;
   currentPage = 1;
   pageSize = 15;
+  apiURL = environment.apiURL;
 
   get paginatedOperators(): any[] {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -65,7 +67,7 @@ export class Operators implements OnInit {
 
   newOperator() {
     this.router.navigate(['/dashboard/operator/new']);
-  }
+  } 
 
   editOperator(id: number) {
     this.router.navigate(['/dashboard/operator/edit', id]);

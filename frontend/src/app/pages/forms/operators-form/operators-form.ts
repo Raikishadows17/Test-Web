@@ -128,6 +128,10 @@ export class OperatorsForm implements OnInit {
       this.formData.driveLicenseUrl = op.driveLicenseUrl ?? '';
       this.formData.foreignCertificateUrl = op.foreignCertificateUrl ?? '';
       this.formData.photoUrl = op.photoUrl ?? '';
+      this.formData.phone = op.phone ?? '';
+      this.formData.address = op.address ?? '';
+      this.formData.emergencyPhone = op.emergencyPhone ?? '';
+      this.formData.zipCode = op.zipCode ?? '';
       if (op.photoUrl) {
         this.formData.photoPreview = `${environment.apiURL}${op.photoUrl}`;
       }
@@ -172,7 +176,10 @@ export class OperatorsForm implements OnInit {
     fd.append('gender', this.formData.gender);
     fd.append('maritalStatus', this.formData.maritalStatus);
     fd.append('bloodType', this.formData.bloodType);
-    fd.append('educationLevel', this.formData.educationLevel);
+    fd.append('phone', this.formData.phone);
+    fd.append('emergencyPhone', this.formData.emergencyPhone);
+    fd.append('zipCode', this.formData.zipCode);
+    fd.append('address', this.formData.address);    
 
     // Datos laborales
     if (this.formData.empCatId) fd.append('empCatId', this.formData.empCatId.toString());
@@ -190,11 +197,14 @@ export class OperatorsForm implements OnInit {
     fd.append('medicalCertificateFolio', this.formData.medicalCertificateFolio);
     if (this.formData.medicalCertificateExp) fd.append('medicalCertificateExp', this.formData.medicalCertificateExp);
 
-    // Archivos
-    if (this.formData.photoFile) fd.append('photoFile', this.formData.photoFile);
-    if (this.formData.licenseFile) fd.append('licenseFile', this.formData.licenseFile);
-    if (this.formData.foreignCertificateFile) fd.append('foreignCertificateFile', this.formData.foreignCertificateFile);
+    fd.append('photoUrl', this.formData.photoUrl ?? '');
+    fd.append('driveLicenseUrl', this.formData.driveLicenseUrl ?? '');
+    fd.append('foreignCertificateUrl', this.formData.foreignCertificateUrl ?? '');
 
+    // Archivos
+  if (this.formData.photoFile) fd.append('photoFile', this.formData.photoFile);
+  if (this.formData.licenseFile) fd.append('licenseFile', this.formData.licenseFile);
+  if (this.formData.foreignCertificateFile) fd.append('foreignCertificateFile', this.formData.foreignCertificateFile);
     try {
       if (this.isEdit && this.operatorId) {
         fd.append('empId', this.operatorId.toString());
@@ -204,7 +214,7 @@ export class OperatorsForm implements OnInit {
         await this.operatorService.createOperator(fd);
         alert('Operador creado con éxito');
       }
-      this.router.navigate(['/dashboard/operators']);
+      this.router.navigate(['/dashboard/operator']);
     } catch (err) {
       console.error('Error al guardar:', err);
       alert('Error al guardar operador');

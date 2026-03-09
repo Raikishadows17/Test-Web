@@ -18,7 +18,7 @@ import { ServicesOrdenServices } from '../../services/servicesorden.service';
 export class ServiceOrdersForm {
   activeTab = 1;
   isEditMode = false;
-  folio: string | null = null;
+  serviceId: number | null = null;
   isSubmitting = false;
 
   constructor(private route: ActivatedRoute,
@@ -28,9 +28,8 @@ export class ServiceOrdersForm {
 
 
   // Datos del formulario (puedes separarlos por tab si quieres)
-  formData = {
+  formData:  any = {
     //tab 1 - Datos generales
-    serviceId: null,
     folio: '',
     client: '',
     tripType: '',
@@ -54,7 +53,10 @@ export class ServiceOrdersForm {
 
     //Tab 2 - Carga y asignación
     operator: '',
-    loadStatus: '',
+    loadStatus1: '',
+    loadStatus1b: '',
+    loadStatus2: '',
+    loadStatus2b: '',
     outdoorPatioReason: '',
     seal1: '',
     seal2: '',
@@ -95,6 +97,8 @@ export class ServiceOrdersForm {
     imo1: '',
     imo2: '',
 
+    containerType1b: '',
+    containerType2b: '',
     containerNumber1b: '',
     containerNumber2b: '',
     shippingline1b: '',
@@ -116,11 +120,6 @@ export class ServiceOrdersForm {
 
     placa: '',
     noEconomico: '',
-
-    selectedPedimento: '',
-    selectedCartaPorte: '',
-    selectedBoletaTerminal: '',
-    selectedDoda: '',
 
     //tab 3 - Evidencias y gastos
     newExpense: {
@@ -244,22 +243,23 @@ export class ServiceOrdersForm {
     },
     route: {
       selectedRoute: null as { origen: string; destino: string; urlMapa: string } | null
+    },
+    docs: {
+      pedimento: { docId: 1, file: null, urlDocumentPath: null },
+      cartaPorte: { docId: 2, file: null, urlDocumentPath: null },
+      boletaTerminal: { docId: 3, file: null, urlDocumentPath: null },
+      doda: { docId: 4, file: null, urlDocumentPath: null },
     }
 
   };
   ngOnInit() {
     this.loadOptions();
     // Detectar si viene folio en la URL (modo edición)
-    this.folio = this.route.snapshot.paramMap.get('folio');
-    this.isEditMode = !!this.folio;
+    this.serviceId = Number(this.route.snapshot.paramMap.get('id'));
+    this.isEditMode = !!this.serviceId;
 
     if (this.isEditMode) {
-      const selectedService = history.state?.selectedService;
-      if (selectedService) {
-        this.formData = { ...this.formData, ...selectedService };
-      } else {
-        alert('No se encontró la orden con folio: ' + this.folio);
-      }
+      this.loadServiceData(this.serviceId!);
     } else {
       this.formData.folio = `SERV-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
     }
@@ -272,17 +272,93 @@ export class ServiceOrdersForm {
   }
   async onSubmit() {
     if (!this.formData.folio) {
-      alert('Po favo, complete los campos obligatorios!');
+      alert('Po favor, complete los campos obligatorios!');
       return;
     }
     const fd = new FormData();
-    fd.append('Folio', this.formData.folio ?? '')
 
+    // Datos generales
+    fd.append('Folio', this.formData.folio ?? '');
+    fd.append('Client', this.formData.client ?? '');
+    fd.append('TripType', this.formData.tripType ?? '');
+    fd.append('Status', this.formData.status ?? '');
+    fd.append('DateRequest', this.formData.daterequest ?? '');
+    fd.append('DateScheduled', this.formData.datescheduled ?? '');
+    fd.append('DateCarry', this.formData.datecarry ?? '');
+    fd.append('DateDownload', this.formData.datedownload ?? '');
+    fd.append('DateClosing', this.formData.dateclosing ?? '');
+    fd.append('RequiresOvernight', this.formData.requiresOvernight ?? false);
+    fd.append('EstimatedKm', this.formData.estimatedKm ?? '');
+    fd.append('EstimatedTime', this.formData.estimatedTime ?? '');
+    fd.append('Instrucciones', this.formData.instrucciones ?? '');
 
+    // Ruta
+    fd.append('RouteOrigen', this.formData.route?.selectedRoute?.origen ?? '');
+    fd.append('RouteDestino', this.formData.route?.selectedRoute?.destino ?? '');
+    fd.append('RouteMapUrl', this.formData.route?.selectedRoute?.urlMapa ?? '');
+
+    // Asignación
+    fd.append('Operator', this.formData.operator ?? '');
+    fd.append('Tractor', this.formData.tractor ?? '');
+    fd.append('IsFull', this.formData.isFull ?? false);
+    fd.append('IsSocio', this.formData.isSocio ?? false);
+    fd.append('NoSolicitarEquipo', this.formData.noSolicitarEquipo ?? false);
+
+    // Contenedor 1
+    fd.append('ContainerType1', this.formData.containerType1 ?? '');
+    fd.append('ContainerNumber1', this.formData.containerNumber1 ?? '');
+    fd.append('ShippingLine1', this.formData.shippingline1 ?? '');
+    fd.append('Size1', this.formData.size1 ?? '');
+    fd.append('Weight1', this.formData.weight1 ?? '');
+    fd.append('LoadStatus1', this.formData.loadStatus1 ?? '');
+    fd.append('Seal1', this.formData.seal1 ?? '');
+    fd.append('Seal2', this.formData.seal2 ?? '');
+    fd.append('PedimentoCliente1', this.formData.pedimentoCliente1 ?? '');
+    fd.append('PedimentoNumber1', this.formData.pedimentoNumber1 ?? '');
+    fd.append('TariffClassification1', this.formData.tariffClassification1 ?? '');
+    fd.append('Imo1', this.formData.imo1 ?? '');
+
+    // Contenedor 1B
+    fd.append('ContainerType1b', this.formData.containerType1b ?? '');
+    fd.append('ContainerNumber1b', this.formData.containerNumber1b ?? '');
+    fd.append('ShippingLine1b', this.formData.shippingline1b ?? '');
+    fd.append('Size1b', this.formData.size1b ?? '');
+    fd.append('Weight1b', this.formData.weight1b ?? '');
+    fd.append('LoadStatus1b', this.formData.loadStatus1b ?? '');
+
+    // Contenedor 2
+    fd.append('ContainerType2', this.formData.containerType2 ?? '');
+    fd.append('ContainerNumber2', this.formData.containerNumber2 ?? '');
+    fd.append('ShippingLine2', this.formData.shippingline2 ?? '');
+    fd.append('Size2', this.formData.size2 ?? '');
+    fd.append('Weight2', this.formData.weight2 ?? '');
+    fd.append('LoadStatus2', this.formData.loadStatus2 ?? '');
+
+    // Contenedor 2B
+    fd.append('ContainerType2b', this.formData.containerType2b ?? '');
+    fd.append('ContainerNumber2b', this.formData.containerNumber2b ?? '');
+    fd.append('ShippingLine2b', this.formData.shippingline2b ?? '');
+    fd.append('Size2b', this.formData.size2b ?? '');
+    fd.append('Weight2b', this.formData.weight2b ?? '');
+    fd.append('LoadStatus2b', this.formData.loadStatus2b ?? '');
+
+    //docs
+    const docs = this.formData.docs as any;
+    let idx = 0;
+    for (const key of Object.keys(docs)) {
+      const doc = docs[key];
+      if (doc.file || doc.urlDocumentPath) {
+        fd.append(`ServiceFiles[${idx}].DocId`, doc.docId);
+        fd.append(`ServiceFiles[${idx}].Name`, key);
+        if (doc.urlDocumentPath) fd.append(`ServiceFiles[${idx}].UrlDocumentPath`, doc.urlDocumentPath);
+        if (doc.file) fd.append(`ServiceFiles[${idx}].File`, doc.file);
+        idx++;
+      }
+    }
 
     try {
       if (this.isEditMode) {
-        fd.append('ServiceId', this.formData.folio);
+        fd.append('ServiceId', this.formData.serviceId);
         await this.servicesOrdenServices.updateService(fd);
         alert('Servicio actualizado con éxito!');
       } else {
@@ -296,9 +372,46 @@ export class ServiceOrdersForm {
       console.error('Detalle:', error.error);
       alert('Error al guardar el equipo.');
     }
+  }
+  private async loadServiceData(id: number) {
+    try {
+      const res: any = await this.servicesOrdenServices.getServiceById(id);
+      const service = res.Data ?? res;
 
+      // Mezclar datos del backend con el formData
+      Object.assign(this.formData, service);
 
+      // Mapear ruta si viene del backend
+      if (service.routeOrigen && service.routeDestino) {
+        this.formData.route.selectedRoute = {
+          origen: service.routeOrigen,
+          destino: service.routeDestino,
+          urlMapa: service.routeMapUrl ?? ''
+        };
+      }
 
+      // Mapear docs si vienen del backend
+      if (service.serviceFiles) {
+
+        const docMap: any = {
+          1: 'pedimento',
+          2: 'cartaPorte',
+          3: 'boletaTerminal',
+          4: 'doda'
+        };
+        const docs = this.formData.docs as any;
+        for (const file of service.serviceFiles) {
+          const key = docMap[file.docId];
+          if (key && docs[key]) {
+            docs[key].urlDocumentPath = file.urlDocumentPath;
+          }
+        }
+      }
+
+    } catch (err) {
+      console.error('Error al cargar servicio:', err);
+      alert('No se pudo cargar la orden de servicio.');
+    }
   }
 
   get pageTitle(): string {

@@ -525,23 +525,23 @@
 <div class="form-grid">
   <div class="form-group">
     <label>Estado Carga</label>
-    <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+    <select [(ngModel)]="formData.loadStatus1" (change)="checkPatioExterno()">
       <option value="">-- Seleccionar --</option>
       <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
       <option value="patio_externo">En Patio Externo</option>
     </select>
   </div>
-  <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+  <div class="form-group" *ngIf="formData.loadStatus1 === 'patio_externo'">
     <label>Motivo de Contenedor en patio externo</label>
     <input type="text" [(ngModel)]="formData.outdoorPatioReason"
       placeholder="Ej: Espera de documentación / Problema aduanal">
   </div>
-  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+  <div class="form-group" *ngIf="formData.loadStatus1 !== 'Vacio'">
     <label>Sello 1</label>
     <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
       (input)="onlyNumbers($event)" pattern="[0-9]*">
   </div>
-  <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+  <div class="form-group" *ngIf="formData.loadStatus1 !== 'Vacio'">
     <label>Sello 2</label>
     <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
       (input)="onlyNumbers($event)" pattern="[0-9]*">
@@ -587,55 +587,53 @@
       </option>
     </select>
   </div>
-  <div class="form-group" *ngIf="formData.loadStatus == 'Vacio'">
+  <div class="form-group" *ngIf="formData.loadStatus1 == 'Vacio'">
     <label>Fecha de Vacío</label>
     <input type="datetime-local" [(ngModel)]="formData.emptyDate">
   </div>
   <div class="checkbox-row">
-        <label>
-          <input type="checkbox" [(ngModel)]="formData.noSolicitarEquipo" (change)="onNoSolicitarEquipoChange()">
-          No solicitar equipo
-        </label>
-      </div>
+    <label>
+      <input type="checkbox" [(ngModel)]="formData.noSolicitarEquipo" (change)="onNoSolicitarEquipoChange()">
+      No solicitar equipo
+    </label>
+  </div>
 </div>
 <div *ngIf="is20ft1">
   <h3>Contenedor 1 B</h3>
   <div class="form-grid">
     <div class="form-group">
       <label>Estado Carga</label>
-      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+      <select [(ngModel)]="formData.loadStatus1b" (change)="checkPatioExterno()">
         <option value="">-- Seleccionar --</option>
         <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
         <option value="patio_externo">En Patio Externo</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+    <div class="form-group" *ngIf="formData.loadStatus1b === 'patio_externo'">
       <label>Motivo de Contenedor en patio externo</label>
       <input type="text" [(ngModel)]="formData.outdoorPatioReason"
         placeholder="Ej: Espera de documentación / Problema aduanal">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus1b !== 'Vacio'">
       <label>Sello 1</label>
       <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus1b !== 'Vacio'">
       <label>Sello 2</label>
       <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
     <div class="form-group">
-      <label>Número Contenedor</label>
-      <input type="text" [(ngModel)]="formData.containerNumber1b" placeholder="Num. Contenedor"
-        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-    </div>
-    <div class="form-group">
-      <label>Linea Naviera</label>
-      <input type="text" [(ngModel)]="formData.shippingline1b" placeholder="Linea Naviera">
-    </div>
-    <div class="form-group">
-      <label>Tamaño</label>
-      <input type="text" [(ngModel)]="formData.size1b" placeholder="Tamaño">
+      <label>Contenedor</label>
+      <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer"
+        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+      <mat-autocomplete #autoContainer [displayWith]="displayContainer"
+        (optionSelected)="selectContainer1b($event.option.value)">
+        <mat-option *ngFor="let c1b of filteredContainers" [value]="c1b">
+          {{ c1b.containerType.name }} - {{ c1b.containerNumber }} - {{ c1b.size }} - {{ c1b.shippingLineId }}
+        </mat-option>
+      </mat-autocomplete>
     </div>
     <div class="form-group">
       <label>Peso (Kg)</label>
@@ -667,7 +665,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="formData.loadStatus1b == 'Vacio'">
       <label>Fecha de Vacío</label>
       <input type="datetime-local" [(ngModel)]="formData.emptyDate">
     </div>
@@ -681,47 +679,37 @@
   <div class="form-grid">
     <div class="form-group">
       <label>Estado Carga</label>
-      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+      <select [(ngModel)]="formData.loadStatus2" (change)="checkPatioExterno()">
         <option value="">-- Seleccionar --</option>
         <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
         <option value="patio_externo">En Patio Externo</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+    <div class="form-group" *ngIf="formData.loadStatus2 === 'patio_externo'">
       <label>Motivo de Contenedor en patio externo</label>
       <input type="text" [(ngModel)]="formData.outdoorPatioReason"
         placeholder="Ej: Espera de documentación / Problema aduanal">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus2 !== 'Vacio'">
       <label>Sello 1</label>
       <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus2 !== 'Vacio'">
       <label>Sello 2</label>
       <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
     <div class="form-group">
-      <label>Tipo de Contenedor</label>
-      <select [(ngModel)]="formData.containerType2" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-        <option value="">-- Seleccionar --</option>
-        <option *ngFor="let t of formData.options.containerTypes">{{t.name}}</option>
-        <!-- Agrega más si necesitas -->
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Número Contenedor</label>
-      <input type="text" [(ngModel)]="formData.containerNumber2" placeholder="Num. Contenedor"
-        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-    </div>
-    <div class="form-group">
-      <label>Linea Naviera</label>
-      <input type="text" [(ngModel)]="formData.shippingline2" placeholder="Linea Naviera">
-    </div>
-    <div class="form-group">
-      <label>Tamaño</label>
-      <input type="text" [(ngModel)]="formData.size2" placeholder="Tamaño">
+      <label>Contenedor 2</label>
+      <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer2"
+        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+      <mat-autocomplete #autoContainer2 [displayWith]="displayContainer"
+        (optionSelected)="selectContainer2($event.option.value)">
+        <mat-option *ngFor="let c2 of filteredContainers" [value]="c2">
+          {{ c2.containerType.name }} - {{ c2.containerNumber }} - {{ c2.size }} - {{ c2.shippingLineId }}
+        </mat-option>
+      </mat-autocomplete>
     </div>
     <div class="form-group">
       <label>Peso (Kg)</label>
@@ -753,7 +741,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="formData.loadStatus2 == 'Vacio'">
       <label>Fecha de Vacío</label>
       <input type="datetime-local" [(ngModel)]="formData.emptyDate">
     </div>
@@ -764,39 +752,37 @@
   <div class="form-grid">
     <div class="form-group">
       <label>Estado Carga</label>
-      <select [(ngModel)]="formData.loadStatus" (change)="checkPatioExterno()">
+      <select [(ngModel)]="formData.loadStatus2b" (change)="checkPatioExterno()">
         <option value="">-- Seleccionar --</option>
         <option *ngFor="let s of formData.options.loadStatuses">{{ s }}</option>
         <option value="patio_externo">En Patio Externo</option>
       </select>
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus === 'patio_externo'">
+    <div class="form-group" *ngIf="formData.loadStatus2b === 'patio_externo'">
       <label>Motivo de Contenedor en patio externo</label>
       <input type="text" [(ngModel)]="formData.outdoorPatioReason"
         placeholder="Ej: Espera de documentación / Problema aduanal">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus2b !== 'Vacio'">
       <label>Sello 1</label>
       <input type="text" [(ngModel)]="formData.seal1" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
-    <div class="form-group" *ngIf="formData.loadStatus !== 'Vacio'">
+    <div class="form-group" *ngIf="formData.loadStatus2b !== 'Vacio'">
       <label>Sello 2</label>
       <input type="text" [(ngModel)]="formData.seal2" placeholder="15 dígitos" maxlength="15"
         (input)="onlyNumbers($event)" pattern="[0-9]*">
     </div>
     <div class="form-group">
-      <label>Número Contenedor</label>
-      <input type="text" [(ngModel)]="formData.containerNumber2b" placeholder="Num. Contenedor"
-        (blur)="validateContainer($event)" maxlength="11" [disabled]="formData.noSolicitarEquipo || formData.esSocio">
-    </div>
-    <div class="form-group">
-      <label>Linea Naviera</label>
-      <input type="text" [(ngModel)]="formData.shippingline2b" placeholder="Linea Naviera">
-    </div>
-    <div class="form-group">
-      <label>Tamaño</label>
-      <input type="text" [(ngModel)]="formData.size2b" placeholder="Tamaño">
+      <label>Contenedor 2B</label>
+      <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer2b"
+        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+      <mat-autocomplete #autoContainer2b [displayWith]="displayContainer"
+        (optionSelected)="selectContainer2b($event.option.value)">
+        <mat-option *ngFor="let c2b of filteredContainers" [value]="c2b">
+          {{ c2b.containerType.name }} - {{ c2b.containerNumber }} - {{ c2b.size }} - {{ c2b.shippingLineId }}
+        </mat-option>
+      </mat-autocomplete>
     </div>
     <div class="form-group">
       <label>Peso (Kg)</label>
@@ -828,7 +814,7 @@
         </option>
       </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="formData.loadStatus2b == 'Vacio'">
       <label>Fecha de Vacío</label>
       <input type="datetime-local" [(ngModel)]="formData.emptyDate">
     </div>
