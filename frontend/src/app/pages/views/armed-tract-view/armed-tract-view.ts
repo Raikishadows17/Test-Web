@@ -156,7 +156,7 @@ export class ArmedTractView {
   get isRFft1(): boolean {
     return this.formData.containerType1 === "RF"
   }
-  get isTKft1(): boolean {
+  get isTFft1(): boolean {
     return this.formData.containerType1 === "TF"
   }
 
@@ -168,16 +168,16 @@ export class ArmedTractView {
     return this.formData.containerType2 === "40'";
   }
   get is45ft2(): boolean {
-    return this.formData.containerType1 === "45'"
+    return this.formData.containerType2 === "45'"
   }
   get isOTft2(): boolean {
-    return this.formData.containerType1 === "OT"
+    return this.formData.containerType2 === "OT"
   }
   get isRFft2(): boolean {
-    return this.formData.containerType1 === "RF"
+    return this.formData.containerType2 === "RF"
   }
-  get isTKft2(): boolean {
-    return this.formData.containerType1 === "TF"
+  get isTFft2(): boolean {
+    return this.formData.containerType2 === "TF"
   }
   onSearchContainer(term: string): void {
     const query = term.toLowerCase();
@@ -191,6 +191,19 @@ export class ArmedTractView {
     this.formData.selectedContainer1 = c;
     this.onSelectContainer1();
   }
+  selectContainer1b(c1b: any): void {
+    this.formData.selectedContainer1b = c1b;
+    this.onSelectContainer1b();
+  }
+  selectContainer2(c: any): void {
+    this.formData.selectedContainer2 = c;
+    this.onSelectContainer2();
+  }
+
+  selectContainer2b(c2b: any): void {
+    this.formData.selectedContainer2b = c2b;
+    this.onSelectContainer2b();
+  }
   onSelectContainer1(): void {
     const c = this.formData.selectedContainer1;
     if (c) {
@@ -198,6 +211,35 @@ export class ArmedTractView {
       this.formData.containerNumber1 = c.containerNumber;
       this.formData.shippingline1 = c.shippingLineId;
       this.formData.size1 = c.size;
+    }
+  }
+  onSelectContainer1b() {
+    const c1b = this.formData.selectedContainer1b;
+    if (c1b) {
+      this.formData.containerType1b = c1b.containerType.name;  // "20'" o "40'"
+      this.formData.containerNumber1b = c1b.containerNumber;
+      this.formData.shippingline1b = c1b.shippingLineId;
+      this.formData.size1b = c1b.size;
+    }
+  }
+  onSelectContainer2(): void {
+    const c = this.formData.selectedContainer2;
+    if (c) {
+      this.formData.containerType2 = c.containerType.name;
+      this.formData.containerNumber2 = c.containerNumber;
+      this.formData.shippingline2 = c.shippingLineId;
+      this.formData.size2 = c.size;
+    }
+  }
+
+  onSelectContainer2b(): void {
+    const c2b = this.formData.selectedContainer2b;
+    if (c2b) {
+      this.formData.containerType2b = c2b.containerType.name;
+      this.formData.containerType2b = c2b.containerType.name;
+      this.formData.containerNumber2b = c2b.containerNumber;
+      this.formData.shippingline2b = c2b.shippingLineId;
+      this.formData.size2b = c2b.size;
     }
   }
   displayContainer(c: any): string {

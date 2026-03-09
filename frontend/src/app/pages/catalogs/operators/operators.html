@@ -68,8 +68,7 @@
             </td>
             <td>
               <div style="display: flex; align-items: center; gap: 10px;">
-                <img *ngIf="op.photoUrl"
-                    [src]="op.photoUrl"
+               <img *ngIf="op.photoUrl" [src]="apiURL + op.photoUrl"
                     [alt]="op.fullName"
                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #555;"
                     (error)="onImageError($event)">

@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../../../environments/environment";
 import { firstValueFrom } from "rxjs";
 
-
 @Injectable({
    providedIn: 'root'
 })
@@ -15,7 +14,6 @@ export class OperatorService {
       this.http.get(`${environment.apiURL}/api/Employee/Operator`)
     );
   }
-
 
   getOperatorById(id: number) {
     return firstValueFrom(
@@ -34,6 +32,5 @@ export class OperatorService {
       this.http.put(`${environment.apiURL}/api/Employee/Operator`, formData)
     );
   }
-
 
 }
