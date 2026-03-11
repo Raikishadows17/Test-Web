@@ -16,6 +16,7 @@ export class ArmedTractView {
   @Input() formData: any;
   equiposDisponibles: EquipoType[] = ['tracto', 'chasisPrincipal', 'dolly', 'chasisSecundario'];
   filteredContainers: any[] = [];
+  filteredNumbersEconomic: any[] = [];
 
 
   // Estado de selección (acumulativo)
@@ -245,5 +246,18 @@ export class ArmedTractView {
   displayContainer(c: any): string {
     return c ? `${c.containerType.name} - ${c.containerNumber} - ${c.size} - ${c.shippingLineId}` : '';
   }
+   onSearchEconomicNumber(term: string): void {
+    const query = term.toLowerCase();
+    this.filteredNumbersEconomic = this.formData.options.equipments.filter((e: any) =>
+      e.economicNumber.toLowerCase().includes(query)
+    );
+  }
+  displayNumberEconomico(e: any): string {
+    return e ? `${e.economicNumber}` : '';
+  }
+  selectEconomic(e: any): void {
+    this.formData.noEconomico = e.economicNumber;
+  }
+
 
 }

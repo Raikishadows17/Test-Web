@@ -28,7 +28,7 @@ export class ServiceOrdersForm {
 
 
   // Datos del formulario (puedes separarlos por tab si quieres)
-  formData:  any = {
+  formData: any = {
     //tab 1 - Datos generales
     folio: '',
     client: '',
@@ -252,11 +252,21 @@ export class ServiceOrdersForm {
     }
 
   };
-  ngOnInit() {
-    this.loadOptions();
+  async ngOnInit() {
     // Detectar si viene folio en la URL (modo edición)
     this.serviceId = Number(this.route.snapshot.paramMap.get('id'));
     this.isEditMode = !!this.serviceId;
+
+    const res: any = await this.servicesOrdenServices.getServiceOptions();
+    /*
+       imo[9] tripType[2] equipment[102] terminal[16] container[10]
+       containerType[6] roadRoutes[] customer[] operator[21]
+       */
+    this.formData.options.operators = res.Data.operator;
+    this.formData.options.tripTypes = res.Data.tripType;
+    this.formData.options.containers = res.Data.container;
+    this.formData.options.equipments = res.Data.equipment;
+    this.formData.options.imoClasses = res.Data.imo;
 
     if (this.isEditMode) {
       this.loadServiceData(this.serviceId!);
@@ -419,29 +429,5 @@ export class ServiceOrdersForm {
   }
   get submitButtonText(): string {
     return this.isEditMode ? 'Actualizar Orden de Servicio' : 'Crear Orden de Servicio';
-  }
-  private loadOptions() {
-    this.servicesOrdenServices.getServiceCreationOptions().subscribe({
-
-      next: (data) => {
-        const backendData = data.Data;
-
-        // Mapear correctamente lo que viene del backend
-        this.formData.options = {
-          ...this.formData.options,
-          operators: backendData.operator || [],
-          tripTypes: backendData.tripType || [],
-          imoClasses: backendData.imo || [],
-          containers: backendData.container || [],
-          equipments: backendData.equipment || []
-
-        };
-
-        console.log('Operadores cargados:', this.formData.options.equipments);
-      },
-      error: (error) => {
-        console.error('Error al cargar opciones:', error);
-      }
-    })
   }
 }

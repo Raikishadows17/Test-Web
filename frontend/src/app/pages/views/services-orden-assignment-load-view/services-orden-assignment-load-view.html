@@ -6,7 +6,7 @@
   <div class="form-grid">
     <div class="form-group">
       <input type="text" placeholder="Buscar Operador ..." [matAutocomplete]="autoOperador"
-        (input)="onSearchOperador($event.target.value)" style="width: 250px;" />
+        (input)="onSearchOperador($event.target.value)" (focus)="onSearchOperador('')"  style="width: 250px;" />
       <mat-autocomplete #autoOperador [displayWith]="displayOperador"
         (optionSelected)="selectOperador($event.option.value)">
         <mat-option *ngFor="let o of filteredOperators" [value]="o">

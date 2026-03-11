@@ -513,8 +513,17 @@
   Tracto
 </h3>
 <div class="form-grid">
-  <div class="form-group">
-
+  <div class="form-group" style="width: 250px;">
+    <label>No. Económico</label>
+    <input type="text" placeholder="Buscar No. Económico ..." [matAutocomplete]="autoEconmico"
+      (input)="onSearchEconomicNumber($event.target.value)" (focus)="onSearchEconomicNumber('')"
+      [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+    <mat-autocomplete #autoEconmico [displayWith]="displayNumberEconomico"
+      (optionSelected)="selectEconomic($event.option.value)">
+      <mat-option *ngFor="let e of filteredNumbersEconomic" [value]="e">
+        {{ e.economicNumber }}
+      </mat-option>
+    </mat-autocomplete>
   </div>
 </div>
 
@@ -549,7 +558,7 @@
   <div class="form-group">
     <label>Contenedor</label>
     <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer"
-      (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+      (input)="onSearchContainer($event.target.value)" (focus)="onSearchContainer('')"  [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
     <mat-autocomplete #autoContainer [displayWith]="displayContainer"
       (optionSelected)="selectContainer1($event.option.value)">
       <mat-option *ngFor="let c of filteredContainers" [value]="c">
@@ -627,7 +636,7 @@
     <div class="form-group">
       <label>Contenedor</label>
       <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer"
-        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+        (input)="onSearchContainer($event.target.value)" (focus)="onSearchContainer('')" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
       <mat-autocomplete #autoContainer [displayWith]="displayContainer"
         (optionSelected)="selectContainer1b($event.option.value)">
         <mat-option *ngFor="let c1b of filteredContainers" [value]="c1b">
@@ -703,7 +712,7 @@
     <div class="form-group">
       <label>Contenedor 2</label>
       <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer2"
-        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+        (input)="onSearchContainer($event.target.value)" (focus)="onSearchContainer('')" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
       <mat-autocomplete #autoContainer2 [displayWith]="displayContainer"
         (optionSelected)="selectContainer2($event.option.value)">
         <mat-option *ngFor="let c2 of filteredContainers" [value]="c2">
@@ -776,7 +785,7 @@
     <div class="form-group">
       <label>Contenedor 2B</label>
       <input type="text" placeholder="Buscar Contenedor ..." [matAutocomplete]="autoContainer2b"
-        (input)="onSearchContainer($event.target.value)" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
+        (input)="onSearchContainer($event.target.value)" (focus)="onSearchContainer('')" [disabled]="formData.noSolicitarEquipo || formData.esSocio" />
       <mat-autocomplete #autoContainer2b [displayWith]="displayContainer"
         (optionSelected)="selectContainer2b($event.option.value)">
         <mat-option *ngFor="let c2b of filteredContainers" [value]="c2b">
@@ -823,14 +832,9 @@
 <div *ngIf="formData.isSocio">
   <h3>Socio</h3>
   <div class="form-grid">
-
     <div class="form-group">
       <label>Placa</label>
       <input type="text" [(ngModel)]="formData.placa" placeholder="Placa">
-    </div>
-    <div class="form-group">
-      <label>No. Económico</label>
-      <input type="text" [(ngModel)]="formData.noEconomico" placeholder="No. Económico">
     </div>
   </div>
 </div>
