@@ -1,5 +1,5 @@
 
 export const environment = {
   production: true,
-  apiURL: "https://cast-schedules-planets-workout.trycloudflare.com"
+  apiURL: "https://workstation-journalists-instructor-upon.trycloudflare.com"
 };
