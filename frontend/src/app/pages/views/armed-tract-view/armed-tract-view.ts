@@ -88,11 +88,6 @@ export class ArmedTractView {
       default: return '';
     }
   }
-  checkPatioExterno() {
-    if (this.formData.loadStatus === 'patio_externo') {
-      alert('Registrar motivo de patio externo');
-    }
-  }
   onlyNumbers(event: any) {
     // Solo permite dígitos 0-9
     event.target.value = event.target.value.replace(/[^0-9]/g, '');
